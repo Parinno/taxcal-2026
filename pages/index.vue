@@ -2,6 +2,7 @@
 
 <script setup>
 import { ref, computed, inject, watch } from 'vue'
+import { useTaxCalculator } from '~/composables/useTaxCalculator'
 import AlertModal from '~/components/AlertModal.vue'
 import IncomeForm from '~/components/IncomeForm.vue'
 import FamilyDeductionsForm from '~/components/FamilyDeductionsForm.vue'
@@ -167,60 +168,16 @@ const handleBack = () => {
 }
 
 // Calculate tax function
+const { calculateTax: calculateTaxCore } = useTaxCalculator()
 const calculateTax = () => {
-  // Calculate total income
-  const totalIncome = (parseFloat(incomeData.value.salary) || 0) + 
-                     (parseFloat(incomeData.value.bonus) || 0) + 
-                     (parseFloat(incomeData.value.otherIncome) || 0)
-  
-  // Calculate total deductions (simplified calculation)
-  const personalDeduction = parseFloat(familyData.value.personalDeduction) || 0
-  const providentFund = parseFloat(providentFundData.value.providentFund) || 0
-  const socialSecurity = parseFloat(providentFundData.value.socialSecurity) || 0
-  const housingInterest = parseFloat(providentFundData.value.housingInterest) || 0
-  const lifeInsurance = parseFloat(insuranceData.value.lifeInsurance) || 0
-  const healthInsurance = parseFloat(insuranceData.value.healthInsurance) || 0
-  const parentsHealthInsurance = parseFloat(insuranceData.value.parentsHealthInsurance) || 0
-  const pensionLifeInsurance = parseFloat(insuranceData.value.pensionLifeInsurance) || 0
-  const governmentPensionFund = parseFloat(otherFundsData.value.governmentPensionFund) || 0
-  const nationalSavingsFund = parseFloat(otherFundsData.value.nationalSavingsFund) || 0
-  const privateTeachersFund = parseFloat(otherFundsData.value.privateTeachersFund) || 0
-  
-  const totalDeductions = personalDeduction + providentFund + socialSecurity + housingInterest + 
-                         lifeInsurance + healthInsurance + parentsHealthInsurance + pensionLifeInsurance +
-                         governmentPensionFund + nationalSavingsFund + privateTeachersFund
-  
-  const taxableIncome = Math.max(0, totalIncome - totalDeductions)
-  
-  // Simple tax calculation (Thai tax brackets)
-  let taxAmount = 0
-  if (taxableIncome > 0) {
-    if (taxableIncome <= 150000) {
-      taxAmount = 0
-    } else if (taxableIncome <= 300000) {
-      taxAmount = (taxableIncome - 150000) * 0.05
-    } else if (taxableIncome <= 500000) {
-      taxAmount = 7500 + (taxableIncome - 300000) * 0.10
-    } else if (taxableIncome <= 750000) {
-      taxAmount = 27500 + (taxableIncome - 500000) * 0.15
-    } else if (taxableIncome <= 1000000) {
-      taxAmount = 65000 + (taxableIncome - 750000) * 0.20
-    } else if (taxableIncome <= 2000000) {
-      taxAmount = 115000 + (taxableIncome - 1000000) * 0.25
-    } else if (taxableIncome <= 5000000) {
-      taxAmount = 365000 + (taxableIncome - 2000000) * 0.30
-    } else {
-      taxAmount = 1265000 + (taxableIncome - 5000000) * 0.35
-    }
-  }
-  
-  // Update calculation data
-  calculationData.value = {
-    totalIncome,
-    totalDeductions,
-    taxableIncome,
-    taxAmount
-  }
+  const result = calculateTaxCore(
+    incomeData.value,
+    familyData.value,
+    providentFundData.value,
+    insuranceData.value,
+    otherFundsData.value
+  )
+  calculationData.value = result
 }
 
 // Handle recalculate button click

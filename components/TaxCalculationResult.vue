@@ -8,11 +8,11 @@
     <!-- Top Summary Section -->
     <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
       <div class="grid grid-cols-2 gap-8">
-        <!-- Total Net Income -->
+        <!-- Total Net Income (Taxable Income) -->
         <div class="text-center">
           <div class="text-lg text-gray-700 mb-2">รวมเงินได้สุทธิ</div>
           <div class="text-3xl font-bold text-emerald-600">
-            {{ formatCurrency(calculationData.totalIncome) }}
+            {{ formatCurrency(calculationData.taxableIncome) }}
             <span class="text-lg text-gray-500">บาท</span>
           </div>
         </div>
@@ -55,7 +55,7 @@
                 <div class="text-xs text-gray-500">
                   (กองทุนสำรองเลี้ยงชีพ, ประกันชีวิตบำนาญ, กองทุนออมแห่งชาติ, กองทุน ครูเอกชน, กองทุนบำเหน็จบำนาญข้าราชการ)
                 </div>
-                <div class="text-lg font-bold text-emerald-600 mt-2">4</div>
+                <div class="text-lg font-bold text-emerald-600 mt-2">{{ formatCurrency(investmentRecommendations.rmfMax) }}</div>
               </td>
               <td class="py-4 px-4 text-right">
                 <input
@@ -75,7 +75,7 @@
                 <div class="text-sm text-red-600 mb-1">
                   ThaiESG 30% ของรายได้ทั้งปี ไม่เกิน 300,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ
                 </div>
-                <div class="text-lg font-bold text-emerald-600 mt-2">4</div>
+                <div class="text-lg font-bold text-emerald-600 mt-2">{{ formatCurrency(investmentRecommendations.thaiEsgMax) }}</div>
               </td>
               <td class="py-4 px-4 text-right">
                 <input
@@ -95,7 +95,7 @@
                 <div class="text-sm text-red-600 mb-1">
                   Thai ESGX 30% ของรายได้ทั้งปี ไม่เกิน 300,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ
                 </div>
-                <div class="text-lg font-bold text-emerald-600 mt-2">4</div>
+                <div class="text-lg font-bold text-emerald-600 mt-2">{{ formatCurrency(investmentRecommendations.thaiEsgxMax) }}</div>
               </td>
               <td class="py-4 px-4 text-right">
                 <input
@@ -116,7 +116,7 @@
                   ปี 2568 ลดหย่อนสูงสุด 300,000 บาท<br>
                   ปี 2569 - 2572 ลดหย่อนสูงสุดปีละ 50,000 บาท
                 </div>
-                <div class="text-lg font-bold text-emerald-600 mt-2">300,000</div>
+                <div class="text-lg font-bold text-emerald-600 mt-2">{{ formatCurrency(investmentRecommendations.ltfMax) }}</div>
               </td>
               <td class="py-4 px-4 text-right">
                 <input
@@ -149,11 +149,11 @@
       <div class="grid grid-cols-2 gap-6">
         <div class="text-center">
           <div class="text-sm text-gray-600 mb-2">เมื่อลงทุนสูงสุด</div>
-          <div class="text-3xl font-bold text-red-600">0</div>
+          <div class="text-3xl font-bold text-red-600">{{ formatCurrency(taxSavingsFromInvestments) }}</div>
         </div>
         <div class="text-center">
           <div class="text-sm text-gray-600 mb-2">เมื่อลงทุนตามจำนวนเงินของคุณ</div>
-          <div class="text-3xl font-bold text-emerald-600">0</div>
+          <div class="text-3xl font-bold text-emerald-600">{{ formatCurrency(taxSavingsFromInvestments) }}</div>
         </div>
       </div>
     </div>
@@ -196,10 +196,10 @@
       
       <div class="grid grid-cols-2 gap-6">
         <div class="text-center">
-          <div class="text-3xl font-bold text-red-600">0</div>
+          <div class="text-3xl font-bold text-red-600">{{ formatCurrency(finalTaxAmount) }}</div>
         </div>
         <div class="text-center">
-          <div class="text-3xl font-bold text-emerald-600">0</div>
+          <div class="text-3xl font-bold text-emerald-600">{{ formatCurrency(finalTaxAmount) }}</div>
         </div>
       </div>
     </div>
@@ -227,6 +227,8 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useTaxCalculator } from '~/composables/useTaxCalculator'
+import { formatCurrencyTHB } from '~/utils/format'
 
 const props = defineProps({
   modelValue: {
@@ -256,23 +258,60 @@ const formData = ref({
 // Use the calculation data
 const calculationData = computed(() => props.modelValue)
 
+// Composable helpers
+const {
+  getInvestmentRecommendations,
+  computeTotalInvestment,
+  computeTaxSavingsFromInvestments,
+  computeDonationDeductions,
+  computeFinalTaxAmount,
+} = useTaxCalculator()
+
+// Calculate investment recommendations based on income
+const investmentRecommendations = computed(() => {
+  return getInvestmentRecommendations(calculationData.value.totalIncome)
+})
+
 // Calculate total investment
 const totalInvestment = computed(() => {
-  const rmf = parseFloat(formData.value.rmfInvestment) || 0
-  const thaiEsg = parseFloat(formData.value.thaiEsgInvestment) || 0
-  const thaiEsgx = parseFloat(formData.value.thaiEsgxInvestment) || 0
-  const ltf = parseFloat(formData.value.ltfTransfer) || 0
-  return rmf + thaiEsg + thaiEsgx + ltf
+  return computeTotalInvestment(
+    parseFloat(formData.value.rmfInvestment) || 0,
+    parseFloat(formData.value.thaiEsgInvestment) || 0,
+    parseFloat(formData.value.thaiEsgxInvestment) || 0,
+    parseFloat(formData.value.ltfTransfer) || 0
+  )
+})
+
+// Calculate tax savings from investments
+const taxSavingsFromInvestments = computed(() => {
+  return computeTaxSavingsFromInvestments(
+    totalInvestment.value,
+    calculationData.value.taxableIncome,
+    calculationData.value.taxAmount
+  )
+})
+
+// Calculate donation deductions
+const donationDeductions = computed(() => {
+  return computeDonationDeductions(
+    parseFloat(formData.value.educationSportsSocialHospital) || 0,
+    parseFloat(formData.value.generalDonation) || 0,
+    calculationData.value.taxableIncome
+  )
+})
+
+// Calculate final tax after all deductions
+const finalTaxAmount = computed(() => {
+  return computeFinalTaxAmount(
+    calculationData.value.taxAmount,
+    calculationData.value.taxableIncome,
+    totalInvestment.value,
+    donationDeductions.value
+  )
 })
 
 // Format currency helper
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('th-TH', {
-    style: 'currency',
-    currency: 'THB',
-    minimumFractionDigits: 0
-  }).format(amount)
-}
+const formatCurrency = (amount) => formatCurrencyTHB(amount)
 
 const handleBack = () => {
   emit('back')
