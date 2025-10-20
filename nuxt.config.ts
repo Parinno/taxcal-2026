@@ -4,6 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxtjs/tailwindcss"],
   css: ["@/assets/css/tailwind.css"],
+  app: {
+    baseURL: '/tax/',
+    buildAssetsDir: '/_nuxt/'
+  },
   alias: {
     "@": "~",
   },
