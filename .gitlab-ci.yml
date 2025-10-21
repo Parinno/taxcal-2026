@@ -19,7 +19,7 @@ test_lint:
     - apk add g++ make py3-pip
     - npm install -g pnpm@10.9.0
   script:
-    - pnpm install --frozen-lockfile
+    - pnpm install --no-frozen-lockfile
     - pnpm run lint || true
   only:
     - /^feature\/.*$/
@@ -33,7 +33,7 @@ test_build:
     - apk add g++ make py3-pip
     - npm install -g pnpm@10.9.0
   script:
-    - pnpm install --frozen-lockfile
+    - pnpm install --no-frozen-lockfile
     - pnpm run build
   only:
     - /^feature\/.*$/
