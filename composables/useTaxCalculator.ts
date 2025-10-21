@@ -187,8 +187,51 @@ export function useTaxCalculator() {
   }
 
   const computeTaxSavingsFromInvestments = (totalInvestmentAmount: number, taxableIncome: number, baseTax: number) => {
-    const effectiveRate = baseTax / Math.max(taxableIncome, 1)
-    return totalInvestmentAmount * effectiveRate
+    // Apply limits to investment amount
+    // Maximum possible investment: RMF(500k) + ThaiESG(300k) + Thai ESGX(300k) + LTF(300k) = 1.4M
+    const maxAllowedInvestment = 1400000
+    const limitedInvestmentAmount = Math.min(totalInvestmentAmount, maxAllowedInvestment)
+    
+    // Calculate tax on reduced taxable income
+    const newTaxableIncome = Math.max(0, taxableIncome - limitedInvestmentAmount)
+    
+    // Calculate new tax amount
+    let newTaxAmount = 0
+    if (newTaxableIncome > 0) {
+      if (newTaxableIncome <= 150000) newTaxAmount = 0
+      else if (newTaxableIncome <= 300000) newTaxAmount = (newTaxableIncome - 150000) * 0.05
+      else if (newTaxableIncome <= 500000) newTaxAmount = 7500 + (newTaxableIncome - 300000) * 0.1
+      else if (newTaxableIncome <= 750000) newTaxAmount = 27500 + (newTaxableIncome - 500000) * 0.15
+      else if (newTaxableIncome <= 1000000) newTaxAmount = 65000 + (newTaxableIncome - 750000) * 0.2
+      else if (newTaxableIncome <= 2000000) newTaxAmount = 115000 + (newTaxableIncome - 1000000) * 0.25
+      else if (newTaxableIncome <= 5000000) newTaxAmount = 365000 + (newTaxableIncome - 2000000) * 0.3
+      else newTaxAmount = 1265000 + (newTaxableIncome - 5000000) * 0.35
+    }
+    
+    // Tax savings = original tax - new tax
+    return Math.max(0, baseTax - newTaxAmount)
+  }
+
+  const computeMaxTaxSavingsFromInvestments = (totalIncome: number, taxableIncome: number, baseTax: number) => {
+    // Calculate maximum possible investment with proper limits
+    const recommendations = getInvestmentRecommendations(totalIncome)
+    
+    // RMF: 30% of total income, max 500k, but limited by remaining retirement cap
+    const rmfMax = Math.min(recommendations.rmfMax, 500000)
+    
+    // ThaiESG: 30% of total income, max 300k, separate from retirement funds
+    const thaiEsgMax = Math.min(recommendations.thaiEsgMax, 300000)
+    
+    // Thai ESGX: 30% of total income, max 300k, separate from retirement funds  
+    const thaiEsgxMax = Math.min(recommendations.thaiEsgxMax, 300000)
+    
+    // LTF: Fixed limit 300k for 2025
+    const ltfMax = Math.min(recommendations.ltfMax, 300000)
+    
+    const maxInvestment = rmfMax + thaiEsgMax + thaiEsgxMax + ltfMax
+    
+    // Calculate tax savings from maximum investment
+    return computeTaxSavingsFromInvestments(maxInvestment, taxableIncome, baseTax)
   }
 
   const computeDonationDeductions = (educationDonation: number, generalDonation: number, taxableIncome: number) => {
@@ -199,9 +242,35 @@ export function useTaxCalculator() {
   }
 
   const computeFinalTaxAmount = (baseTax: number, taxableIncome: number, totalInvestmentAmount: number, donationDeduction: number) => {
-    const investmentSavings = computeTaxSavingsFromInvestments(totalInvestmentAmount, taxableIncome, baseTax)
-    const donationSavings = computeTaxSavingsFromInvestments(donationDeduction, taxableIncome, baseTax)
-    return Math.max(0, baseTax - investmentSavings - donationSavings)
+    // Calculate final taxable income after investments and donations
+    const finalTaxableIncome = Math.max(0, taxableIncome - totalInvestmentAmount - donationDeduction)
+    
+    // Calculate final tax amount
+    let finalTaxAmount = 0
+    if (finalTaxableIncome > 0) {
+      if (finalTaxableIncome <= 150000) finalTaxAmount = 0
+      else if (finalTaxableIncome <= 300000) finalTaxAmount = (finalTaxableIncome - 150000) * 0.05
+      else if (finalTaxableIncome <= 500000) finalTaxAmount = 7500 + (finalTaxableIncome - 300000) * 0.1
+      else if (finalTaxableIncome <= 750000) finalTaxAmount = 27500 + (finalTaxableIncome - 500000) * 0.15
+      else if (finalTaxableIncome <= 1000000) finalTaxAmount = 65000 + (finalTaxableIncome - 750000) * 0.2
+      else if (finalTaxableIncome <= 2000000) finalTaxAmount = 115000 + (finalTaxableIncome - 1000000) * 0.25
+      else if (finalTaxableIncome <= 5000000) finalTaxAmount = 365000 + (finalTaxableIncome - 2000000) * 0.3
+      else finalTaxAmount = 1265000 + (finalTaxableIncome - 5000000) * 0.35
+    }
+    
+    return Math.max(0, finalTaxAmount)
+  }
+
+  const computeTaxAmountAfterMaxInvestment = (baseTax: number, taxableIncome: number, totalIncome: number) => {
+    // Calculate maximum possible investment with proper limits
+    const recommendations = getInvestmentRecommendations(totalIncome)
+    const maxInvestment = recommendations.rmfMax + 
+                         recommendations.thaiEsgMax + 
+                         recommendations.thaiEsgxMax + 
+                         recommendations.ltfMax
+    
+    // Calculate tax amount after maximum investment (no donation deductions)
+    return computeFinalTaxAmount(baseTax, taxableIncome, maxInvestment, 0)
   }
 
   return {
@@ -209,8 +278,10 @@ export function useTaxCalculator() {
     getInvestmentRecommendations,
     computeTotalInvestment,
     computeTaxSavingsFromInvestments,
+    computeMaxTaxSavingsFromInvestments,
     computeDonationDeductions,
     computeFinalTaxAmount,
+    computeTaxAmountAfterMaxInvestment,
   }
 }
 
