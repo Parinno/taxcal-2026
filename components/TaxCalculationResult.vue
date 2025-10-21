@@ -149,7 +149,7 @@
       <div class="grid grid-cols-2 gap-6">
         <div class="text-center">
           <div class="text-sm text-gray-600 mb-2">เมื่อลงทุนสูงสุด</div>
-          <div class="text-3xl font-bold text-red-600">{{ formatCurrency(taxSavingsFromInvestments) }}</div>
+          <div class="text-3xl font-bold text-red-600">{{ formatCurrency(maxTaxSavingsFromInvestments) }}</div>
         </div>
         <div class="text-center">
           <div class="text-sm text-gray-600 mb-2">เมื่อลงทุนตามจำนวนเงินของคุณ</div>
@@ -196,7 +196,7 @@
       
       <div class="grid grid-cols-2 gap-6">
         <div class="text-center">
-          <div class="text-3xl font-bold text-red-600">{{ formatCurrency(finalTaxAmount) }}</div>
+          <div class="text-3xl font-bold text-red-600">{{ formatCurrency(taxAmountAfterMaxInvestment) }}</div>
         </div>
         <div class="text-center">
           <div class="text-3xl font-bold text-emerald-600">{{ formatCurrency(finalTaxAmount) }}</div>
@@ -263,8 +263,10 @@ const {
   getInvestmentRecommendations,
   computeTotalInvestment,
   computeTaxSavingsFromInvestments,
+  computeMaxTaxSavingsFromInvestments,
   computeDonationDeductions,
   computeFinalTaxAmount,
+  computeTaxAmountAfterMaxInvestment,
 } = useTaxCalculator()
 
 // Calculate investment recommendations based on income
@@ -291,6 +293,15 @@ const taxSavingsFromInvestments = computed(() => {
   )
 })
 
+// Calculate maximum tax savings from investments
+const maxTaxSavingsFromInvestments = computed(() => {
+  return computeMaxTaxSavingsFromInvestments(
+    calculationData.value.totalIncome,
+    calculationData.value.taxableIncome,
+    calculationData.value.taxAmount
+  )
+})
+
 // Calculate donation deductions
 const donationDeductions = computed(() => {
   return computeDonationDeductions(
@@ -307,6 +318,15 @@ const finalTaxAmount = computed(() => {
     calculationData.value.taxableIncome,
     totalInvestment.value,
     donationDeductions.value
+  )
+})
+
+// Calculate tax amount after maximum investment savings
+const taxAmountAfterMaxInvestment = computed(() => {
+  return computeTaxAmountAfterMaxInvestment(
+    calculationData.value.taxAmount,
+    calculationData.value.taxableIncome,
+    calculationData.value.totalIncome
   )
 })
 
