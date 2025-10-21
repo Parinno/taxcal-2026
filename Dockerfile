@@ -29,7 +29,7 @@ WORKDIR $DIR
 # Bundle app source
 COPY . .
 
-RUN rm -rf node_modules && pnpm install --frozen-lockfile
+RUN rm -rf node_modules && pnpm install --no-frozen-lockfile
 RUN pnpm build
 
 
