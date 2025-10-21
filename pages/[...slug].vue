@@ -1,12 +1,11 @@
 <script setup>
-const router = useRouter()
-onMounted(() => {
-  router.replace('/')
+definePageMeta({
+  layout: 'tax-calculator'
 })
 </script>
 
 <template>
-  <div />
+  <TaxCalculator />
 </template>
 
 
