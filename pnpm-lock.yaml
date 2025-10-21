@@ -6988,6 +6988,7 @@ packages:
       rollup: 4.52.5
       tinyglobby: 0.2.15
     optionalDependencies:
+      '@types/node': 24.9.1
       fsevents: 2.3.3
     dev: false
 
