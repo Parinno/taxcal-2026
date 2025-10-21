@@ -22,3 +22,6 @@ logs
 .env
 .env.*
 !.env.example
+
+# Google Service Account
+service-account.json
