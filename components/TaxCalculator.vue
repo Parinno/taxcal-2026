@@ -1,8 +1,5 @@
-
-
 <script setup>
 import { ref, computed, inject, watch } from 'vue'
-import { useTaxCalculator } from '~/composables/useTaxCalculator'
 import AlertModal from '~/components/AlertModal.vue'
 import IncomeForm from '~/components/IncomeForm.vue'
 import FamilyDeductionsForm from '~/components/FamilyDeductionsForm.vue'
@@ -11,18 +8,15 @@ import InsuranceForm from '~/components/InsuranceForm.vue'
 import OtherFundsForm from '~/components/OtherFundsForm.vue'
 import TaxCalculationResult from '~/components/TaxCalculationResult.vue'
 
-// Define layout
-definePageMeta({
-  layout: 'tax-calculator'
-})
-
 // Current step state
 const currentStep = ref(1)
 
 // Inject currentStep from layout and update it
 const layoutCurrentStep = inject('currentStep')
 watch(currentStep, (newStep) => {
-  layoutCurrentStep.value = newStep
+  if (layoutCurrentStep) {
+    layoutCurrentStep.value = newStep
+  }
 }, { immediate: true })
 
 // Form data for each step
@@ -130,33 +124,21 @@ const currentFormData = computed(() => {
 // Handle next button click
 const handleNext = () => {
   if (currentStep.value === 1) {
-    // Check if at least one income field is filled
     const hasIncome = incomeData.value.salary || incomeData.value.bonus || incomeData.value.otherIncome
-    
     if (!hasIncome) {
       showAlert.value = true
       return
     }
-    
-    console.log('Income data:', incomeData.value)
     currentStep.value = 2
   } else if (currentStep.value === 2) {
-    console.log('Family deductions data:', familyData.value)
     currentStep.value = 3
   } else if (currentStep.value === 3) {
-    console.log('Provident fund data:', providentFundData.value)
     currentStep.value = 4
   } else if (currentStep.value === 4) {
-    console.log('Insurance data:', insuranceData.value)
     currentStep.value = 5
   } else if (currentStep.value === 5) {
-    console.log('Other funds data:', otherFundsData.value)
-    // Calculate tax when moving to step 6
     calculateTax()
     currentStep.value = 6
-  } else if (currentStep.value === 6) {
-    console.log('Final calculation completed')
-    // This is the last step, maybe trigger final calculation or show a "finish" message
   }
 }
 
@@ -168,21 +150,60 @@ const handleBack = () => {
 }
 
 // Calculate tax function
-const { calculateTax: calculateTaxCore } = useTaxCalculator()
 const calculateTax = () => {
-  const result = calculateTaxCore(
-    incomeData.value,
-    familyData.value,
-    providentFundData.value,
-    insuranceData.value,
-    otherFundsData.value
-  )
-  calculationData.value = result
+  const totalIncome = (parseFloat(incomeData.value.salary) || 0) + 
+                     (parseFloat(incomeData.value.bonus) || 0) + 
+                     (parseFloat(incomeData.value.otherIncome) || 0)
+
+  const personalDeduction = parseFloat(familyData.value.personalDeduction) || 0
+  const providentFund = parseFloat(providentFundData.value.providentFund) || 0
+  const socialSecurity = parseFloat(providentFundData.value.socialSecurity) || 0
+  const housingInterest = parseFloat(providentFundData.value.housingInterest) || 0
+  const lifeInsurance = parseFloat(insuranceData.value.lifeInsurance) || 0
+  const healthInsurance = parseFloat(insuranceData.value.healthInsurance) || 0
+  const parentsHealthInsurance = parseFloat(insuranceData.value.parentsHealthInsurance) || 0
+  const pensionLifeInsurance = parseFloat(insuranceData.value.pensionLifeInsurance) || 0
+  const governmentPensionFund = parseFloat(otherFundsData.value.governmentPensionFund) || 0
+  const nationalSavingsFund = parseFloat(otherFundsData.value.nationalSavingsFund) || 0
+  const privateTeachersFund = parseFloat(otherFundsData.value.privateTeachersFund) || 0
+
+  const totalDeductions = personalDeduction + providentFund + socialSecurity + housingInterest + 
+                         lifeInsurance + healthInsurance + parentsHealthInsurance + pensionLifeInsurance +
+                         governmentPensionFund + nationalSavingsFund + privateTeachersFund
+
+  const taxableIncome = Math.max(0, totalIncome - totalDeductions)
+
+  let taxAmount = 0
+  if (taxableIncome > 0) {
+    if (taxableIncome <= 150000) {
+      taxAmount = 0
+    } else if (taxableIncome <= 300000) {
+      taxAmount = (taxableIncome - 150000) * 0.05
+    } else if (taxableIncome <= 500000) {
+      taxAmount = 7500 + (taxableIncome - 300000) * 0.10
+    } else if (taxableIncome <= 750000) {
+      taxAmount = 27500 + (taxableIncome - 500000) * 0.15
+    } else if (taxableIncome <= 1000000) {
+      taxAmount = 65000 + (taxableIncome - 750000) * 0.20
+    } else if (taxableIncome <= 2000000) {
+      taxAmount = 115000 + (taxableIncome - 1000000) * 0.25
+    } else if (taxableIncome <= 5000000) {
+      taxAmount = 365000 + (taxableIncome - 2000000) * 0.30
+    } else {
+      taxAmount = 1265000 + (taxableIncome - 5000000) * 0.35
+    }
+  }
+
+  calculationData.value = {
+    totalIncome,
+    totalDeductions,
+    taxableIncome,
+    taxAmount
+  }
 }
 
 // Handle recalculate button click
 const handleRecalculate = () => {
-  // Reset to step 1
   currentStep.value = 1
 }
 
@@ -193,7 +214,6 @@ const handleAlertClose = () => {
 </script>
 
 <template>
-  <!-- Dynamic Component based on current step -->
   <component 
     :is="currentComponent"
     v-model="currentFormData" 
@@ -202,7 +222,6 @@ const handleAlertClose = () => {
     @recalculate="handleRecalculate"
   />
 
-  <!-- Alert Modal -->
   <AlertModal 
     :show="showAlert" 
     @close="handleAlertClose"
@@ -213,3 +232,5 @@ const handleAlertClose = () => {
 <style scoped>
 /* Custom styles if needed */
 </style>
+
+

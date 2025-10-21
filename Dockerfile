@@ -15,6 +15,11 @@ ENV NUXT_HOST=0.0.0.0
 ARG NUXT_APP_VERSION
 ENV NUXT_APP_VERSION=${NUXT_APP_VERSION}
 
+# Build variable
+ARG GOOGLE_APPLICATION_CREDENTIALS=./service-account.json
+ARG GOOGLE_SHEETS_ID=1GJYgrLMOROAH7K8Jb-X8As9SXhPjayRy2W1xe9ca704
+ARG GOOGLE_SHEETS_RANGE=data!A1:Z1000
+
 # Run in production mode
 ENV NODE_ENV=production
 
@@ -24,7 +29,7 @@ WORKDIR $DIR
 # Bundle app source
 COPY . .
 
-RUN rm -rf node_modules && pnpm install --frozen-lockfile
+RUN rm -rf node_modules && pnpm install --no-frozen-lockfile
 RUN pnpm build
 
 
