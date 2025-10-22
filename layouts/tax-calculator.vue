@@ -13,70 +13,30 @@
       </div>
 
       <!-- Progress Steps -->
-      <div class="progress-container">
-        <!-- Step 1 -->
-        <div class="step-frame">
-          <div class="step-row">
-            <div class="step-status">
-              <div class="step-circle">
-                <span class="step-number">1</span>
-              </div>
-            </div>
-            <div class="step-line"></div>
-          </div>
-          <div class="step-content">
-            <div class="step-text">
-              <div class="step-caption">ขั้นตอนที่ 1</div>
-              <div class="step-detail">รายได้</div>
-            </div>
-          </div>
-        </div>
+      <StepIndicator :current-step="currentStep" />
 
-        <!-- Step 2 -->
-        <div class="step-frame">
-          <div class="step-row">
-            <div class="step-status">
-              <div class="step-circle">
-                <span class="step-number">2</span>
-              </div>
-            </div>
-            <div class="step-line"></div>
-          </div>
-          <div class="step-content">
-            <div class="step-text">
-              <div class="step-caption">ขั้นตอนที่ 2</div>
-              <div class="step-detail">ค่าลดหย่อน</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="step-frame step-frame-last">
-          <div class="step-row">
-            <div class="step-status">
-              <div class="step-circle">
-                <span class="step-number">3</span>
-              </div>
-            </div>
-          </div>
-          <div class="step-content">
-            <div class="step-text">
-              <div class="step-caption">ขั้นตอนที่ 3</div>
-              <div class="step-detail">คำนวนภาษี</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Page Content Slot -->
-      <slot />
+      <!-- Page Content -->
+      <component 
+        :is="currentComponent"
+        v-model="currentFormData" 
+        @submit="handleNext"
+        @back="handleBack"
+      />
 
       <!-- Navigation Buttons -->
       <div class="navigation-buttons">
-        <button class="btn-back">
+        <button 
+          class="btn-back"
+          @click="handleBack"
+          :disabled="currentStep <= 1"
+        >
           ย้อนกลับ
         </button>
-        <button class="btn-next">
+        <button 
+          class="btn-next"
+          @click="handleNext"
+          :disabled="currentStep >= 3"
+        >
           ต่อไป
         </button>
       </div>
@@ -87,37 +47,116 @@
 </template>
 
 <script setup>
-import { computed, provide } from 'vue'
+import { ref, provide, computed } from 'vue'
+import StepIndicator from '~/components/StepIndicator.vue'
+import IncomeForm from '~/components/IncomeForm.vue'
+import DeductionsForm from '~/components/DeductionsForm.vue'
+import TaxPlanningResult from '~/components/TaxPlanningResult.vue'
 
-// Provide current step to child components
+// Current step state
 const currentStep = ref(1)
 provide('currentStep', currentStep)
 
-// Helper function to get step classes
-const getStepClasses = (step) => {
-  const isActive = currentStep.value === step
-  const isCompleted = currentStep.value > step
-  
-  if (isActive) {
-    return {
-      circle: 'bg-emerald-500 border-2 border-emerald-500',
-      text: 'text-emerald-500',
-      number: 'text-white'
+// Form data for each step
+const incomeData = ref({
+  salary: '',
+  bonus: '',
+  otherIncome: ''
+})
+
+const deductionsData = ref({
+  personalDeduction: 60000,
+  socialSecurity: '',
+  providentFund: '',
+  thaiESGX: '',
+  thaiESGXTransferred: ''
+})
+
+
+const calculationData = ref({
+  totalIncome: 0,
+  totalDeductions: 0,
+  taxableIncome: 0,
+  taxAmount: 0
+})
+
+// Current component based on step
+const currentComponent = computed(() => {
+  switch (currentStep.value) {
+    case 1:
+      return IncomeForm
+    case 2:
+      return DeductionsForm
+    case 3:
+      return TaxPlanningResult
+    default:
+      return IncomeForm
+  }
+})
+
+// Current form data based on step
+const currentFormData = computed(() => {
+  switch (currentStep.value) {
+    case 1:
+      return incomeData.value
+    case 2:
+      return deductionsData.value
+    case 3:
+      return calculationData.value
+    default:
+      return incomeData.value
+  }
+})
+
+// Handle next button click
+const handleNext = () => {
+  if (currentStep.value === 1) {
+    const hasIncome = incomeData.value.salary || incomeData.value.bonus || incomeData.value.otherIncome
+    if (!hasIncome) {
+      alert('กรุณากรอกข้อมูลรายได้')
+      return
     }
-  } else if (isCompleted) {
-    return {
-      circle: 'bg-emerald-500 border-2 border-emerald-500',
-      text: 'text-emerald-500',
-      number: 'text-white'
-    }
-  } else {
-    return {
-      circle: 'bg-gray-200 border-2 border-gray-300',
-      text: 'text-gray-600',
-      number: 'text-gray-600'
-    }
+    currentStep.value = 2
+  } else if (currentStep.value === 2) {
+    calculateTax()
+    currentStep.value = 3
   }
 }
+
+// Handle back button click
+const handleBack = () => {
+  if (currentStep.value > 1) {
+    currentStep.value--
+  }
+}
+
+// Calculate tax function
+const calculateTax = () => {
+  // Basic tax calculation logic
+  const totalIncome = parseFloat(incomeData.value.salary || 0) + 
+                     parseFloat(incomeData.value.bonus || 0) + 
+                     parseFloat(incomeData.value.otherIncome || 0)
+  
+  const totalDeductions = parseFloat(deductionsData.value.personalDeduction || 0) +
+                        parseFloat(deductionsData.value.socialSecurity || 0) +
+                        parseFloat(deductionsData.value.providentFund || 0)
+  
+  const taxableIncome = Math.max(0, totalIncome - totalDeductions)
+  
+  // Simple tax calculation (this should be replaced with proper tax calculation)
+  let taxAmount = 0
+  if (taxableIncome > 0) {
+    taxAmount = taxableIncome * 0.1 // 10% for simplicity
+  }
+  
+  calculationData.value = {
+    totalIncome,
+    totalDeductions,
+    taxableIncome,
+    taxAmount
+  }
+}
+
 </script>
 
 <style scoped>
@@ -155,192 +194,6 @@ const getStepClasses = (step) => {
   text-align: center;
 }
 
-/* Progress Steps */
-.progress-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 8px;
-  margin: 0 auto 32px;
-  max-width: 100%;
-}
-
-.step-frame {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 0px;
-  gap: 8px;
-  width: 182.25px;
-  height: 99px;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  margin: 0px -2px;
-}
-
-.step-frame-last {
-  width: 96px;
-  order: 2;
-}
-
-.step-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0px;
-  gap: 8px;
-  width: 167px;
-  height: 42px;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-}
-
-.step-status {
-  width: 42px;
-  height: 42px;
-  position: relative;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-}
-
-.step-circle {
-  position: absolute;
-  left: 4.76%;
-  right: 4.76%;
-  top: 4.76%;
-  bottom: 4.76%;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: #D3DFE6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.step-circle::before {
-  content: '';
-  position: absolute;
-  left: 13.79%;
-  right: 13.79%;
-  top: 13.79%;
-  bottom: 13.79%;
-  width: 72.42%;
-  height: 72.42%;
-  border-radius: 50%;
-  background: #E9EFF2;
-}
-
-.step-number {
-  position: absolute;
-  width: 6px;
-  height: 18px;
-  left: calc(50% - 6px/2 - 1px);
-  top: calc(50% - 18px/2);
-  font-family: 'Finnomena Trek', 'Inter', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 18px;
-  color: rgba(1, 23, 43, 0.6);
-  z-index: 1;
-}
-
-.step-line {
-  width: 117px;
-  height: 0px;
-  border: 2px solid #D3DFE6;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-}
-
-.step-content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px;
-  gap: 4px;
-  width: 182.25px;
-  height: 49px;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-}
-
-.step-frame-last .step-content {
-  width: 96px;
-}
-
-.step-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px;
-  width: 56px;
-  height: 42px;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-}
-
-.step-frame:nth-child(2) .step-text {
-  width: 83px;
-}
-
-.step-frame-last .step-text {
-  width: 81px;
-}
-
-.step-caption {
-  width: 56px;
-  height: 18px;
-  font-family: 'Finnomena Trek', 'Inter', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.32px;
-  color: rgba(1, 23, 43, 0.45);
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-}
-
-.step-frame:nth-child(2) .step-caption {
-  width: 58px;
-}
-
-.step-frame-last .step-caption {
-  width: 58px;
-}
-
-.step-detail {
-  width: 46px;
-  height: 24px;
-  font-family: 'Finnomena Trek', 'Inter', sans-serif;
-  font-size: 17px;
-  line-height: 24px;
-  text-align: right;
-  letter-spacing: 0.16px;
-  color: #01172B;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-}
-
-.step-frame:nth-child(2) .step-detail {
-  width: 83px;
-}
-
-.step-frame-last .step-detail {
-  width: 81px;
-}
-
 /* Responsive adjustments */
 @media (max-width: 640px) {
   .header-title {
@@ -358,28 +211,6 @@ const getStepClasses = (step) => {
     line-height: 22px;
     height: auto;
   }
-
-  .progress-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .step-frame {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    margin: 0;
-  }
-
-  .step-row {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .step-line {
-    display: none;
-  }
 }
 
 @media (min-width: 641px) and (max-width: 768px) {
@@ -391,14 +222,6 @@ const getStepClasses = (step) => {
   .header-subtitle {
     width: 100%;
     max-width: 616px;
-  }
-
-  .step-frame {
-    width: 150px;
-  }
-
-  .step-frame-last {
-    width: 80px;
   }
 }
 

@@ -3,11 +3,9 @@ import { ref, computed, inject, watch } from 'vue'
 import { useTaxCalculator } from '~/composables/useTaxCalculator'
 import AlertModal from '~/components/AlertModal.vue'
 import IncomeForm from '~/components/IncomeForm.vue'
-import FamilyDeductionsForm from '~/components/FamilyDeductionsForm.vue'
-import ProvidentFundForm from '~/components/ProvidentFundForm.vue'
-import InsuranceForm from '~/components/InsuranceForm.vue'
-import OtherFundsForm from '~/components/OtherFundsForm.vue'
+import DeductionsForm from '~/components/DeductionsForm.vue'
 import TaxCalculationResult from '~/components/TaxCalculationResult.vue'
+import TaxPlanningResult from '~/components/TaxPlanningResult.vue'
 
 // Current step state
 const currentStep = ref(1)
@@ -20,6 +18,7 @@ watch(currentStep, (newStep) => {
   }
 }, { immediate: true })
 
+
 // Form data for each step
 const incomeData = ref({
   salary: '',
@@ -27,50 +26,14 @@ const incomeData = ref({
   otherIncome: ''
 })
 
-const familyData = ref({
-  maritalStatus: '',
-  spouseIncomeStatus: '',
-  spouseNoIncome: false,
+const deductionsData = ref({
   personalDeduction: 60000,
-  parentsSelf: {
-    father: false,
-    mother: false
-  },
-  parentsSpouse: {
-    father: false,
-    mother: false
-  },
-  hasChild: false,
-  disabledNoIncome: {
-    father: false,
-    mother: false,
-    relative: false
-  },
-  disabledSpouseNoIncome: {
-    spouse: false,
-    father: false,
-    mother: false
-  }
-})
-
-const providentFundData = ref({
-  providentFund: '',
   socialSecurity: '',
-  housingInterest: ''
+  providentFund: '',
+  thaiESGX: '',
+  thaiESGXTransferred: ''
 })
 
-const insuranceData = ref({
-  lifeInsurance: '',
-  healthInsurance: '',
-  parentsHealthInsurance: '',
-  pensionLifeInsurance: ''
-})
-
-const otherFundsData = ref({
-  governmentPensionFund: '',
-  nationalSavingsFund: '',
-  privateTeachersFund: ''
-})
 
 const calculationData = ref({
   totalIncome: 0,
@@ -88,15 +51,9 @@ const currentComponent = computed(() => {
     case 1:
       return IncomeForm
     case 2:
-      return FamilyDeductionsForm
+      return DeductionsForm
     case 3:
-      return ProvidentFundForm
-    case 4:
-      return InsuranceForm
-    case 5:
-      return OtherFundsForm
-    case 6:
-      return TaxCalculationResult
+      return TaxPlanningResult
     default:
       return IncomeForm
   }
@@ -108,14 +65,8 @@ const currentFormData = computed(() => {
     case 1:
       return incomeData.value
     case 2:
-      return familyData.value
+      return deductionsData.value
     case 3:
-      return providentFundData.value
-    case 4:
-      return insuranceData.value
-    case 5:
-      return otherFundsData.value
-    case 6:
       return calculationData.value
     default:
       return incomeData.value
@@ -132,14 +83,8 @@ const handleNext = () => {
     }
     currentStep.value = 2
   } else if (currentStep.value === 2) {
-    currentStep.value = 3
-  } else if (currentStep.value === 3) {
-    currentStep.value = 4
-  } else if (currentStep.value === 4) {
-    currentStep.value = 5
-  } else if (currentStep.value === 5) {
     calculateTax()
-    currentStep.value = 6
+    currentStep.value = 3
   }
 }
 
@@ -156,10 +101,11 @@ const calculateTax = () => {
   
   const result = calculateTaxFromComposable(
     incomeData.value,
-    familyData.value,
-    providentFundData.value,
-    insuranceData.value,
-    otherFundsData.value
+    deductionsData.value,
+    {}, // familyData
+    {}, // providentFundData
+    {}, // insuranceData
+    {}  // otherFundsData
   )
 
   calculationData.value = {
@@ -179,6 +125,10 @@ const handleRecalculate = () => {
 const handleAlertClose = () => {
   showAlert.value = false
 }
+
+// Provide handlers to layout
+provide('handleNext', handleNext)
+provide('handleBack', handleBack)
 </script>
 
 <template>

@@ -7,7 +7,7 @@ definePageMeta({
 </script>
 
 <template>
-  <TaxCalculator />
+  <!-- Content is now handled by the layout -->
 </template>
 
 <style scoped>
