@@ -1,13 +1,15 @@
 
 
 <script setup>
+import TaxCalculator from '~/components/TaxCalculator.vue'
+
 definePageMeta({
   layout: 'tax-calculator'
 })
 </script>
 
 <template>
-  <!-- Content is now handled by the layout -->
+  <TaxCalculator />
 </template>
 
 <style scoped>

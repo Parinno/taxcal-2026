@@ -4,7 +4,6 @@ import { useTaxCalculator } from '~/composables/useTaxCalculator'
 import AlertModal from '~/components/AlertModal.vue'
 import IncomeForm from '~/components/IncomeForm.vue'
 import DeductionsForm from '~/components/DeductionsForm.vue'
-import TaxCalculationResult from '~/components/TaxCalculationResult.vue'
 import TaxPlanningResult from '~/components/TaxPlanningResult.vue'
 
 // Current step state
@@ -99,13 +98,47 @@ const handleBack = () => {
 const calculateTax = () => {
   const { calculateTax: calculateTaxFromComposable } = useTaxCalculator()
   
+  // Prepare family data from deductionsData
+  const familyData = {
+    maritalStatus: deductionsData.value.maritalStatus || '',
+    spouseIncomeStatus: deductionsData.value.spouseIncomeStatus || '',
+    spouseNoIncome: deductionsData.value.spouseNoIncome || false,
+    personalDeduction: deductionsData.value.personalDeduction || 60000,
+    parentsSelf: deductionsData.value.parentsSelf || { father: false, mother: false },
+    parentsSpouse: deductionsData.value.parentsSpouse || { father: false, mother: false },
+    hasChild: deductionsData.value.hasChild || false,
+    disabledNoIncome: deductionsData.value.disabledNoIncome || { father: false, mother: false, relative: false },
+    disabledSpouseNoIncome: deductionsData.value.disabledSpouseNoIncome || { spouse: false, father: false, mother: false }
+  }
+
+  // Prepare provident fund data
+  const providentFundData = {
+    providentFund: deductionsData.value.providentFund || '',
+    socialSecurity: deductionsData.value.socialSecurity || '',
+    housingInterest: deductionsData.value.housingInterest || ''
+  }
+
+  // Prepare insurance data
+  const insuranceData = {
+    lifeInsurance: deductionsData.value.lifeInsurance || '',
+    healthInsurance: deductionsData.value.healthInsurance || '',
+    parentsHealthInsurance: deductionsData.value.parentsHealthInsurance || '',
+    pensionLifeInsurance: deductionsData.value.pensionLifeInsurance || ''
+  }
+
+  // Prepare other funds data
+  const otherFundsData = {
+    governmentPensionFund: deductionsData.value.governmentPensionFund || '',
+    nationalSavingsFund: deductionsData.value.nationalSavingsFund || '',
+    privateTeachersFund: deductionsData.value.privateTeachersFund || ''
+  }
+  
   const result = calculateTaxFromComposable(
     incomeData.value,
-    deductionsData.value,
-    {}, // familyData
-    {}, // providentFundData
-    {}, // insuranceData
-    {}  // otherFundsData
+    familyData,
+    providentFundData,
+    insuranceData,
+    otherFundsData
   )
 
   calculationData.value = {
@@ -126,9 +159,6 @@ const handleAlertClose = () => {
   showAlert.value = false
 }
 
-// Provide handlers to layout
-provide('handleNext', handleNext)
-provide('handleBack', handleBack)
 </script>
 
 <template>
@@ -140,6 +170,24 @@ provide('handleBack', handleBack)
     @recalculate="handleRecalculate"
   />
 
+  <!-- Navigation Buttons -->
+  <div class="navigation-buttons">
+    <button 
+      class="btn-back"
+      @click="handleBack"
+      :disabled="currentStep <= 1"
+    >
+      ย้อนกลับ
+    </button>
+    <button 
+      class="btn-next"
+      @click="handleNext"
+      :disabled="currentStep >= 3"
+    >
+      ต่อไป
+    </button>
+  </div>
+
   <AlertModal 
     :show="showAlert" 
     @close="handleAlertClose"
@@ -148,7 +196,84 @@ provide('handleBack', handleBack)
 </template>
 
 <style scoped>
-/* Custom styles if needed */
+/* Navigation Buttons */
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 616px;
+  margin: 32px auto 0;
+  padding: 0 16px;
+}
+
+.btn-back {
+  background: #E9EFF2;
+  color: #01172B;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+  font-family: 'Finnomena Trek', 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.btn-back:hover {
+  background: #D3DFE6;
+  transform: translateY(-1px);
+}
+
+.btn-next {
+  background: #01172B;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+  font-family: 'Finnomena Trek', 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.btn-next:hover {
+  background: #001A2E;
+  transform: translateY(-1px);
+}
+
+.btn-next:disabled {
+  background: #D3DFE6;
+  color: rgba(1, 23, 43, 0.4);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive adjustments for buttons */
+@media (max-width: 640px) {
+  .navigation-buttons {
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 8px;
+  }
+
+  .btn-back,
+  .btn-next {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .navigation-buttons {
+    padding: 0 12px;
+  }
+}
 </style>
 
 
