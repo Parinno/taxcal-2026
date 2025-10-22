@@ -184,7 +184,6 @@ const handleAlertClose = () => {
   border: none;
   border-radius: 24px;
   padding: 12px 24px;
-  font-family: 'Finnomena Trek', 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
@@ -204,7 +203,6 @@ const handleAlertClose = () => {
   border: none;
   border-radius: 24px;
   padding: 12px 24px;
-  font-family: 'Finnomena Trek', 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;

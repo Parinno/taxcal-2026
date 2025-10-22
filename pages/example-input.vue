@@ -194,7 +194,7 @@
 </template>
 
 <script setup lang="ts">
-import { appendToGoogleSheets, type GoogleSheetsConfig } from '@/utils/googleSheets'
+import { appendToGoogleSheets } from '@/utils/googleSheets'
 
 // Form data
 const formData = ref({
@@ -222,7 +222,7 @@ const combinedData = computed(() => {
   // Add custom fields
   customFields.value.forEach(field => {
     if (field.key && field.value) {
-      data[field.key] = field.value
+      data[field.key as keyof typeof data] = field.value as any
     }
   })
   

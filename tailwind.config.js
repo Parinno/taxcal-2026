@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from 'tailwindcss/defaultTheme'
 export default {
 	darkMode: ['class'],
 	content: [
@@ -11,8 +12,7 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['DBHeaventRez', 'sans-serif'],
-				aktiv: ['aktiv-grotesk-thai', 'sans-serif']
+				sans: ['aktiv-grotesk-thai', ...defaultTheme.fontFamily.sans]
 			}
 		}
 	},

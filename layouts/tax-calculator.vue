@@ -1,4 +1,5 @@
 <template>
+  <Header />
   <div class="min-h-screen bg-white">
     <!-- Main Container -->
     <div class="max-w-4xl mx-auto px-4 md:px-6 py-6 md:py-8">
@@ -19,6 +20,7 @@
       <slot />
     </div>
   </div>
+  <Footer />
 </template>
 
 <script setup>
@@ -32,13 +34,11 @@ provide('currentStep', currentStep)
 
 <style scoped>
 /* Layout-specific styles */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* Header Title */
 .header-title {
   width: 616px;
   height: 48px;
-  font-family: 'Finnomena Trek', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 34px;
   line-height: 48px;
   color: rgba(1, 23, 43, 0.87);
@@ -53,7 +53,6 @@ provide('currentStep', currentStep)
 .header-subtitle {
   width: 616px;
   height: 24px;
-  font-family: 'Finnomena Trek', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 17px;
   line-height: 24px;
   letter-spacing: 0.16px;
