@@ -9,7 +9,12 @@ export default {
 		'./plugins/**/*.{js,ts}'
 	],
 	theme: {
-    	extend: {},
-    },
+		extend: {
+			fontFamily: {
+				sans: ['DBHeaventRez', 'sans-serif'],
+				aktiv: ['aktiv-grotesk-thai', 'sans-serif']
+			}
+		}
+	},
 	plugins: []
 }
