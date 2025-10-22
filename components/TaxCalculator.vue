@@ -22,7 +22,8 @@ watch(currentStep, (newStep) => {
 const incomeData = ref({
   salary: '',
   bonus: '',
-  otherIncome: ''
+  otherIncome: '',
+  withholdingTax: ''
 })
 
 const deductionsData = ref({
@@ -36,9 +37,13 @@ const deductionsData = ref({
 
 const calculationData = ref({
   totalIncome: 0,
+  totalExpenses: 0,
   totalDeductions: 0,
+  totalDeductionsAndExpenses: 0,
   taxableIncome: 0,
-  taxAmount: 0
+  taxAmount: 0,
+  withholdingTax: 0,
+  netTaxPayable: 0
 })
 
 // Alert modal state
@@ -94,58 +99,24 @@ const handleBack = () => {
   }
 }
 
-// Calculate tax function using the proper composable
+// Calculate tax function using the simplified composable
 const calculateTax = () => {
-  const { calculateTax: calculateTaxFromComposable } = useTaxCalculator()
+  const { calculateTaxFromForms } = useTaxCalculator()
   
-  // Prepare family data from deductionsData
-  const familyData = {
-    maritalStatus: deductionsData.value.maritalStatus || '',
-    spouseIncomeStatus: deductionsData.value.spouseIncomeStatus || '',
-    spouseNoIncome: deductionsData.value.spouseNoIncome || false,
-    personalDeduction: deductionsData.value.personalDeduction || 60000,
-    parentsSelf: deductionsData.value.parentsSelf || { father: false, mother: false },
-    parentsSpouse: deductionsData.value.parentsSpouse || { father: false, mother: false },
-    hasChild: deductionsData.value.hasChild || false,
-    disabledNoIncome: deductionsData.value.disabledNoIncome || { father: false, mother: false, relative: false },
-    disabledSpouseNoIncome: deductionsData.value.disabledSpouseNoIncome || { spouse: false, father: false, mother: false }
-  }
-
-  // Prepare provident fund data
-  const providentFundData = {
-    providentFund: deductionsData.value.providentFund || '',
-    socialSecurity: deductionsData.value.socialSecurity || '',
-    housingInterest: deductionsData.value.housingInterest || ''
-  }
-
-  // Prepare insurance data
-  const insuranceData = {
-    lifeInsurance: deductionsData.value.lifeInsurance || '',
-    healthInsurance: deductionsData.value.healthInsurance || '',
-    parentsHealthInsurance: deductionsData.value.parentsHealthInsurance || '',
-    pensionLifeInsurance: deductionsData.value.pensionLifeInsurance || ''
-  }
-
-  // Prepare other funds data
-  const otherFundsData = {
-    governmentPensionFund: deductionsData.value.governmentPensionFund || '',
-    nationalSavingsFund: deductionsData.value.nationalSavingsFund || '',
-    privateTeachersFund: deductionsData.value.privateTeachersFund || ''
-  }
-  
-  const result = calculateTaxFromComposable(
+  const result = calculateTaxFromForms(
     incomeData.value,
-    familyData,
-    providentFundData,
-    insuranceData,
-    otherFundsData
+    deductionsData.value
   )
 
   calculationData.value = {
     totalIncome: result.totalIncome,
+    totalExpenses: result.totalExpenses,
     totalDeductions: result.totalDeductions,
+    totalDeductionsAndExpenses: result.totalDeductionsAndExpenses,
     taxableIncome: result.taxableIncome,
-    taxAmount: result.taxAmount
+    taxAmount: result.taxAmount,
+    withholdingTax: result.withholdingTax,
+    netTaxPayable: result.netTaxPayable
   }
 }
 
