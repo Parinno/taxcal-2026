@@ -241,7 +241,6 @@ const getStepIcon = (step) => {
   height: 18px;
   left: calc(50% - 6px/2 - 1px);
   top: calc(50% - 18px/2);
-  font-family: 'Finnomena Trek', 'Inter', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 13px;
@@ -307,7 +306,6 @@ const getStepIcon = (step) => {
 .step-caption {
   width: 56px;
   height: 18px;
-  font-family: 'Finnomena Trek', 'Inter', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -330,7 +328,6 @@ const getStepIcon = (step) => {
 .step-detail {
   width: 46px;
   height: 24px;
-  font-family: 'Finnomena Trek', 'Inter', sans-serif;
   font-size: 17px;
   line-height: 24px;
   text-align: right;
