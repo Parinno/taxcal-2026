@@ -1,6 +1,8 @@
 
 
 <script setup>
+import TaxCalculator from '~/components/TaxCalculator.vue'
+
 definePageMeta({
   layout: 'tax-calculator'
 })

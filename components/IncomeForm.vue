@@ -5,7 +5,7 @@ const props = defineProps({
   modelValue: {
     type: Object,
     required: true,
-    default: () => ({ salary: '', bonus: '', otherIncome: '' })
+    default: () => ({ salary: '', bonus: '', otherIncome: '', withholdingTax: '' })
   }
 })
 
@@ -34,8 +34,9 @@ const handleNext = () => {
                 <label class="block text-gray-800 font-medium mb-2">
                     เงินเดือน (บาท)
                 </label>
+                <p class="text-sm text-gray-500 mb-3">Description</p>
                 <div class="relative">
-                    <input type="number" v-model="formData.salary" placeholder="เงินเดือนของคุณเดือนละ"
+                    <input type="number" v-model="formData.salary" placeholder="เงินเดือนของคุณ"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors" />
                 </div>
             </div>
@@ -45,8 +46,9 @@ const handleNext = () => {
                 <label class="block text-gray-800 font-medium mb-2">
                     โบนัส (บาท)
                 </label>
+                <p class="text-sm text-gray-500 mb-3">Description</p>
                 <div class="relative">
-                    <input type="number" v-model="formData.bonus" placeholder="ระบุโบนัสที่คุณได้รับในปี"
+                    <input type="number" v-model="formData.bonus" placeholder="ระบุโบนัส"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors" />
                 </div>
             </div>
@@ -54,21 +56,26 @@ const handleNext = () => {
             <!-- Other Income Input -->
             <div>
                 <label class="block text-gray-800 font-medium mb-2">
-                    รายได้อื่นๆ เช่น การขายของออนไลน์, รับจ้างฟรีแลนซ์ (บาท)
+                    รายได้อื่นๆ (บาท)
                 </label>
+                <p class="text-sm text-gray-500 mb-3">เช่น การขายของออนไลน์, รับจ้างฟรีแลนซ์</p>
                 <div class="relative">
                     <input type="number" v-model="formData.otherIncome" placeholder="ระบุรายได้ทั้งปี"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors" />
                 </div>
             </div>
-        </div>
 
-        <!-- Next Button -->
-        <div class="text-center">
-            <button @click="handleNext"
-                class="bg-gradient-to-r from-teal-500 to-emerald-400 text-white font-semibold py-4 px-12 rounded-lg hover:from-teal-600 hover:to-emerald-500 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                ถัดไป
-            </button>
+            <!-- Withholding Tax Input -->
+            <div>
+                <label class="block text-gray-800 font-medium mb-2">
+                    ภาษีหัก ณ ที่จ่าย (บาท)
+                </label>
+                <p class="text-sm text-gray-500 mb-3">Description</p>
+                <div class="relative">
+                    <input type="number" v-model="formData.withholdingTax" placeholder="ระบุภาษีทั้งปี"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors" />
+                </div>
+            </div>
         </div>
     </div>
 </template>

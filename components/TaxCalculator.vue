@@ -3,11 +3,8 @@ import { ref, computed, inject, watch } from 'vue'
 import { useTaxCalculator } from '~/composables/useTaxCalculator'
 import AlertModal from '~/components/AlertModal.vue'
 import IncomeForm from '~/components/IncomeForm.vue'
-import FamilyDeductionsForm from '~/components/FamilyDeductionsForm.vue'
-import ProvidentFundForm from '~/components/ProvidentFundForm.vue'
-import InsuranceForm from '~/components/InsuranceForm.vue'
-import OtherFundsForm from '~/components/OtherFundsForm.vue'
-import TaxCalculationResult from '~/components/TaxCalculationResult.vue'
+import DeductionsForm from '~/components/DeductionsForm.vue'
+import TaxPlanningResult from '~/components/TaxPlanningResult.vue'
 
 // Current step state
 const currentStep = ref(1)
@@ -20,6 +17,7 @@ watch(currentStep, (newStep) => {
   }
 }, { immediate: true })
 
+
 // Form data for each step
 const incomeData = ref({
   salary: '',
@@ -27,50 +25,14 @@ const incomeData = ref({
   otherIncome: ''
 })
 
-const familyData = ref({
-  maritalStatus: '',
-  spouseIncomeStatus: '',
-  spouseNoIncome: false,
+const deductionsData = ref({
   personalDeduction: 60000,
-  parentsSelf: {
-    father: false,
-    mother: false
-  },
-  parentsSpouse: {
-    father: false,
-    mother: false
-  },
-  hasChild: false,
-  disabledNoIncome: {
-    father: false,
-    mother: false,
-    relative: false
-  },
-  disabledSpouseNoIncome: {
-    spouse: false,
-    father: false,
-    mother: false
-  }
-})
-
-const providentFundData = ref({
-  providentFund: '',
   socialSecurity: '',
-  housingInterest: ''
+  providentFund: '',
+  thaiESGX: '',
+  thaiESGXTransferred: ''
 })
 
-const insuranceData = ref({
-  lifeInsurance: '',
-  healthInsurance: '',
-  parentsHealthInsurance: '',
-  pensionLifeInsurance: ''
-})
-
-const otherFundsData = ref({
-  governmentPensionFund: '',
-  nationalSavingsFund: '',
-  privateTeachersFund: ''
-})
 
 const calculationData = ref({
   totalIncome: 0,
@@ -88,15 +50,9 @@ const currentComponent = computed(() => {
     case 1:
       return IncomeForm
     case 2:
-      return FamilyDeductionsForm
+      return DeductionsForm
     case 3:
-      return ProvidentFundForm
-    case 4:
-      return InsuranceForm
-    case 5:
-      return OtherFundsForm
-    case 6:
-      return TaxCalculationResult
+      return TaxPlanningResult
     default:
       return IncomeForm
   }
@@ -108,14 +64,8 @@ const currentFormData = computed(() => {
     case 1:
       return incomeData.value
     case 2:
-      return familyData.value
+      return deductionsData.value
     case 3:
-      return providentFundData.value
-    case 4:
-      return insuranceData.value
-    case 5:
-      return otherFundsData.value
-    case 6:
       return calculationData.value
     default:
       return incomeData.value
@@ -132,14 +82,8 @@ const handleNext = () => {
     }
     currentStep.value = 2
   } else if (currentStep.value === 2) {
-    currentStep.value = 3
-  } else if (currentStep.value === 3) {
-    currentStep.value = 4
-  } else if (currentStep.value === 4) {
-    currentStep.value = 5
-  } else if (currentStep.value === 5) {
     calculateTax()
-    currentStep.value = 6
+    currentStep.value = 3
   }
 }
 
@@ -154,12 +98,47 @@ const handleBack = () => {
 const calculateTax = () => {
   const { calculateTax: calculateTaxFromComposable } = useTaxCalculator()
   
+  // Prepare family data from deductionsData
+  const familyData = {
+    maritalStatus: deductionsData.value.maritalStatus || '',
+    spouseIncomeStatus: deductionsData.value.spouseIncomeStatus || '',
+    spouseNoIncome: deductionsData.value.spouseNoIncome || false,
+    personalDeduction: deductionsData.value.personalDeduction || 60000,
+    parentsSelf: deductionsData.value.parentsSelf || { father: false, mother: false },
+    parentsSpouse: deductionsData.value.parentsSpouse || { father: false, mother: false },
+    hasChild: deductionsData.value.hasChild || false,
+    disabledNoIncome: deductionsData.value.disabledNoIncome || { father: false, mother: false, relative: false },
+    disabledSpouseNoIncome: deductionsData.value.disabledSpouseNoIncome || { spouse: false, father: false, mother: false }
+  }
+
+  // Prepare provident fund data
+  const providentFundData = {
+    providentFund: deductionsData.value.providentFund || '',
+    socialSecurity: deductionsData.value.socialSecurity || '',
+    housingInterest: deductionsData.value.housingInterest || ''
+  }
+
+  // Prepare insurance data
+  const insuranceData = {
+    lifeInsurance: deductionsData.value.lifeInsurance || '',
+    healthInsurance: deductionsData.value.healthInsurance || '',
+    parentsHealthInsurance: deductionsData.value.parentsHealthInsurance || '',
+    pensionLifeInsurance: deductionsData.value.pensionLifeInsurance || ''
+  }
+
+  // Prepare other funds data
+  const otherFundsData = {
+    governmentPensionFund: deductionsData.value.governmentPensionFund || '',
+    nationalSavingsFund: deductionsData.value.nationalSavingsFund || '',
+    privateTeachersFund: deductionsData.value.privateTeachersFund || ''
+  }
+  
   const result = calculateTaxFromComposable(
     incomeData.value,
-    familyData.value,
-    providentFundData.value,
-    insuranceData.value,
-    otherFundsData.value
+    familyData,
+    providentFundData,
+    insuranceData,
+    otherFundsData
   )
 
   calculationData.value = {
@@ -179,6 +158,7 @@ const handleRecalculate = () => {
 const handleAlertClose = () => {
   showAlert.value = false
 }
+
 </script>
 
 <template>
@@ -190,6 +170,24 @@ const handleAlertClose = () => {
     @recalculate="handleRecalculate"
   />
 
+  <!-- Navigation Buttons -->
+  <div class="navigation-buttons">
+    <button 
+      class="btn-back"
+      @click="handleBack"
+      :disabled="currentStep <= 1"
+    >
+      ย้อนกลับ
+    </button>
+    <button 
+      class="btn-next"
+      @click="handleNext"
+      :disabled="currentStep >= 3"
+    >
+      ต่อไป
+    </button>
+  </div>
+
   <AlertModal 
     :show="showAlert" 
     @close="handleAlertClose"
@@ -198,7 +196,84 @@ const handleAlertClose = () => {
 </template>
 
 <style scoped>
-/* Custom styles if needed */
+/* Navigation Buttons */
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 616px;
+  margin: 32px auto 0;
+  padding: 0 16px;
+}
+
+.btn-back {
+  background: #E9EFF2;
+  color: #01172B;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+  font-family: 'Finnomena Trek', 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.btn-back:hover {
+  background: #D3DFE6;
+  transform: translateY(-1px);
+}
+
+.btn-next {
+  background: #01172B;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+  font-family: 'Finnomena Trek', 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.btn-next:hover {
+  background: #001A2E;
+  transform: translateY(-1px);
+}
+
+.btn-next:disabled {
+  background: #D3DFE6;
+  color: rgba(1, 23, 43, 0.4);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive adjustments for buttons */
+@media (max-width: 640px) {
+  .navigation-buttons {
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 8px;
+  }
+
+  .btn-back,
+  .btn-next {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .navigation-buttons {
+    padding: 0 12px;
+  }
+}
 </style>
 
 
