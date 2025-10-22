@@ -25,7 +25,7 @@ const handleNext = () => {
 <template>
     <div class="max-w-2xl mx-auto">
         <!-- Section Title -->
-        <h2 class="text-2xl font-bold text-gray-800 mb-8">รายรับ</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-8">รายได้ทั้งหมดของคุณ</h2>
 
         <!-- Form Fields -->
         <div class="space-y-6 mb-12">
