@@ -104,7 +104,8 @@ export default defineNuxtConfig({
 					src: `${contentURL}/web-component/${headerVersion}/header-finnomena.min.js`
 				},
 			]
-		}
+		},
+		baseURL: '/tax/'
 	},
 	alias: {
 		'@': '~'
