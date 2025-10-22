@@ -92,6 +92,14 @@
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors bg-gray-50"
             />
           </div>
+          <div class="flex items-center mt-2">
+            <div class="w-4 h-4 bg-gray-400 rounded-full flex items-center justify-center mr-2">
+              <span class="text-white text-xs">i</span>
+            </div>
+            <p class="text-sm text-gray-600">
+              ไม่เกิน 30% รายได้ทั้งปีสูงสุด 300,000 บาท
+            </p>
+          </div>
         </div>
 
         <!-- ThaiESGX Fund (Transferred from LTF) -->
@@ -106,6 +114,14 @@
               placeholder="ระบุจำนวนเงิน"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors bg-gray-50"
             />
+          </div>
+          <div class="flex items-center mt-2">
+            <div class="w-4 h-4 bg-gray-400 rounded-full flex items-center justify-center mr-2">
+              <span class="text-white text-xs">i</span>
+            </div>
+            <p class="text-sm text-gray-600">
+              ไม่เกิน 30% รายได้ทั้งปีสูงสุด 300,000 บาท
+            </p>
           </div>
         </div>
       </div>

@@ -5,7 +5,12 @@ const props = defineProps({
   modelValue: {
     type: Object,
     required: true,
-    default: () => ({ salary: '', bonus: '', otherIncome: '', withholdingTax: '' })
+    default: () => ({ 
+      salary: '', 
+      bonus: '', 
+      otherIncome: '', 
+      withholdingTax: '' 
+    })
   }
 })
 
