@@ -143,11 +143,10 @@ const getStepIcon = (step) => {
 /* Progress Steps */
 .progress-container {
   display: flex;
-  justify-content: center;
   align-items: flex-start;
   gap: 8px;
   margin: 0 auto 32px;
-  max-width: 100%;
+  max-width: 42rem;
 }
 
 .step-frame {
@@ -157,7 +156,7 @@ const getStepIcon = (step) => {
   align-items: flex-start;
   padding: 0px;
   gap: 8px;
-  width: 182.25px;
+  /* width: 182.25px; */
   height: 99px;
   flex: none;
   order: 0;
@@ -280,7 +279,7 @@ const getStepIcon = (step) => {
 }
 
 .step-frame-last .step-content {
-  width: 96px;
+  /* width: 96px; */
 }
 
 .step-text {
@@ -288,7 +287,7 @@ const getStepIcon = (step) => {
   flex-direction: column;
   align-items: flex-start;
   padding: 0px;
-  width: 56px;
+  /* width: 56px; */
   height: 42px;
   flex: none;
   order: 0;
@@ -304,7 +303,7 @@ const getStepIcon = (step) => {
 }
 
 .step-caption {
-  width: 56px;
+  /* width: 56px; */
   height: 18px;
   font-style: normal;
   font-weight: 400;
@@ -326,12 +325,12 @@ const getStepIcon = (step) => {
 }
 
 .step-detail {
-  width: 46px;
-  height: 24px;
+  /* width: 46px; */
+  /* height: 24px; */
   font-size: 17px;
   line-height: 24px;
-  text-align: right;
-  letter-spacing: 0.16px;
+  /* text-align: right; */
+  /* letter-spacing: 0.16px; */
   color: #01172B;
   flex: none;
   order: 1;

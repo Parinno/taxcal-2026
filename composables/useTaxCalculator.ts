@@ -1,47 +1,12 @@
-export interface IncomeData {
-  salary: string | number
-  bonus: string | number
-  otherIncome: string | number
-}
-
-export interface FamilyData {
-  maritalStatus: string
-  spouseIncomeStatus: string
-  spouseNoIncome: boolean
-  personalDeduction: number
-  parentsSelf: { father: boolean; mother: boolean }
-  parentsSpouse: { father: boolean; mother: boolean }
-  hasChild: boolean
-  disabledNoIncome: { father: boolean; mother: boolean; relative: boolean }
-  disabledSpouseNoIncome: { spouse: boolean; father: boolean; mother: boolean }
-}
-
-export interface ProvidentFundData {
-  providentFund: string | number
-  socialSecurity: string | number
-  housingInterest: string | number
-}
-
-export interface InsuranceData {
-  lifeInsurance: string | number
-  healthInsurance: string | number
-  parentsHealthInsurance: string | number
-  pensionLifeInsurance: string | number
-}
-
-export interface OtherFundsData {
-  governmentPensionFund: string | number
-  nationalSavingsFund: string | number
-  privateTeachersFund: string | number
-}
-
-export interface CalculationResult {
-  totalIncome: number
-  totalDeductions: number
-  taxableIncome: number
-  taxAmount: number
-  retirementUsed: number
-}
+import type {
+  IncomeData,
+  DeductionsData,
+  FamilyData,
+  ProvidentFundData,
+  InsuranceData,
+  OtherFundsData,
+  CalculationResult
+} from '../types/tax-calculator'
 
 export function useTaxCalculator() {
   const toNumber = (v: string | number | undefined | null): number => {
@@ -166,10 +131,14 @@ export function useTaxCalculator() {
 
     return {
       totalIncome,
-      totalDeductions,
+      totalExpenses: employmentExpense,
+      totalDeductions: familyDeductions + retirementUsed + socialSecurity + housingInterest + lifeInsurance + healthInsurance + parentsHealthInsurance,
+      totalDeductionsAndExpenses: employmentExpense + familyDeductions + retirementUsed + socialSecurity + housingInterest + lifeInsurance + healthInsurance + parentsHealthInsurance,
       taxableIncome,
       taxAmount,
       retirementUsed,
+      withholdingTax: 0,
+      netTaxPayable: taxAmount,
     }
   }
 
@@ -180,6 +149,15 @@ export function useTaxCalculator() {
     const thaiEsgxMax = Math.min(totalIncome * 0.3, 300000)
     const ltfMax = 300000
     return { rmfMax, thaiEsgMax, thaiEsgxMax, ltfMax }
+  }
+
+  // Get ThaiESGX limits for forms
+  const getThaiESGXLimits = (totalIncome: number) => {
+    const thaiESGXLimit = Math.min(totalIncome * 0.3, 300000)
+    return {
+      thaiESGXLimit,
+      thaiESGXTransferredLimit: thaiESGXLimit // Same limit for transferred
+    }
   }
 
   const computeTotalInvestment = (rmf: number, thaiEsg: number, thaiEsgx: number, ltf: number) => {
@@ -273,9 +251,131 @@ export function useTaxCalculator() {
     return computeFinalTaxAmount(baseTax, taxableIncome, maxInvestment, 0)
   }
 
+  // New simplified calculation function that works with actual form fields
+  const calculateTaxFromForms = (
+    incomeData: IncomeData,
+    deductionsData: DeductionsData
+  ): CalculationResult => {
+    // Annualize salary and compute total income
+    const monthlySalary = toNumber(incomeData.salary)
+    const annualSalary = monthlySalary * 12
+    const bonus = toNumber(incomeData.bonus)
+    const otherIncome = toNumber(incomeData.otherIncome)
+    const totalIncome = annualSalary + bonus + otherIncome
+
+    // Withholding tax from income data
+    const withholdingTax = toNumber(incomeData.withholdingTax)
+
+    // Standard expense deduction (50% of employment income capped at 100,000)
+    const employmentIncome = annualSalary + bonus
+    const employmentExpense = Math.min(employmentIncome * 0.5, 100000)
+
+    // Basic deductions from form
+    const personalDeduction = toNumber(deductionsData.personalDeduction) || 60000
+    const socialSecurity = Math.min(toNumber(deductionsData.socialSecurity), 9000)
+    const providentFund = Math.min(toNumber(deductionsData.providentFund), Math.min(annualSalary * 0.15, 500000))
+    
+    // ThaiESGX limits: 30% of total income, max 300,000 baht
+    const thaiESGXLimit = Math.min(totalIncome * 0.3, 300000)
+    const thaiESGX = Math.min(toNumber(deductionsData.thaiESGX), thaiESGXLimit)
+    
+    // ThaiESGX Transferred from LTF: same limits as ThaiESGX
+    const thaiESGXTransferredLimit = Math.min(totalIncome * 0.3, 300000)
+    const thaiESGXTransferred = Math.min(toNumber(deductionsData.thaiESGXTransferred), thaiESGXTransferredLimit)
+
+    // Calculate expenses and deductions separately
+    const totalExpenses = employmentExpense
+    const totalDeductions = personalDeduction + socialSecurity + providentFund + thaiESGX + thaiESGXTransferred
+    const totalDeductionsAndExpenses = totalExpenses + totalDeductions
+
+    const taxableIncome = Math.max(0, totalIncome - totalDeductionsAndExpenses)
+
+    // Tax calculation by brackets
+    let taxAmount = 0
+    if (taxableIncome > 0) {
+      if (taxableIncome <= 150000) taxAmount = 0
+      else if (taxableIncome <= 300000) taxAmount = (taxableIncome - 150000) * 0.05
+      else if (taxableIncome <= 500000) taxAmount = 7500 + (taxableIncome - 300000) * 0.1
+      else if (taxableIncome <= 750000) taxAmount = 27500 + (taxableIncome - 500000) * 0.15
+      else if (taxableIncome <= 1000000) taxAmount = 65000 + (taxableIncome - 750000) * 0.2
+      else if (taxableIncome <= 2000000) taxAmount = 115000 + (taxableIncome - 1000000) * 0.25
+      else if (taxableIncome <= 5000000) taxAmount = 365000 + (taxableIncome - 2000000) * 0.3
+      else taxAmount = 1265000 + (taxableIncome - 5000000) * 0.35
+    }
+
+    // Calculate net tax payable (tax amount - withholding tax)
+    const netTaxPayable = Math.max(0, taxAmount - withholdingTax)
+
+    return {
+      totalIncome,
+      totalExpenses,
+      totalDeductions,
+      totalDeductionsAndExpenses,
+      taxableIncome,
+      taxAmount,
+      retirementUsed: providentFund + thaiESGX + thaiESGXTransferred,
+      withholdingTax,
+      netTaxPayable,
+    }
+  }
+
+  // Tax planning calculations
+  const calculateTaxPlanning = (
+    calculationData: CalculationResult,
+    rmfInvestment: number,
+    thaiEsgInvestment: number
+  ) => {
+    const totalInvestment = rmfInvestment + thaiEsgInvestment
+    
+    // Calculate tax savings from investments
+    const taxSavings = computeTaxSavingsFromInvestments(
+      totalInvestment,
+      calculationData.taxableIncome,
+      calculationData.taxAmount
+    )
+    
+    // Calculate before and after tax amounts
+    const beforeTaxAmount = calculationData.netTaxPayable || (calculationData.taxAmount - calculationData.withholdingTax)
+    const afterTaxAmount = Math.max(0, beforeTaxAmount - taxSavings)
+    
+    // Calculate final tax amount after investments
+    const finalTaxAmount = computeFinalTaxAmount(
+      calculationData.taxAmount,
+      calculationData.taxableIncome,
+      totalInvestment,
+      0 // No donation deduction
+    )
+    const finalNetTaxPayable = Math.max(0, finalTaxAmount - calculationData.withholdingTax)
+    
+    return {
+      totalInvestment,
+      taxSavings,
+      beforeTaxAmount,
+      afterTaxAmount,
+      finalTaxAmount,
+      finalNetTaxPayable,
+      taxReduction: -taxSavings
+    }
+  }
+
+  // Get investment limits for forms
+  const getInvestmentLimits = (totalIncome: number) => {
+    const recommendations = getInvestmentRecommendations(totalIncome)
+    return {
+      rmfMax: recommendations.rmfMax,
+      thaiEsgMax: recommendations.thaiEsgMax,
+      thaiEsgxMax: recommendations.thaiEsgxMax,
+      ltfMax: recommendations.ltfMax
+    }
+  }
+
   return {
     calculateTax,
+    calculateTaxFromForms,
+    calculateTaxPlanning,
     getInvestmentRecommendations,
+    getInvestmentLimits,
+    getThaiESGXLimits,
     computeTotalInvestment,
     computeTaxSavingsFromInvestments,
     computeMaxTaxSavingsFromInvestments,

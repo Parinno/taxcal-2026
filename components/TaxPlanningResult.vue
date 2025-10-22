@@ -2,53 +2,146 @@
   <div class="max-w-6xl mx-auto">
     <!-- Main Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <!-- Left Side - Tax Calculation and Planning -->
+      <!-- Left Side - Tax Planning and Investment -->
       <div class="space-y-8">
-        <!-- Tax Calculation Section -->
-        <div>
-          <h3 class="text-2xl font-bold text-gray-800 mb-6">คำนวณภาษี</h3>
-          
-          <!-- Tax Payable -->
-          <div class="text-center mb-8">
-            <div class="text-lg text-gray-700 mb-2">ภาษีที่ต้องจ่ายเพิ่ม</div>
-            <div class="text-4xl font-bold text-gray-800">
-              {{ formatCurrency(additionalTaxPayable) }}({{ formatCurrency(taxReduction) }})
+        <!-- Tax Summary Section -->
+        <div class="text-center mb-8">
+          <div class="text-lg text-gray-700 mb-2">ภาษีที่ต้องจ่ายเพิ่ม</div>
+          <div class="text-4xl font-bold text-gray-800">
+            {{ formatCurrency(beforeTaxAmount - taxSavings) }}({{ formatCurrency(-taxSavings) }})
+          </div>
+        </div>
+
+        <!-- Income Summary -->
+        <div class="grid grid-cols-2 gap-8 mb-8">
+          <div class="text-center">
+            <div class="text-sm text-gray-600 mb-2">รายได้ทั้งปี</div>
+            <div class="text-2xl font-bold text-gray-800">
+              {{ formatCurrency(calculationData.totalIncome) }}
             </div>
           </div>
-
-          <!-- Income Summary -->
-          <div class="grid grid-cols-2 gap-8">
-            <div class="text-center">
-              <div class="text-sm text-gray-600 mb-2">รายได้ทั้งปี</div>
-              <div class="text-2xl font-bold text-gray-800">
-                {{ formatCurrency(calculationData.totalIncome) }}
-              </div>
-            </div>
-            <div class="text-center">
-              <div class="text-sm text-gray-600 mb-2">รายได้สุทธิ</div>
-              <div class="text-2xl font-bold text-gray-800">
-                {{ formatCurrency(calculationData.taxableIncome) }}
-              </div>
+          <div class="text-center">
+            <div class="text-sm text-gray-600 mb-2">รายได้สุทธิ</div>
+            <div class="text-2xl font-bold text-gray-800">
+              {{ formatCurrency(calculationData.taxableIncome) }}
             </div>
           </div>
         </div>
 
-        <!-- Tax Planning Section -->
+        <!-- Tax Planning Header -->
         <div>
-          <h3 class="text-2xl font-bold text-gray-800 mb-6">วางแผนลดหย่อนภาษี</h3>
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">วางแผนลดหย่อนภาษี</h3>
+          <p class="text-sm text-gray-600 mb-6">
+            แสดงผลเปรียบเทียบภาษี 'ก่อน-หลัง' การซื้อกองทุนเพื่อประหยัดภาษีได้สูงสุด
+          </p>
+        </div>
+
+        <!-- Tax Comparison Section -->
+        <div class="bg-gray-100 rounded-lg p-6">
+          <div class="text-lg font-bold text-gray-800 mb-4">จำนวนเงินภาษีที่ต้องจ่าย</div>
           
-          <!-- Empty gray area -->
-          <div class="bg-gray-200 h-40 rounded-lg mb-6"></div>
-          
-          <!-- Investment Options -->
-          <div class="space-y-4">
-            <div class="flex justify-between items-center">
-              <span class="text-lg font-medium text-gray-800">RMF</span>
-              <span class="text-2xl font-bold text-gray-800">+{{ formatCurrency(rmfInvestment) }}</span>
+          <!-- Before Tax Planning -->
+          <div class="flex justify-between items-center mb-3">
+            <div>
+              <div class="font-medium text-gray-800">ก่อนวางแผนภาษี</div>
+              <div class="text-sm text-gray-600">(จ่ายภาษีเพิ่ม)</div>
             </div>
-            <div class="flex justify-between items-center">
-              <span class="text-lg font-medium text-gray-800">Thai ESG</span>
-              <span class="text-2xl font-bold text-gray-800">+{{ formatCurrency(thaiEsgInvestment) }}</span>
+            <div class="text-xl font-bold text-gray-800">
+              {{ formatCurrency(beforeTaxAmount) }}
+            </div>
+          </div>
+          
+          <!-- After Tax Planning -->
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="font-medium text-gray-800">หลังวางแผนภาษี</div>
+              <div class="text-sm text-gray-600">(จ่ายภาษีเพิ่ม/คืนเงินภาษี)</div>
+            </div>
+            <div class="text-xl font-bold text-gray-800">
+              {{ formatCurrency(afterTaxAmount) }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Investment Planning Section -->
+        <div class="space-y-6">
+          <!-- RMF Investment -->
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <div class="w-4 h-4 bg-purple-500 rounded-full"></div>
+              <div>
+                <div class="font-medium text-gray-800">RMF</div>
+                <div class="text-sm text-gray-500">Description</div>
+              </div>
+              <div class="ml-auto">
+                <input 
+                  type="text" 
+                  v-model="rmfInvestmentFormatted"
+                  @input="updateRmfInvestment"
+                  class="w-32 px-3 py-2 bg-gray-100 rounded-lg text-right font-medium"
+                />
+              </div>
+            </div>
+            
+            <!-- RMF Slider -->
+            <div class="relative">
+              <input 
+                type="range" 
+                v-model="rmfSliderValue"
+                @input="updateRmfFromSlider"
+                min="0" 
+                :max="rmfMaxValue"
+                step="1000"
+                class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer slider"
+              />
+              <div class="absolute left-0 top-0 w-2 h-2 bg-gray-600 rounded-full"></div>
+            </div>
+            
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+              <div class="w-4 h-4 bg-gray-400 rounded-full flex items-center justify-center">
+                <span class="text-white text-xs">i</span>
+              </div>
+              <span>ไม่เกิน 30% รายได้ทั้งปีสูงสุด 300,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ</span>
+            </div>
+          </div>
+
+          <!-- ThaiESG Investment -->
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <div class="w-4 h-4 bg-green-500 rounded-full"></div>
+              <div>
+                <div class="font-medium text-gray-800">ThaiESG</div>
+                <div class="text-sm text-gray-500">Description</div>
+              </div>
+              <div class="ml-auto">
+                <input 
+                  type="text" 
+                  v-model="thaiEsgInvestmentFormatted"
+                  @input="updateThaiEsgInvestment"
+                  class="w-32 px-3 py-2 bg-gray-100 rounded-lg text-right font-medium"
+                />
+              </div>
+            </div>
+            
+            <!-- ThaiESG Slider -->
+            <div class="relative">
+              <input 
+                type="range" 
+                v-model="thaiEsgSliderValue"
+                @input="updateThaiEsgFromSlider"
+                min="0" 
+                :max="thaiEsgMaxValue"
+                step="1000"
+                class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer slider"
+              />
+              <div class="absolute left-0 top-0 w-2 h-2 bg-gray-600 rounded-full"></div>
+            </div>
+            
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+              <div class="w-4 h-4 bg-gray-400 rounded-full flex items-center justify-center">
+                <span class="text-white text-xs">i</span>
+              </div>
+              <span>ไม่เกิน 30% รายได้ทั้งปีสูงสุด 300,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ</span>
             </div>
           </div>
         </div>
@@ -64,7 +157,7 @@
           <div class="text-center mb-6">
             <div class="text-lg text-gray-700 mb-2">ภาษีที่ต้องจ่าย</div>
             <div class="text-3xl font-bold text-red-600">
-              {{ formatCurrency(finalTaxAmount) }}
+              {{ formatCurrency(calculationData.netTaxPayable || (calculationData.taxAmount - calculationData.withholdingTax)) }}
               <span class="text-lg text-gray-500">THB</span>
             </div>
           </div>
@@ -107,7 +200,7 @@
           <div class="text-center mb-6">
             <div class="text-lg text-gray-700 mb-2">เงินลงทุนเพิ่ม</div>
             <div class="text-3xl font-bold text-emerald-600">
-              {{ formatCurrency(totalAdditionalInvestment) }}
+              {{ formatCurrency(totalInvestmentAmount) }}
               <span class="text-lg text-gray-500">THB</span>
             </div>
           </div>
@@ -148,6 +241,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { formatCurrencyTHB } from '~/utils/format'
+import { useTaxCalculator } from '~/composables/useTaxCalculator'
 
 const props = defineProps({
   modelValue: {
@@ -155,9 +249,13 @@ const props = defineProps({
     required: true,
     default: () => ({
       totalIncome: 0,
+      totalExpenses: 0,
       totalDeductions: 0,
+      totalDeductionsAndExpenses: 0,
       taxableIncome: 0,
-      taxAmount: 0
+      taxAmount: 0,
+      withholdingTax: 0,
+      netTaxPayable: 0
     })
   }
 })
@@ -167,42 +265,92 @@ const emit = defineEmits(['update:modelValue', 'back', 'recalculate'])
 // Use the calculation data
 const calculationData = computed(() => props.modelValue)
 
+// Use tax calculator composable
+const { 
+  calculateTaxPlanning,
+  getInvestmentLimits
+} = useTaxCalculator()
+
 // Investment amounts (these would typically come from form inputs)
-const rmfInvestment = ref(200000)
-const thaiEsgInvestment = ref(10000)
+const rmfInvestment = ref(0)
+const thaiEsgInvestment = ref(0)
+
+// Slider values
+const rmfSliderValue = ref(0)
+const thaiEsgSliderValue = ref(0)
+
+// Formatted input values
+const rmfInvestmentFormatted = ref('0 ฿')
+const thaiEsgInvestmentFormatted = ref('0 ฿')
+
+// Max values for sliders using investment limits
+const investmentLimits = computed(() => 
+  getInvestmentLimits(calculationData.value.totalIncome)
+)
+
+const rmfMaxValue = computed(() => investmentLimits.value.rmfMax)
+const thaiEsgMaxValue = computed(() => investmentLimits.value.thaiEsgMax)
+
+// Additional calculations - use actual data from calculation
+const expenses = computed(() => calculationData.value.totalExpenses || 0)
+const withholdingTax = computed(() => calculationData.value.withholdingTax || 0)
+const totalDeductions = computed(() => calculationData.value.totalDeductions || 0)
+
+// Tax planning calculations using useTaxCalculator
+const taxPlanning = computed(() => 
+  calculateTaxPlanning(
+    calculationData.value,
+    Number(rmfInvestment.value) || 0,
+    Number(thaiEsgInvestment.value) || 0
+  )
+)
+
+// Extract values from tax planning calculation
+const beforeTaxAmount = computed(() => taxPlanning.value.beforeTaxAmount)
+const afterTaxAmount = computed(() => taxPlanning.value.afterTaxAmount)
+const taxSavings = computed(() => taxPlanning.value.taxSavings)
+const taxReduction = computed(() => taxPlanning.value.taxReduction)
+const finalTaxAmount = computed(() => taxPlanning.value.finalNetTaxPayable)
+const totalAdditionalInvestment = computed(() => taxPlanning.value.totalInvestment)
+const totalInvestmentAmount = computed(() => taxPlanning.value.totalInvestment)
+const totalInvestmentDisplay = computed(() => taxPlanning.value.totalInvestment)
+const taxSavingsDisplay = computed(() => taxPlanning.value.taxSavings)
+const finalTaxDisplay = computed(() => taxPlanning.value.finalNetTaxPayable)
 
 // Additional calculations
-const expenses = computed(() => 100000) // Example value
-const withholdingTax = computed(() => 10000) // Example value
-const totalDeductions = computed(() => 200000) // Example value
-
-// Total additional investment
-const totalAdditionalInvestment = computed(() => {
-  return rmfInvestment.value + thaiEsgInvestment.value
-})
-
-// Tax savings calculation (simplified)
-const taxSavings = computed(() => {
-  return 15000 // Fixed value as shown in image
-})
-
-// Additional tax payable (after deductions)
 const additionalTaxPayable = computed(() => {
-  return 21000 // Fixed value as shown in image
-})
-
-// Tax reduction amount
-const taxReduction = computed(() => {
-  return -5000 // Fixed value as shown in image (negative value)
-})
-
-// Final tax amount
-const finalTaxAmount = computed(() => {
-  return 26000 // Fixed value as shown in image
+  return Math.max(0, calculationData.value.taxAmount - withholdingTax.value)
 })
 
 // Format currency helper
 const formatCurrency = (amount) => formatCurrencyTHB(amount)
+
+// Slider and input methods - ensure proper number conversion
+const updateRmfFromSlider = () => {
+  rmfInvestment.value = Number(rmfSliderValue.value) || 0
+  rmfInvestmentFormatted.value = formatCurrencyTHB(rmfInvestment.value) + ' ฿'
+}
+
+const updateThaiEsgFromSlider = () => {
+  thaiEsgInvestment.value = Number(thaiEsgSliderValue.value) || 0
+  thaiEsgInvestmentFormatted.value = formatCurrencyTHB(thaiEsgInvestment.value) + ' ฿'
+}
+
+const updateRmfInvestment = (event) => {
+  const value = event.target.value.replace(/[^\d]/g, '')
+  const numValue = Number(value) || 0
+  rmfInvestment.value = Math.min(numValue, rmfMaxValue.value)
+  rmfSliderValue.value = rmfInvestment.value
+  rmfInvestmentFormatted.value = formatCurrencyTHB(rmfInvestment.value) + ' ฿'
+}
+
+const updateThaiEsgInvestment = (event) => {
+  const value = event.target.value.replace(/[^\d]/g, '')
+  const numValue = Number(value) || 0
+  thaiEsgInvestment.value = Math.min(numValue, thaiEsgMaxValue.value)
+  thaiEsgSliderValue.value = thaiEsgInvestment.value
+  thaiEsgInvestmentFormatted.value = formatCurrencyTHB(thaiEsgInvestment.value) + ' ฿'
+}
 
 const handleBack = () => {
   emit('back')
@@ -214,5 +362,53 @@ const handleRecalculate = () => {
 </script>
 
 <style scoped>
-/* Custom styles if needed */
+/* Slider styling */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-track {
+  background: #D1D5DB;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #374151;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.slider::-webkit-slider-thumb:hover {
+  background: #1F2937;
+}
+
+.slider::-moz-range-track {
+  background: #D1D5DB;
+  height: 8px;
+  border-radius: 4px;
+  border: none;
+}
+
+.slider::-moz-range-thumb {
+  background: #374151;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.slider::-moz-range-thumb:hover {
+  background: #1F2937;
+}
 </style>
