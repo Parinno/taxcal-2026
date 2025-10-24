@@ -1,6 +1,5 @@
 const contentURL = process.env.CONTENT_URL
 const headerVersion = process.env.HEADER_VERSION
-const searchComponentsVersion = process.env.SEARCH_COMPONENTS_VERSION
 
 
 export default defineNuxtConfig({
