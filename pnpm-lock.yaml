@@ -8,6 +8,9 @@ overrides:
   cross-spawn: ^7.0.6
 
 dependencies:
+  gapi-script:
+    specifier: ^1.2.0
+    version: 1.2.0
   googleapis:
     specifier: ^164.1.0
     version: 164.1.0
@@ -3599,6 +3602,10 @@ packages:
   /fuse.js@7.1.0:
     resolution: {integrity: sha512-trLf4SzuuUxfusZADLINj+dE8clK1frKdmqiJNb1Es75fmI5oY6X2mxLVUciLLjxqw/xr72Dhy+lER6dGd02FQ==}
     engines: {node: '>=10'}
+    dev: false
+
+  /gapi-script@1.2.0:
+    resolution: {integrity: sha512-NKTVKiIwFdkO1j1EzcrWu/Pz7gsl1GmBmgh+qhuV2Ytls04W/Eg5aiBL91SCiBM9lU0PMu7p1hTVxhh1rPT5Lw==}
     dev: false
 
   /gaxios@7.1.2:

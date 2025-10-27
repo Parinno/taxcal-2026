@@ -19,7 +19,7 @@ export default {
 				'color-primaryGray': '#01172BDE',
 				'color-secondary': '#01172BA6',
 				'color-placeholder': '#01172B99',
-				'color-information': '#01172B73',
+				'color-information': '#01172B73'
 			}
 		}
 	},

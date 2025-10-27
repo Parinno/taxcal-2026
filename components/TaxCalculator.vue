@@ -4,6 +4,7 @@ import { useTaxCalculator } from '~/composables/useTaxCalculator'
 import IncomeForm from '~/components/IncomeForm.vue'
 import DeductionsForm from '~/components/DeductionsForm.vue'
 import TaxPlanningResult from '~/components/TaxPlanningResult.vue'
+import TaxSummary from '~/components/TaxSummary.vue'
 import HeaderContent from '~/components/HeaderContent.vue'
 import StepIndicator from '~/components/StepIndicator.vue'
 
@@ -17,6 +18,19 @@ watch(currentStep, (newStep) => {
     layoutCurrentStep.value = newStep
   }
 }, { immediate: true })
+
+// Investment data state
+const rmfInvestment = ref(0)
+const thaiEsgInvestment = ref(0)
+
+// Handlers for investment data updates
+const handleRmfInvestmentUpdate = (value) => {
+  rmfInvestment.value = value
+}
+
+const handleThaiEsgInvestmentUpdate = (value) => {
+  thaiEsgInvestment.value = value
+}
 
 
 // Form data for each step
@@ -32,7 +46,8 @@ const deductionsData = ref({
   socialSecurity: '',
   providentFund: '',
   thaiESGX: '',
-  thaiESGXTransferred: ''
+  thaiESGXTransferred: '',
+  otherDeduction: ''
 })
 
 
@@ -49,6 +64,42 @@ const calculationData = ref({
 
 // Alert modal state
 const showAlert = ref(false)
+
+// Form validation errors
+const incomeErrors = ref({})
+
+// Validation functions
+const validateIncomeForm = () => {
+  const errors = {}
+  const fields = ['salary', 'bonus', 'otherIncome', 'withholdingTax']
+  
+  // Check if at least one income field has value
+  const hasIncome = incomeData.value.salary || incomeData.value.bonus || incomeData.value.otherIncome
+  if (!hasIncome) {
+    errors.salary = 'กรุณากรอกเงินเดือน'
+    errors.bonus = 'กรุณากรอกโบนัส'
+    errors.otherIncome = 'กรุณากรอกรายได้อื่นๆ'
+    return errors
+  }
+  
+  // Validate each field
+  fields.forEach(field => {
+    const value = incomeData.value[field]
+    if (value && value.toString().trim() !== '') {
+      // Check if value is a valid number
+      const numValue = parseFloat(value.toString().replace(/,/g, ''))
+      if (isNaN(numValue)) {
+        errors[field] = 'กรุณากรอกตัวเลขที่ถูกต้อง'
+      } else if (numValue < 0) {
+        errors[field] = 'ไม่สามารถกรอกค่าลบได้'
+      } else if (numValue > 999999999) {
+        errors[field] = 'จำนวนเงินสูงเกินไป (ไม่เกิน 999,999,999 บาท)'
+      }
+    }
+  })
+  
+  return errors
+}
 
 // Current component based on step
 const currentComponent = computed(() => {
@@ -81,11 +132,15 @@ const currentFormData = computed(() => {
 // Handle next button click
 const handleNext = () => {
   if (currentStep.value === 1) {
-    const hasIncome = incomeData.value.salary || incomeData.value.bonus || incomeData.value.otherIncome
-    if (!hasIncome) {
-      showAlert.value = true
+    // Validate income form
+    const errors = validateIncomeForm()
+    incomeErrors.value = errors
+    
+    // If there are errors, don't proceed
+    if (Object.keys(errors).length > 0) {
       return
     }
+    
     currentStep.value = 2
   } else if (currentStep.value === 2) {
     calculateTax()
@@ -126,6 +181,32 @@ const handleRecalculate = () => {
   currentStep.value = 1
 }
 
+// Clear errors when user starts typing
+const clearIncomeErrors = () => {
+  incomeErrors.value = {}
+}
+// Tax planning calculations for TaxSummary
+const { calculateTaxPlanning } = useTaxCalculator()
+
+const taxPlanning = computed(() => {
+  if (currentStep.value === 3) {
+    return calculateTaxPlanning(
+      calculationData.value,
+      rmfInvestment.value,
+      thaiEsgInvestment.value
+    )
+  }
+  return {
+    totalInvestment: 0,
+    taxSavings: 0,
+    beforeTaxAmount: 0,
+    afterTaxAmount: 0,
+    finalTaxAmount: 0,
+    finalNetTaxPayable: 0,
+    taxReduction: 0
+  }
+})
+
 </script>
 
 <template>
@@ -135,8 +216,10 @@ const handleRecalculate = () => {
       <div class="w-[288px]"></div>
       <div class="w-[648px] px-[16px]">
         <StepIndicator :current-step="currentStep" />
-        <component :is="currentComponent" v-model="currentFormData" @submit="handleNext" @back="handleBack"
-          @recalculate="handleRecalculate" />
+        <component :is="currentComponent" v-model="currentFormData" :errors="currentStep === 1 ? incomeErrors : {}"
+          @submit="handleNext" @back="handleBack" @recalculate="handleRecalculate"
+          @update:rmf-investment="handleRmfInvestmentUpdate" @update:thai-esg-investment="handleThaiEsgInvestmentUpdate"
+          @clear-errors="clearIncomeErrors" />
         <!-- Navigation Buttons -->
         <div class="line-separator">
 
@@ -145,12 +228,16 @@ const handleRecalculate = () => {
           <button class="btn-back" @click="handleBack" :disabled="currentStep <= 1">
             ย้อนกลับ
           </button>
-          <button class="btn-next" @click="handleNext" :disabled="currentStep >= 3">
+          <button v-if="currentStep < 3" class="btn-next" @click="handleNext">
             ต่อไป
+            <i class="fas fa-arrow-right pl-4"></i>
           </button>
         </div>
       </div>
-      <div class="w-[336px]"></div>
+      <div class="w-[336px]">
+        <TaxSummary v-if="currentStep === 3" :calculation-data="calculationData" :tax-planning="taxPlanning"
+          :rmf-investment="rmfInvestment" :thai-esg-investment="thaiEsgInvestment" />
+      </div>
     </div>
   </div>
 </template>
@@ -163,45 +250,51 @@ const handleRecalculate = () => {
   align-items: center;
   width: 100%;
   max-width: 616px;
-  padding: 20px 0px 32px 0px;
+  padding: 0px 0px 32px 0px;
+}
+
+.navigation-buttons:has(.btn-back:only-child) {
+  justify-content: center;
 }
 
 .btn-back {
   background: #E9EFF2;
-  color: #01172B;
+  color: var(--color-primary);
   border: none;
-  border-radius: 24px;
+  border-radius: 200px;
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 24px;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 120px;
+  min-width: 154px;
+  height: 48px;
 }
 
 .btn-back:hover {
   background: #D3DFE6;
-  transform: translateY(-1px);
+  /* transform: translateY(-1px); */
 }
 
 .btn-next {
-  background: #01172B;
+  background: var(--color-primary);
   color: #FFFFFF;
   border: none;
-  border-radius: 24px;
+  border-radius: 200px;
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 24px;
-  cursor: pointer;
+  cursor: pointer !important;
   transition: all 0.2s ease;
-  min-width: 120px;
+  min-width: 154px;
+  height: 48px;
 }
 
 .btn-next:hover {
   background: #001A2E;
-  transform: translateY(-1px);
+  /* transform: translateY(-1px); */
 }
 
 .btn-next:disabled {
@@ -213,7 +306,8 @@ const handleRecalculate = () => {
 
 .line-separator {
   border-top: 1px solid #e1e3e6;
-  margin: auto;
+  margin: 2rem auto;
+
 }
 
 /* Responsive adjustments for buttons */
