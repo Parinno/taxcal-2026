@@ -1,10 +1,11 @@
 <script setup>
 import { ref, computed, inject, watch } from 'vue'
 import { useTaxCalculator } from '~/composables/useTaxCalculator'
-import AlertModal from '~/components/AlertModal.vue'
 import IncomeForm from '~/components/IncomeForm.vue'
 import DeductionsForm from '~/components/DeductionsForm.vue'
 import TaxPlanningResult from '~/components/TaxPlanningResult.vue'
+import HeaderContent from '~/components/HeaderContent.vue'
+import StepIndicator from '~/components/StepIndicator.vue'
 
 // Current step state
 const currentStep = ref(1)
@@ -102,7 +103,7 @@ const handleBack = () => {
 // Calculate tax function using the simplified composable
 const calculateTax = () => {
   const { calculateTaxFromForms } = useTaxCalculator()
-  
+
   const result = calculateTaxFromForms(
     incomeData.value,
     deductionsData.value
@@ -125,45 +126,33 @@ const handleRecalculate = () => {
   currentStep.value = 1
 }
 
-// Handle alert close
-const handleAlertClose = () => {
-  showAlert.value = false
-}
-
 </script>
 
 <template>
-  <component 
-    :is="currentComponent"
-    v-model="currentFormData" 
-    @submit="handleNext"
-    @back="handleBack"
-    @recalculate="handleRecalculate"
-  />
+  <HeaderContent />
+  <div class="sm:container xs:mx-auto xs:w-full xs:px-3 md:mx-auto md:max-w-7xl lg:max-w-[1272px] pb-[32px]">
+    <div class="flex justify-between w-full">
+      <div class="w-[288px]"></div>
+      <div class="w-[648px] px-[16px]">
+        <StepIndicator :current-step="currentStep" />
+        <component :is="currentComponent" v-model="currentFormData" @submit="handleNext" @back="handleBack"
+          @recalculate="handleRecalculate" />
+        <!-- Navigation Buttons -->
+        <div class="line-separator">
 
-  <!-- Navigation Buttons -->
-  <div class="navigation-buttons">
-    <button 
-      class="btn-back"
-      @click="handleBack"
-      :disabled="currentStep <= 1"
-    >
-      ย้อนกลับ
-    </button>
-    <button 
-      class="btn-next"
-      @click="handleNext"
-      :disabled="currentStep >= 3"
-    >
-      ต่อไป
-    </button>
+        </div>
+        <div class="navigation-buttons pb-[16px]">
+          <button class="btn-back" @click="handleBack" :disabled="currentStep <= 1">
+            ย้อนกลับ
+          </button>
+          <button class="btn-next" @click="handleNext" :disabled="currentStep >= 3">
+            ต่อไป
+          </button>
+        </div>
+      </div>
+      <div class="w-[336px]"></div>
+    </div>
   </div>
-
-  <AlertModal 
-    :show="showAlert" 
-    @close="handleAlertClose"
-    @update:show="showAlert = $event"
-  />
 </template>
 
 <style scoped>
@@ -174,8 +163,7 @@ const handleAlertClose = () => {
   align-items: center;
   width: 100%;
   max-width: 616px;
-  margin: 32px auto 0;
-  padding: 0 16px;
+  padding: 20px 0px 32px 0px;
 }
 
 .btn-back {
@@ -223,6 +211,11 @@ const handleAlertClose = () => {
   transform: none;
 }
 
+.line-separator {
+  border-top: 1px solid #e1e3e6;
+  margin: auto;
+}
+
 /* Responsive adjustments for buttons */
 @media (max-width: 640px) {
   .navigation-buttons {
@@ -244,5 +237,3 @@ const handleAlertClose = () => {
   }
 }
 </style>
-
-

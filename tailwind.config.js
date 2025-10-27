@@ -13,6 +13,13 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ['aktiv-grotesk-thai', ...defaultTheme.fontFamily.sans]
+			},
+			colors: {
+				'color-primary': '#01172B',
+				'color-primaryGray': '#01172BDE',
+				'color-secondary': '#01172BA6',
+				'color-placeholder': '#01172B99',
+				'color-information': '#01172B73',
 			}
 		}
 	},

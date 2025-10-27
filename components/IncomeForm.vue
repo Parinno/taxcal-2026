@@ -30,10 +30,10 @@ const handleNext = () => {
 <template>
     <div class="max-w-2xl mx-auto">
         <!-- Section Title -->
-        <h2 class="text-2xl font-bold text-gray-800 mb-8">รายได้ทั้งหมดของคุณ</h2>
+        <h2 class="font-bold text-color-primary mb-[16px] text-[20px]">รายได้ทั้งหมดของคุณ</h2>
 
         <!-- Form Fields -->
-        <div class="space-y-6 mb-12">
+        <div class="space-y-6 mb-[20px]">
             <!-- Salary Input -->
             <div>
                 <label class="block text-gray-800 font-medium mb-2">
@@ -41,8 +41,8 @@ const handleNext = () => {
                 </label>
                 <p class="text-sm text-gray-500 mb-3">Description</p>
                 <div class="relative">
-                    <input type="number" v-model="formData.salary" placeholder="เงินเดือนของคุณ"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors" />
+                    <input type="text" v-model="formData.salary" placeholder="เงินเดือนของคุณ"
+                        class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none font-medium text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:font-medium placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
                 </div>
             </div>
 
@@ -53,8 +53,8 @@ const handleNext = () => {
                 </label>
                 <p class="text-sm text-gray-500 mb-3">Description</p>
                 <div class="relative">
-                    <input type="number" v-model="formData.bonus" placeholder="ระบุโบนัส"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors" />
+                    <input type="text" v-model="formData.bonus" placeholder="ระบุโบนัส"
+                        class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none font-medium text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:font-medium placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
                 </div>
             </div>
 
@@ -65,8 +65,8 @@ const handleNext = () => {
                 </label>
                 <p class="text-sm text-gray-500 mb-3">เช่น การขายของออนไลน์, รับจ้างฟรีแลนซ์</p>
                 <div class="relative">
-                    <input type="number" v-model="formData.otherIncome" placeholder="ระบุรายได้ทั้งปี"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors" />
+                    <input type="text" v-model="formData.otherIncome" placeholder="ระบุรายได้ทั้งปี"
+                        class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none font-medium text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:font-medium placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
                 </div>
             </div>
 
@@ -77,8 +77,8 @@ const handleNext = () => {
                 </label>
                 <p class="text-sm text-gray-500 mb-3">Description</p>
                 <div class="relative">
-                    <input type="number" v-model="formData.withholdingTax" placeholder="ระบุภาษีทั้งปี"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors" />
+                    <input type="text" v-model="formData.withholdingTax" placeholder="ระบุภาษีทั้งปี"
+                        class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none font-medium text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:font-medium placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
                 </div>
             </div>
         </div>

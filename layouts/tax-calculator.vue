@@ -1,9 +1,14 @@
 <template>
-  <Header />
-  <div class="min-h-screen bg-white">
-    <!-- Main Container -->
+  <div>
+    <Header />
+    <section class="sm:container xs:mx-auto xs:w-full xs:px-3 md:mx-auto md:max-w-7xl lg:max-w-[1440px]">
+      <slot />
+    </section>
+    <Disclaimer />
+    <Footer />
+  </div>
+  <!-- <div class="min-h-screen bg-white">
     <div class="max-w-4xl mx-auto px-4 md:px-6 py-6 md:py-8">
-      <!-- Header Section -->
       <div class="text-center mb-8 md:mb-12">
         <h1 class="header-title">
           คำนวณภาษีและวางแผนลดหย่อนภาษี
@@ -13,19 +18,20 @@
         </p>
       </div>
 
-      <!-- Progress Steps -->
       <StepIndicator :current-step="currentStep" />
 
-      <!-- Page Content Slot -->
       <slot />
     </div>
   </div>
-  <Footer />
+  <Footer /> -->
 </template>
 
 <script setup>
 import { ref, provide } from 'vue'
 import StepIndicator from '~/components/StepIndicator.vue'
+import Header from '~/components/header/Header.vue'
+import Footer from '~/components/footer/Footer.vue'
+import Disclaimer from '~/components/footer/Disclaimer.vue'
 
 // Current step state - provide to child components
 const currentStep = ref(1)
@@ -73,7 +79,7 @@ provide('currentStep', currentStep)
     line-height: 40px;
     height: auto;
   }
-  
+
   .header-subtitle {
     width: 100%;
     max-width: 616px;
@@ -88,12 +94,10 @@ provide('currentStep', currentStep)
     width: 100%;
     max-width: 616px;
   }
-  
+
   .header-subtitle {
     width: 100%;
     max-width: 616px;
   }
 }
-
-
 </style>
