@@ -283,9 +283,12 @@ export function useTaxCalculator() {
     const thaiESGXTransferredLimit = Math.min(totalIncome * 0.3, 300000)
     const thaiESGXTransferred = Math.min(toNumber(deductionsData.thaiESGXTransferred), thaiESGXTransferredLimit)
 
+    // Other deductions (no specific limits, but should be reasonable)
+    const otherDeduction = toNumber(deductionsData.otherDeduction)
+
     // Calculate expenses and deductions separately
     const totalExpenses = employmentExpense
-    const totalDeductions = personalDeduction + socialSecurity + providentFund + thaiESGX + thaiESGXTransferred
+    const totalDeductions = personalDeduction + socialSecurity + providentFund + thaiESGX + thaiESGXTransferred + otherDeduction
     const totalDeductionsAndExpenses = totalExpenses + totalDeductions
 
     const taxableIncome = Math.max(0, totalIncome - totalDeductionsAndExpenses)

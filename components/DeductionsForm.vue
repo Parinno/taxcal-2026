@@ -75,14 +75,37 @@
         </div>
 
         <!-- ThaiESGX Fund (Transferred from LTF) -->
-        <div>
-          <label class="block text-gray-800 font-medium text-[15px]">
+        <div class="mb-6">
+          <label class="block text-gray-800 font-medium mb-2">
             กองทุน ThaiESGX (Thai ESGX โอนจาก LTF)
           </label>
           <p class="text-sm text-gray-500 mb-2 text-[15px]">(Thai ESGX โอนจาก LTF)</p>
           <div class="relative">
             <input type="text" v-model="formData.thaiESGXTransferred" placeholder="กรอกจำนวนเงิน"
               class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
+          </div>
+        </div>
+
+        <!-- Other Deductions -->
+        <div>
+          <label class="block text-gray-800 font-medium mb-2">
+            ค่าลดหย่อนอื่นๆ
+          </label>
+          <div class="relative">
+            <input
+              type="text"
+              v-model="formData.otherDeduction"
+              placeholder="ระบุจำนวนเงิน"
+              class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none font-medium text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:font-medium placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]"
+            />
+          </div>
+          <div class="flex items-center mt-2">
+            <div class="w-4 h-4 bg-gray-400 rounded-full flex items-center justify-center mr-2">
+              <span class="text-white text-xs">i</span>
+            </div>
+            <p class="text-sm text-gray-600">
+              เช่น ช้อปดีมีคืน ดอกเบี้ยบ้าน อุปการะบิดามารดา ค่าคลอดบุตร และอื่นๆ ที่สามารถหักได้ตามกฎหมาย
+            </p>
           </div>
         </div>
       </div>
@@ -102,7 +125,8 @@ const props = defineProps({
       socialSecurity: '',
       providentFund: '',
       thaiESGX: '',
-      thaiESGXTransferred: ''
+      thaiESGXTransferred: '',
+      otherDeduction: ''
     })
   }
 })
