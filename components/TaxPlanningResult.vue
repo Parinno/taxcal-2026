@@ -43,7 +43,7 @@
             </div>
           </div>
           
-          <div class="border-t border-gray-300 pt-4">
+          <!-- <div class="border-t border-gray-300 pt-4">
             <div class="flex justify-between items-center mb-2">
               <div class="text-sm text-gray-600">รายได้ทั้งปี</div>
               <div class="text-sm font-medium text-gray-800">{{ formatCurrency(calculationData.totalIncome) }}</div>
@@ -52,23 +52,23 @@
               <div class="text-sm text-gray-600">รายได้สุทธิ</div>
               <div class="text-sm font-medium text-gray-800">{{ formatCurrency(calculationData.taxableIncome) }}</div>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <!-- Tax Planning Header -->
         <div>
           <h3 class="text-2xl font-bold text-gray-800 mb-2">วางแผนลดหย่อนภาษี</h3>
-          <p class="text-sm text-gray-600 mb-6">
+          <!-- <p class="text-sm text-gray-600 mb-6">
             แสดงผลเปรียบเทียบภาษี 'ก่อน-หลัง' การซื้อกองทุนเพื่อประหยัดภาษีได้สูงสุด
-          </p>
+          </p> -->
         </div>
 
         <!-- Tax Comparison Section -->
-        <div class="bg-gray-100 rounded-lg p-6">
-          <div class="text-lg font-bold text-gray-800 mb-4">จำนวนเงินภาษีที่ต้องจ่าย</div>
+        <!-- <div class="bg-gray-100 rounded-lg p-6">
+          <div class="text-lg font-bold text-gray-800 mb-4">จำนวนเงินภาษีที่ต้องจ่าย</div> -->
           
           <!-- Before Tax Planning -->
-          <div class="flex justify-between items-center mb-3">
+          <!-- <div class="flex justify-between items-center mb-3">
             <div>
               <div class="font-medium text-gray-800">ก่อนวางแผนภาษี</div>
               <div class="text-sm text-gray-600">(จ่ายภาษีเพิ่ม)</div>
@@ -76,10 +76,10 @@
             <div class="text-xl font-bold text-gray-800">
               {{ formatCurrency(beforeTaxAmount) }}
             </div>
-          </div>
+          </div> -->
           
           <!-- After Tax Planning -->
-          <div class="flex justify-between items-center">
+          <!-- <div class="flex justify-between items-center">
             <div>
               <div class="font-medium text-gray-800">หลังวางแผนภาษี</div>
               <div class="text-sm text-gray-600">(จ่ายภาษีเพิ่ม/คืนเงินภาษี)</div>
@@ -88,7 +88,7 @@
               {{ formatCurrency(afterTaxAmount) }}
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- Investment Planning Section -->
         <div class="space-y-6">
