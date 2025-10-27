@@ -147,6 +147,7 @@ const handleRecalculate = () => {
           </button>
           <button class="btn-next" @click="handleNext" :disabled="currentStep >= 3">
             ต่อไป
+            <i class="fas fa-arrow-right size-[20px]"></i>
           </button>
         </div>
       </div>
@@ -168,40 +169,42 @@ const handleRecalculate = () => {
 
 .btn-back {
   background: #E9EFF2;
-  color: #01172B;
+  color: var(--color-primary);
   border: none;
-  border-radius: 24px;
+  border-radius: 200px;
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 24px;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 120px;
+  min-width: 154px;
+  height: 48px;
 }
 
 .btn-back:hover {
   background: #D3DFE6;
-  transform: translateY(-1px);
+  /* transform: translateY(-1px); */
 }
 
 .btn-next {
-  background: #01172B;
+  background: var(--color-primary);
   color: #FFFFFF;
   border: none;
-  border-radius: 24px;
+  border-radius: 200px;
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 24px;
-  cursor: pointer;
+  cursor: pointer !important;
   transition: all 0.2s ease;
-  min-width: 120px;
+  min-width: 154px;
+  height: 48px;
 }
 
 .btn-next:hover {
   background: #001A2E;
-  transform: translateY(-1px);
+  /* transform: translateY(-1px); */
 }
 
 .btn-next:disabled {
