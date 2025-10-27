@@ -148,7 +148,7 @@ const handleRecalculate = () => {
           </button>
           <button v-if="currentStep < 3" class="btn-next" @click="handleNext">
             ต่อไป
-            <i class="fas fa-arrow-right size-[20px]"></i>
+            <i class="fas fa-arrow-right pl-4"></i>
           </button>
         </div>
       </div>

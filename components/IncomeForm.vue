@@ -36,7 +36,7 @@ const handleNext = () => {
         <div class="space-y-6 mb-[20px]">
             <!-- Salary Input -->
             <div>
-                <label class="block text-gray-800 font-medium text-[15px]">
+                <label class="block text-gray-800 font-medium text-[15px] mb-1">
                     เงินเดือน (บาท)
                 </label>
                 <p class="text-sm text-gray-500 mb-2 text-[15px]">ระบบจะคำนวณคูณ 12 เดือน เมื่อคำนวณภาษี</p>
@@ -48,7 +48,7 @@ const handleNext = () => {
 
             <!-- Bonus Input -->
             <div>
-                <label class="block text-gray-800 font-medium text-[15px]">
+                <label class="block text-gray-800 font-medium text-[15px] mb-1">
                     โบนัส (บาท)
                 </label>
                 <p class="text-sm text-gray-500 mb-2 text-[15px]">รวมโบนัสทั้งหมดที่ได้รับในปี</p>
@@ -60,10 +60,10 @@ const handleNext = () => {
 
             <!-- Other Income Input -->
             <div>
-                <label class="block text-gray-800 font-medium text-[15px]">
+                <label class="block text-gray-800 font-medium text-[15px] mb-1">
                     รายได้อื่นๆ (บาท)
                 </label>
-                <p class="text-sm text-gray-500 mb-2 text-[15px]">เช่น การขายของออนไลน์, รับจ้างฟรีแลนซ์</p>
+                <p class="text-sm text-gray-500 mb-2 text-[15px]">รายได้อื่นๆ นอกจากเงินเดือน และโบนัส หรือคุณสามารถกรอกรายได้รวมทั้งปีที่ตรงนี้ได้</p>
                 <div class="relative">
                     <input type="text" v-model="formData.otherIncome" placeholder="กรอกรายได้ทั้งปี"
                         class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
@@ -72,10 +72,9 @@ const handleNext = () => {
 
             <!-- Withholding Tax Input -->
             <div>
-                <label class="block text-gray-800 font-medium text-[15px]">
+                <label class="block text-gray-800 font-medium text-[15px] mb-1">
                     ภาษีหัก ณ ที่จ่าย (บาท)
                 </label>
-                <p class="text-sm text-gray-500 mb-2 text-[15px]">รายได้อื่นๆ นอกจากเงินเดือน และโบนัส หรือคุณสามารถกรอกรายได้รวมทั้งปีที่ตรงนี้ได้</p>
                 <div class="relative">
                     <input type="text" v-model="formData.withholdingTax" placeholder="กรอกภาษีทั้งปี"
                         class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
