@@ -32,7 +32,8 @@ const deductionsData = ref({
   socialSecurity: '',
   providentFund: '',
   thaiESGX: '',
-  thaiESGXTransferred: ''
+  thaiESGXTransferred: '',
+  otherDeduction: ''
 })
 
 
@@ -145,8 +146,9 @@ const handleRecalculate = () => {
           <button class="btn-back" @click="handleBack" :disabled="currentStep <= 1">
             ย้อนกลับ
           </button>
-          <button class="btn-next" @click="handleNext" :disabled="currentStep >= 3">
+          <button v-if="currentStep < 3" class="btn-next" @click="handleNext">
             ต่อไป
+            <i class="fas fa-arrow-right pl-4"></i>
           </button>
         </div>
       </div>
@@ -163,7 +165,11 @@ const handleRecalculate = () => {
   align-items: center;
   width: 100%;
   max-width: 616px;
-  padding: 20px 0px 32px 0px;
+  padding: 0px 0px 32px 0px;
+}
+
+.navigation-buttons:has(.btn-back:only-child) {
+  justify-content: center;
 }
 
 .btn-back {
@@ -213,7 +219,8 @@ const handleRecalculate = () => {
 
 .line-separator {
   border-top: 1px solid #e1e3e6;
-  margin: auto;
+  margin: 2rem auto;
+
 }
 
 /* Responsive adjustments for buttons */

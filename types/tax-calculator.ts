@@ -11,6 +11,7 @@ export interface DeductionsData {
   providentFund: string | number
   thaiESGX: string | number
   thaiESGXTransferred: string | number
+  otherDeduction: string | number
 }
 
 // Legacy interfaces for backward compatibility
