@@ -4,6 +4,7 @@ import { useTaxCalculator } from '~/composables/useTaxCalculator'
 import IncomeForm from '~/components/IncomeForm.vue'
 import DeductionsForm from '~/components/DeductionsForm.vue'
 import TaxPlanningResult from '~/components/TaxPlanningResult.vue'
+import TaxSummary from '~/components/TaxSummary.vue'
 import HeaderContent from '~/components/HeaderContent.vue'
 import StepIndicator from '~/components/StepIndicator.vue'
 
@@ -17,6 +18,19 @@ watch(currentStep, (newStep) => {
     layoutCurrentStep.value = newStep
   }
 }, { immediate: true })
+
+// Investment data state
+const rmfInvestment = ref(0)
+const thaiEsgInvestment = ref(0)
+
+// Handlers for investment data updates
+const handleRmfInvestmentUpdate = (value) => {
+  rmfInvestment.value = value
+}
+
+const handleThaiEsgInvestmentUpdate = (value) => {
+  thaiEsgInvestment.value = value
+}
 
 
 // Form data for each step
@@ -171,6 +185,27 @@ const handleRecalculate = () => {
 const clearIncomeErrors = () => {
   incomeErrors.value = {}
 }
+// Tax planning calculations for TaxSummary
+const { calculateTaxPlanning } = useTaxCalculator()
+
+const taxPlanning = computed(() => {
+  if (currentStep.value === 3) {
+    return calculateTaxPlanning(
+      calculationData.value,
+      rmfInvestment.value,
+      thaiEsgInvestment.value
+    )
+  }
+  return {
+    totalInvestment: 0,
+    taxSavings: 0,
+    beforeTaxAmount: 0,
+    afterTaxAmount: 0,
+    finalTaxAmount: 0,
+    finalNetTaxPayable: 0,
+    taxReduction: 0
+  }
+})
 
 </script>
 
@@ -181,8 +216,10 @@ const clearIncomeErrors = () => {
       <div class="w-[288px]"></div>
       <div class="w-[648px] px-[16px]">
         <StepIndicator :current-step="currentStep" />
-        <component :is="currentComponent" v-model="currentFormData" :errors="currentStep === 1 ? incomeErrors : {}" @submit="handleNext" @back="handleBack"
-          @recalculate="handleRecalculate" @clear-errors="clearIncomeErrors" />
+        <component :is="currentComponent" v-model="currentFormData" :errors="currentStep === 1 ? incomeErrors : {}"
+          @submit="handleNext" @back="handleBack" @recalculate="handleRecalculate"
+          @update:rmf-investment="handleRmfInvestmentUpdate" @update:thai-esg-investment="handleThaiEsgInvestmentUpdate"
+          @clear-errors="clearIncomeErrors" />
         <!-- Navigation Buttons -->
         <div class="line-separator">
 
@@ -193,11 +230,14 @@ const clearIncomeErrors = () => {
           </button>
           <button v-if="currentStep < 3" class="btn-next" @click="handleNext">
             ต่อไป
-            <i class="fas fa-arrow-right size-[20px]"></i>
+            <i class="fas fa-arrow-right pl-4"></i>
           </button>
         </div>
       </div>
-      <div class="w-[336px]"></div>
+      <div class="w-[336px]">
+        <TaxSummary v-if="currentStep === 3" :calculation-data="calculationData" :tax-planning="taxPlanning"
+          :rmf-investment="rmfInvestment" :thai-esg-investment="thaiEsgInvestment" />
+      </div>
     </div>
   </div>
 </template>
