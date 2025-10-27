@@ -65,6 +65,10 @@ const getStepClasses = (step) => {
     return {
       circle: 'step-circle-completed'
     }
+  } else if (isActive) {
+    return {
+      circle: 'step-circle-active'
+    }
   } else if (step === 2) {
     return {
       circle: 'step-circle-white'
@@ -222,6 +226,25 @@ const getStepIcon = (step) => {
 .step-circle-active {
   background: #10B981;
   border: 2px solid #10B981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+}
+
+.step-circle-active::before {
+  content: '';
+  position: absolute;
+  left: 13.79%;
+  right: 13.79%;
+  top: 13.79%;
+  bottom: 13.79%;
+  width: 72.42%;
+  height: 72.42%;
+  border-radius: 50%;
+  background: #FFFFFF;
+}
+
+.step-circle-active .step-number {
+  color: #10B981;
+  font-weight: 600;
 }
 
 .step-circle-completed {
