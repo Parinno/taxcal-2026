@@ -100,8 +100,8 @@
             />
           </div>
           <div class="flex items-center mt-2">
-            <div class="w-4 h-4 bg-gray-400 rounded-full flex items-center justify-center mr-2">
-              <span class="text-white text-xs">i</span>
+            <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
+              <i class="fa fa-info-circle"></i>
             </div>
             <p class="text-sm text-gray-600">
               เช่น ช้อปดีมีคืน ดอกเบี้ยบ้าน อุปการะบิดามารดา ค่าคลอดบุตร และอื่นๆ ที่สามารถหักได้ตามกฎหมาย
