@@ -102,11 +102,22 @@ export default defineNuxtConfig({
 				{
 					src: `${contentURL}/web-component/${headerVersion}/header-finnomena.min.js`
 				},
+				{
+					src: 'https://apis.google.com/js/api.js'
+				}
 			]
 		},
 		baseURL: '/tax/'
 	},
 	alias: {
 		'@': '~'
+	},
+	runtimeConfig: {
+		public: {
+			googleApiKey: process.env.GOOGLE_API_KEY,
+			googleClientId: process.env.GOOGLE_CLIENT_ID,
+			googleSheetsId: process.env.GOOGLE_SHEETS_ID,
+			googleSheetsRange: process.env.GOOGLE_SHEETS_RANGE
+		}
 	}
 })

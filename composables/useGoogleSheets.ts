@@ -1,8 +1,18 @@
-import { appendToGoogleSheets, saveMultipleRowsToGoogleSheets, type GoogleSheetsResponse } from '@/utils/googleSheets'
+import { type GoogleSheetsResponse } from '@/utils/googleSheets'
+import { useGoogleSheetsClient } from './useGoogleSheetsClient'
 
 export const useGoogleSheets = () => {
-  const isLoading = ref(false)
-  const error = ref<string | null>(null)
+  const { 
+    isLoading, 
+    error, 
+    isAuthenticated,
+    authenticate,
+    signOut,
+    appendData: clientAppendData,
+    saveMultipleRows: clientSaveMultipleRows,
+    readData: clientReadData,
+    clearError: clientClearError
+  } = useGoogleSheetsClient()
 
   /**
    * Append data to Google Sheets with loading state management
@@ -10,27 +20,7 @@ export const useGoogleSheets = () => {
   const appendData = async (
     payload: Record<string, any>
   ): Promise<GoogleSheetsResponse> => {
-    isLoading.value = true
-    error.value = null
-
-    try {
-      const result = await appendToGoogleSheets(payload)
-      
-      if (!result.success) {
-        error.value = result.message
-      }
-      
-      return result
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error'
-      error.value = errorMessage
-      return {
-        success: false,
-        message: errorMessage
-      }
-    } finally {
-      isLoading.value = false
-    }
+    return await clientAppendData(payload)
   }
 
   /**
@@ -39,44 +29,28 @@ export const useGoogleSheets = () => {
   const saveMultipleRows = async (
     dataArray: Record<string, any>[]
   ): Promise<GoogleSheetsResponse> => {
-    isLoading.value = true
-    error.value = null
-
-    try {
-      const result = await saveMultipleRowsToGoogleSheets(dataArray)
-      
-      if (!result.success) {
-        error.value = result.message
-      }
-      
-      return result
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error'
-      error.value = errorMessage
-      return {
-        success: false,
-        message: errorMessage
-      }
-    } finally {
-      isLoading.value = false
-    }
+    return await clientSaveMultipleRows(dataArray)
   }
 
   /**
-   * Clear error state
+   * Read data from Google Sheets
    */
-  const clearError = () => {
-    error.value = null
+  const readData = async (): Promise<GoogleSheetsResponse> => {
+    return await clientReadData()
   }
 
   return {
     // State
-    isLoading: readonly(isLoading),
-    error: readonly(error),
+    isLoading,
+    error,
+    isAuthenticated,
     
     // Methods
+    authenticate,
+    signOut,
     appendData,
     saveMultipleRows,
-    clearError
+    readData,
+    clearError: clientClearError
   }
 }

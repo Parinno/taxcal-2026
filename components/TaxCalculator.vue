@@ -46,7 +46,8 @@ const deductionsData = ref({
   socialSecurity: '',
   providentFund: '',
   thaiESGX: '',
-  thaiESGXTransferred: ''
+  thaiESGXTransferred: '',
+  otherDeduction: ''
 })
 
 
@@ -182,8 +183,9 @@ const taxPlanning = computed(() => {
           <button class="btn-back" @click="handleBack" :disabled="currentStep <= 1">
             ย้อนกลับ
           </button>
-          <button class="btn-next" @click="handleNext" :disabled="currentStep >= 3">
+          <button v-if="currentStep < 3" class="btn-next" @click="handleNext">
             ต่อไป
+            <i class="fas fa-arrow-right pl-4"></i>
           </button>
         </div>
       </div>
@@ -208,45 +210,51 @@ const taxPlanning = computed(() => {
   align-items: center;
   width: 100%;
   max-width: 616px;
-  padding: 20px 0px 32px 0px;
+  padding: 0px 0px 32px 0px;
+}
+
+.navigation-buttons:has(.btn-back:only-child) {
+  justify-content: center;
 }
 
 .btn-back {
   background: #E9EFF2;
-  color: #01172B;
+  color: var(--color-primary);
   border: none;
-  border-radius: 24px;
+  border-radius: 200px;
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 24px;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 120px;
+  min-width: 154px;
+  height: 48px;
 }
 
 .btn-back:hover {
   background: #D3DFE6;
-  transform: translateY(-1px);
+  /* transform: translateY(-1px); */
 }
 
 .btn-next {
-  background: #01172B;
+  background: var(--color-primary);
   color: #FFFFFF;
   border: none;
-  border-radius: 24px;
+  border-radius: 200px;
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 24px;
-  cursor: pointer;
+  cursor: pointer !important;
   transition: all 0.2s ease;
-  min-width: 120px;
+  min-width: 154px;
+  height: 48px;
 }
 
 .btn-next:hover {
   background: #001A2E;
-  transform: translateY(-1px);
+  /* transform: translateY(-1px); */
 }
 
 .btn-next:disabled {
@@ -258,7 +266,8 @@ const taxPlanning = computed(() => {
 
 .line-separator {
   border-top: 1px solid #e1e3e6;
-  margin: auto;
+  margin: 2rem auto;
+
 }
 
 /* Responsive adjustments for buttons */
