@@ -1,19 +1,17 @@
 <template>
-  <div class="max-w-6xl mx-auto">
-    <!-- Main Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <!-- Left Side - Tax Planning and Investment -->
-      <div class="space-y-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Main Content -->
+    <div class="space-y-8">
         <!-- Tax Summary Section -->
-        <div class="text-center mb-8">
+        <!-- <div class="text-center mb-8">
           <div class="text-lg text-gray-700 mb-2">ภาษีที่ต้องจ่ายเพิ่ม</div>
           <div class="text-4xl font-bold text-gray-800">
             {{ formatCurrency(beforeTaxAmount - taxSavings) }}({{ formatCurrency(-taxSavings) }})
           </div>
-        </div>
+        </div> -->
 
         <!-- Income Summary -->
-        <div class="grid grid-cols-2 gap-8 mb-8">
+        <!-- <div class="grid grid-cols-2 gap-8 mb-8">
           <div class="text-center">
             <div class="text-sm text-gray-600 mb-2">รายได้ทั้งปี</div>
             <div class="text-2xl font-bold text-gray-800">
@@ -24,6 +22,35 @@
             <div class="text-sm text-gray-600 mb-2">รายได้สุทธิ</div>
             <div class="text-2xl font-bold text-gray-800">
               {{ formatCurrency(calculationData.taxableIncome) }}
+            </div>
+          </div>
+        </div> -->
+
+        <!-- Tax Summary Card -->
+        <div class="bg-gray-50 rounded-lg p-6 mb-8">
+          <div class="text-left mb-4">
+            <div class="text-lg font-bold text-gray-800 mb-2">
+              {{ (beforeTaxAmount - taxSavings) >= 0 ? 'ภาษีที่ต้องจ่ายเพิ่ม' : 'ภาษีที่ได้รับคืน' }}
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="text-4xl font-bold mb-2" :class="(beforeTaxAmount - taxSavings) >= 0 ? 'text-red-600' : 'text-green-600'">
+                {{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount - taxSavings)) }}
+              </div>
+              <div class="text-sm text-gray-600">THB</div>
+            </div>
+            <div class="text-sm text-gray-600">
+              วางแผนภาษีเพื่อเงินคืนสูงสุด {{ formatCurrency(maxTaxSavings) }} THB
+            </div>
+          </div>
+          
+          <div class="border-t border-gray-300 pt-4">
+            <div class="flex justify-between items-center mb-2">
+              <div class="text-sm text-gray-600">รายได้ทั้งปี</div>
+              <div class="text-sm font-medium text-gray-800">{{ formatCurrency(calculationData.totalIncome) }}</div>
+            </div>
+            <div class="flex justify-between items-center">
+              <div class="text-sm text-gray-600">รายได้สุทธิ</div>
+              <div class="text-sm font-medium text-gray-800">{{ formatCurrency(calculationData.taxableIncome) }}</div>
             </div>
           </div>
         </div>
@@ -92,16 +119,15 @@
                 min="0" 
                 :max="rmfMaxValue"
                 step="1000"
-                class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer slider"
+                class="w-full h-2 bg-gray-300 appearance-none cursor-pointer slider"
               />
-              <div class="absolute left-0 top-0 w-2 h-2 bg-gray-600 rounded-full"></div>
             </div>
             
             <div class="flex items-center gap-2 text-sm text-gray-600">
               <div class="w-4 h-4 bg-gray-400 rounded-full flex items-center justify-center">
                 <span class="text-white text-xs">i</span>
               </div>
-              <span>ไม่เกิน 30% รายได้ทั้งปีสูงสุด 300,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ</span>
+              <span>ไม่เกิน 30% รายได้ทั้งปีสูงสุด 500,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ</span>
             </div>
           </div>
 
@@ -132,9 +158,8 @@
                 min="0" 
                 :max="thaiEsgMaxValue"
                 step="1000"
-                class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer slider"
+                class="w-full h-2 bg-gray-200 appearance-none cursor-pointer slider"
               />
-              <div class="absolute left-0 top-0 w-2 h-2 bg-gray-600 rounded-full"></div>
             </div>
             
             <div class="flex items-center gap-2 text-sm text-gray-600">
@@ -145,101 +170,12 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Right Side - Tax Year Summary and Planning -->
-      <div class="space-y-6">
-        <!-- Tax Year Summary Card -->
-        <div class="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 class="text-xl font-bold text-gray-800 mb-6">สรุปปีภาษี 2568</h3>
-          
-          <!-- Tax Payable -->
-          <div class="text-center mb-6">
-            <div class="text-lg text-gray-700 mb-2">ภาษีที่ต้องจ่าย</div>
-            <div class="text-3xl font-bold text-red-600">
-              {{ formatCurrency(calculationData.netTaxPayable || (calculationData.taxAmount - calculationData.withholdingTax)) }}
-              <span class="text-lg text-gray-500">THB</span>
-            </div>
-          </div>
-
-          <!-- Detailed Breakdown -->
-          <div class="space-y-3">
-            <div class="flex justify-between">
-              <span class="text-gray-600">เงินได้</span>
-              <span class="font-semibold">{{ formatCurrency(calculationData.totalIncome) }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">หักค่าใช้จ่าย</span>
-              <span class="font-semibold">{{ formatCurrency(expenses) }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">ค่าลดหย่อน</span>
-              <span class="font-semibold">{{ formatCurrency(totalDeductions) }}</span>
-              <span class="text-xs text-gray-500">(ไม่รวม RMF, ThaiESGX)</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">เงินได้สุทธิ</span>
-              <span class="font-semibold">{{ formatCurrency(calculationData.taxableIncome) }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">ค่าภาษี</span>
-              <span class="font-semibold">{{ formatCurrency(calculationData.taxAmount) }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">ภาษีหัก ณ ที่จ่าย</span>
-              <span class="font-semibold">{{ formatCurrency(withholdingTax) }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tax Planning Card -->
-        <div class="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 class="text-xl font-bold text-gray-800 mb-6">วางแผนลดหย่อนภาษี</h3>
-          
-          <!-- Additional Investment -->
-          <div class="text-center mb-6">
-            <div class="text-lg text-gray-700 mb-2">เงินลงทุนเพิ่ม</div>
-            <div class="text-3xl font-bold text-emerald-600">
-              {{ formatCurrency(totalInvestmentAmount) }}
-              <span class="text-lg text-gray-500">THB</span>
-            </div>
-          </div>
-
-          <!-- Tax Savings -->
-          <div class="text-center mb-6">
-            <div class="text-lg text-gray-700 mb-2">ประหยัดภาษีเพิ่มขึ้น</div>
-            <div class="text-3xl font-bold text-emerald-600">
-              {{ formatCurrency(taxSavings) }}
-            </div>
-          </div>
-
-          <!-- Investment Breakdown -->
-          <div class="space-y-3 mb-6">
-            <div class="flex justify-between">
-              <span class="text-gray-600">RMF</span>
-              <span class="font-semibold">{{ formatCurrency(rmfInvestment) }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">Thai ESG</span>
-              <span class="font-semibold">{{ formatCurrency(thaiEsgInvestment) }}</span>
-            </div>
-          </div>
-
-          <!-- Action Button -->
-          <button class="w-full bg-gray-500 text-white py-3 px-4 rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center">
-            <span>ดูกองทุนประหยัดภาษี</span>
-            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { formatCurrencyTHB } from '~/utils/format'
 import { useTaxCalculator } from '~/composables/useTaxCalculator'
 
@@ -260,7 +196,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue', 'back', 'recalculate'])
+const emit = defineEmits(['update:modelValue', 'back', 'recalculate', 'update:rmfInvestment', 'update:thaiEsgInvestment'])
 
 // Use the calculation data
 const calculationData = computed(() => props.modelValue)
@@ -268,7 +204,8 @@ const calculationData = computed(() => props.modelValue)
 // Use tax calculator composable
 const { 
   calculateTaxPlanning,
-  getInvestmentLimits
+  getInvestmentLimits,
+  computeMaxTaxSavingsFromInvestments
 } = useTaxCalculator()
 
 // Investment amounts (these would typically come from form inputs)
@@ -310,20 +247,30 @@ const beforeTaxAmount = computed(() => taxPlanning.value.beforeTaxAmount)
 const afterTaxAmount = computed(() => taxPlanning.value.afterTaxAmount)
 const taxSavings = computed(() => taxPlanning.value.taxSavings)
 const taxReduction = computed(() => taxPlanning.value.taxReduction)
-const finalTaxAmount = computed(() => taxPlanning.value.finalNetTaxPayable)
-const totalAdditionalInvestment = computed(() => taxPlanning.value.totalInvestment)
-const totalInvestmentAmount = computed(() => taxPlanning.value.totalInvestment)
-const totalInvestmentDisplay = computed(() => taxPlanning.value.totalInvestment)
-const taxSavingsDisplay = computed(() => taxPlanning.value.taxSavings)
-const finalTaxDisplay = computed(() => taxPlanning.value.finalNetTaxPayable)
 
-// Additional calculations
-const additionalTaxPayable = computed(() => {
-  return Math.max(0, calculationData.value.taxAmount - withholdingTax.value)
-})
+// Calculate maximum possible tax savings
+const maxTaxSavings = computed(() => 
+  computeMaxTaxSavingsFromInvestments(
+    calculationData.value.totalIncome,
+    calculationData.value.taxableIncome,
+    calculationData.value.taxAmount
+  )
+)
+
+// Emit investment data changes to parent
+
+// Watch for changes and emit to parent
+watch(rmfInvestment, (newValue) => {
+  emit('update:rmfInvestment', newValue)
+}, { immediate: true })
+
+watch(thaiEsgInvestment, (newValue) => {
+  emit('update:thaiEsgInvestment', newValue)
+}, { immediate: true })
 
 // Format currency helper
 const formatCurrency = (amount) => formatCurrencyTHB(amount)
+const formatCurrencyWithDecimals = (amount) => formatCurrencyTHBWithDecimals(amount)
 
 // Slider and input methods - ensure proper number conversion
 const updateRmfFromSlider = () => {
@@ -366,7 +313,7 @@ const handleRecalculate = () => {
 .slider {
   -webkit-appearance: none;
   appearance: none;
-  background: transparent;
+  background: #D1D5DB;
   cursor: pointer;
 }
 

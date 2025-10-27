@@ -4,6 +4,7 @@ import { useTaxCalculator } from '~/composables/useTaxCalculator'
 import IncomeForm from '~/components/IncomeForm.vue'
 import DeductionsForm from '~/components/DeductionsForm.vue'
 import TaxPlanningResult from '~/components/TaxPlanningResult.vue'
+import TaxSummary from '~/components/TaxSummary.vue'
 import HeaderContent from '~/components/HeaderContent.vue'
 import StepIndicator from '~/components/StepIndicator.vue'
 
@@ -17,6 +18,19 @@ watch(currentStep, (newStep) => {
     layoutCurrentStep.value = newStep
   }
 }, { immediate: true })
+
+// Investment data state
+const rmfInvestment = ref(0)
+const thaiEsgInvestment = ref(0)
+
+// Handlers for investment data updates
+const handleRmfInvestmentUpdate = (value) => {
+  rmfInvestment.value = value
+}
+
+const handleThaiEsgInvestmentUpdate = (value) => {
+  thaiEsgInvestment.value = value
+}
 
 
 // Form data for each step
@@ -126,6 +140,28 @@ const handleRecalculate = () => {
   currentStep.value = 1
 }
 
+// Tax planning calculations for TaxSummary
+const { calculateTaxPlanning } = useTaxCalculator()
+
+const taxPlanning = computed(() => {
+  if (currentStep.value === 3) {
+    return calculateTaxPlanning(
+      calculationData.value,
+      rmfInvestment.value,
+      thaiEsgInvestment.value
+    )
+  }
+  return {
+    totalInvestment: 0,
+    taxSavings: 0,
+    beforeTaxAmount: 0,
+    afterTaxAmount: 0,
+    finalTaxAmount: 0,
+    finalNetTaxPayable: 0,
+    taxReduction: 0
+  }
+})
+
 </script>
 
 <template>
@@ -136,7 +172,8 @@ const handleRecalculate = () => {
       <div class="w-[648px] px-[16px]">
         <StepIndicator :current-step="currentStep" />
         <component :is="currentComponent" v-model="currentFormData" @submit="handleNext" @back="handleBack"
-          @recalculate="handleRecalculate" />
+          @recalculate="handleRecalculate" @update:rmf-investment="handleRmfInvestmentUpdate" 
+          @update:thai-esg-investment="handleThaiEsgInvestmentUpdate" />
         <!-- Navigation Buttons -->
         <div class="line-separator">
 
@@ -150,7 +187,15 @@ const handleRecalculate = () => {
           </button>
         </div>
       </div>
-      <div class="w-[336px]"></div>
+      <div class="w-[336px]">
+        <TaxSummary 
+          v-if="currentStep === 3"
+          :calculation-data="calculationData"
+          :tax-planning="taxPlanning"
+          :rmf-investment="rmfInvestment"
+          :thai-esg-investment="thaiEsgInvestment"
+        />
+      </div>
     </div>
   </div>
 </template>
