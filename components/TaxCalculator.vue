@@ -51,6 +51,42 @@ const calculationData = ref({
 // Alert modal state
 const showAlert = ref(false)
 
+// Form validation errors
+const incomeErrors = ref({})
+
+// Validation functions
+const validateIncomeForm = () => {
+  const errors = {}
+  const fields = ['salary', 'bonus', 'otherIncome', 'withholdingTax']
+  
+  // Check if at least one income field has value
+  const hasIncome = incomeData.value.salary || incomeData.value.bonus || incomeData.value.otherIncome
+  if (!hasIncome) {
+    errors.salary = 'กรุณากรอกเงินเดือน'
+    errors.bonus = 'กรุณากรอกโบนัส'
+    errors.otherIncome = 'กรุณากรอกรายได้อื่นๆ'
+    return errors
+  }
+  
+  // Validate each field
+  fields.forEach(field => {
+    const value = incomeData.value[field]
+    if (value && value.toString().trim() !== '') {
+      // Check if value is a valid number
+      const numValue = parseFloat(value.toString().replace(/,/g, ''))
+      if (isNaN(numValue)) {
+        errors[field] = 'กรุณากรอกตัวเลขที่ถูกต้อง'
+      } else if (numValue < 0) {
+        errors[field] = 'ไม่สามารถกรอกค่าลบได้'
+      } else if (numValue > 999999999) {
+        errors[field] = 'จำนวนเงินสูงเกินไป (ไม่เกิน 999,999,999 บาท)'
+      }
+    }
+  })
+  
+  return errors
+}
+
 // Current component based on step
 const currentComponent = computed(() => {
   switch (currentStep.value) {
@@ -82,11 +118,15 @@ const currentFormData = computed(() => {
 // Handle next button click
 const handleNext = () => {
   if (currentStep.value === 1) {
-    const hasIncome = incomeData.value.salary || incomeData.value.bonus || incomeData.value.otherIncome
-    if (!hasIncome) {
-      showAlert.value = true
+    // Validate income form
+    const errors = validateIncomeForm()
+    incomeErrors.value = errors
+    
+    // If there are errors, don't proceed
+    if (Object.keys(errors).length > 0) {
       return
     }
+    
     currentStep.value = 2
   } else if (currentStep.value === 2) {
     calculateTax()
@@ -127,6 +167,11 @@ const handleRecalculate = () => {
   currentStep.value = 1
 }
 
+// Clear errors when user starts typing
+const clearIncomeErrors = () => {
+  incomeErrors.value = {}
+}
+
 </script>
 
 <template>
@@ -136,8 +181,8 @@ const handleRecalculate = () => {
       <div class="w-[288px]"></div>
       <div class="w-[648px] px-[16px]">
         <StepIndicator :current-step="currentStep" />
-        <component :is="currentComponent" v-model="currentFormData" @submit="handleNext" @back="handleBack"
-          @recalculate="handleRecalculate" />
+        <component :is="currentComponent" v-model="currentFormData" :errors="currentStep === 1 ? incomeErrors : {}" @submit="handleNext" @back="handleBack"
+          @recalculate="handleRecalculate" @clear-errors="clearIncomeErrors" />
         <!-- Navigation Buttons -->
         <div class="line-separator">
 
