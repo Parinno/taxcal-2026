@@ -11,6 +11,7 @@
           <div 
             class="step-circle"
             :class="getStepClasses(step.id).circle"
+            @click="handleStepClick(step.id)"
           >
             <span 
               class="step-number"
@@ -47,6 +48,9 @@ const props = defineProps({
   }
 })
 
+// Emits
+const emit = defineEmits(['step-click'])
+
 // Steps configuration
 const steps = [
   { id: 1, caption: 'ขั้นตอนที่ 1', title: 'รายได้' },
@@ -60,23 +64,27 @@ const getStepClasses = (step) => {
   
   const isActive = props.currentStep === step
   const isCompleted = props.currentStep > step
+  const isClickable = step <= props.currentStep || step === props.currentStep + 1
 
+  let circleClass = ''
+  
   if (isCompleted) {
-    return {
-      circle: 'step-circle-completed'
-    }
+    circleClass = 'step-circle-completed'
   } else if (isActive) {
-    return {
-      circle: 'step-circle-active'
-    }
+    circleClass = 'step-circle-active'
   } else if (step === 2) {
-    return {
-      circle: 'step-circle-white'
-    }
+    circleClass = 'step-circle-white'
   } else {
-    return {
-      circle: 'step-circle-gray'
-    }
+    circleClass = 'step-circle-gray'
+  }
+
+  // Add disabled class if step is not clickable
+  if (!isClickable) {
+    circleClass += ' step-circle-disabled'
+  }
+
+  return {
+    circle: circleClass
   }
 }
 
@@ -99,6 +107,16 @@ const getStepIcon = (step) => {
     return '✓'
   } else {
     return step
+  }
+}
+
+// Handle step click
+const handleStepClick = (stepId) => {
+  // Only allow clicking on completed steps or the next step
+  const isClickable = stepId <= props.currentStep || stepId === props.currentStep + 1
+  
+  if (isClickable) {
+    emit('step-click', stepId)
   }
 }
 </script>
@@ -147,6 +165,13 @@ const getStepIcon = (step) => {
   top: 4.76%;
   bottom: 4.76%;
   border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.step-circle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .step-number {
@@ -187,6 +212,7 @@ const getStepIcon = (step) => {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  user-select: none;
 }
 
 .step-circle-gray {
@@ -273,6 +299,17 @@ const getStepIcon = (step) => {
   vertical-align: middle;
   color: var(--color-primary);
   left: calc(50% - 6px / 2 - 4px);
+}
+
+/* Disabled state for steps that cannot be clicked */
+.step-circle-disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.step-circle-disabled:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 .step-number {

@@ -181,6 +181,30 @@ const handleRecalculate = () => {
   currentStep.value = 1
 }
 
+// Handle step click from StepIndicator
+const handleStepClick = (stepId) => {
+  // Only allow navigation to completed steps or the next step
+  if (stepId <= currentStep.value || stepId === currentStep.value + 1) {
+    // If trying to go to step 2 from step 1, validate income form first
+    if (currentStep.value === 1 && stepId === 2) {
+      const errors = validateIncomeForm()
+      incomeErrors.value = errors
+      
+      // If there are errors, don't proceed
+      if (Object.keys(errors).length > 0) {
+        return
+      }
+    }
+    
+    // If trying to go to step 3 from step 2, calculate tax first
+    if (currentStep.value === 2 && stepId === 3) {
+      calculateTax()
+    }
+    
+    currentStep.value = stepId
+  }
+}
+
 // Clear errors when user starts typing
 const clearIncomeErrors = () => {
   incomeErrors.value = {}
@@ -215,7 +239,7 @@ const taxPlanning = computed(() => {
     <div class="flex justify-between w-full">
       <div class="w-[288px]"></div>
       <div class="w-[648px] px-[16px]">
-        <StepIndicator :current-step="currentStep" />
+        <StepIndicator :current-step="currentStep" @step-click="handleStepClick" />
         <component :is="currentComponent" v-model="currentFormData" :errors="currentStep === 1 ? incomeErrors : {}"
           @submit="handleNext" @back="handleBack" @recalculate="handleRecalculate"
           @update:rmf-investment="handleRmfInvestmentUpdate" @update:thai-esg-investment="handleThaiEsgInvestmentUpdate"
