@@ -200,7 +200,7 @@ export function useTaxCalculator() {
     // ThaiESG: 30% of total income, max 300k, separate from retirement funds
     const thaiEsgMax = Math.min(recommendations.thaiEsgMax, 300000)
     
-    // Thai ESGX: 30% of total income, max 300k, separate from retirement funds  
+    // ThaiESGX: 30% of total income, max 300k, separate from retirement funds  
     const thaiEsgxMax = Math.min(recommendations.thaiEsgxMax, 300000)
     
     // LTF: Fixed limit 300k for 2025

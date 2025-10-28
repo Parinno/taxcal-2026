@@ -85,9 +85,9 @@
 				<!-- ThaiESGX Fund (Transferred from LTF) -->
 				<div class="mb-6">
 					<label class="block text-gray-800 font-medium mb-2">
-						กองทุน ThaiESGX (Thai ESGX โอนจาก LTF)
+						กองทุน ThaiESGX (ThaiESGX โอนจาก LTF)
 					</label>
-					<p class="text-sm text-gray-500 mb-2 text-[15px]">(Thai ESGX โอนจาก LTF)</p>
+					<p class="text-sm text-gray-500 mb-2 text-[15px]">(ThaiESGX โอนจาก LTF)</p>
 					<div class="relative">
 						<input
 							type="text"
