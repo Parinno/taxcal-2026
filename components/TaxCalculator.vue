@@ -241,10 +241,11 @@ const taxPlanning = computed(() => {
 	<HeaderContent />
 	<div
 		class="sm:container xs:mx-auto xs:w-full xs:px-3 md:mx-auto md:max-w-7xl lg:max-w-[1272px] pb-[32px]"
+		data-test-id="tax-calculator__tax-calculator--container"
 	>
 		<div class="flex justify-between w-full">
 			<div class="w-[288px]"></div>
-			<div class="w-[648px] px-[16px]">
+			<div class="w-[648px] px-[16px]" data-test-id="tax-calculator__tax-calculator--main-content">
 				<StepIndicator :current-step="currentStep" @step-click="handleStepClick" />
 				<component
 					:is="currentComponent"
@@ -256,35 +257,38 @@ const taxPlanning = computed(() => {
 					@update:rmf-investment="handleRmfInvestmentUpdate"
 					@update:thai-esg-investment="handleThaiEsgInvestmentUpdate"
 					@clear-errors="clearIncomeErrors"
+					:data-test-id="`tax-calculator__tax-calculator--step-${currentStep}-form`"
 				/>
 				<!-- Navigation Buttons -->
-				<div class="line-separator"></div>
-				<div class="navigation-buttons pb-[16px] relative">
+				<div class="line-separator" data-test-id="tax-calculator__tax-calculator--separator"></div>
+				<div class="navigation-buttons pb-[16px] relative" data-test-id="tax-calculator__tax-calculator--navigation">
 					<div>
 						<button
 							class="btn-back"
 							@click="handleBack"
 							v-if="currentStep != 1"
 							:disabled="currentStep <= 1"
+							data-test-id="tax-calculator__tax-calculator--back-button"
 						>
 							ย้อนกลับ
 						</button>
 					</div>
 					<div>
-						<button v-if="currentStep < 3" class="btn-next" @click="handleNext">
+						<button v-if="currentStep < 3" class="btn-next" @click="handleNext" data-test-id="tax-calculator__tax-calculator--next-button">
 							ต่อไป
-							<i class="fas fa-arrow-right pl-4"></i>
+							<i class="fas fa-arrow-right pl-4" data-test-id="tax-calculator__tax-calculator--next-icon"></i>
 						</button>
 					</div>
 				</div>
 			</div>
-			<div class="w-[336px]">
+			<div class="w-[336px]" data-test-id="tax-calculator__tax-calculator--sidebar">
 				<TaxSummary
 					v-if="currentStep === 3"
 					:calculation-data="calculationData"
 					:tax-planning="taxPlanning"
 					:rmf-investment="rmfInvestment"
 					:thai-esg-investment="thaiEsgInvestment"
+					data-test-id="tax-calculator__tax-calculator--tax-summary"
 				/>
 			</div>
 		</div>
