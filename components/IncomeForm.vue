@@ -63,8 +63,9 @@ const handleInput = () => {
                 </div>
                 <!-- Error message with icon -->
                 <div v-if="errors.salary" class="flex items-center mt-2">
-                    <div class="w-5 h-5 bg-[#F73232] rounded-full flex items-center justify-center mr-1 flex-shrink-0">
-                        <i class="fa-solid fa-exclamation-circle text-white"></i>
+                    <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
+
                     </div>
                     <p class="text-[#F73232] text-sm">{{ errors.salary }}</p>
                 </div>
@@ -89,8 +90,8 @@ const handleInput = () => {
                 </div>
                 <!-- Error message with icon -->
                 <div v-if="errors.bonus" class="flex items-center mt-2">
-                    <div class="w-5 h-5 bg-[#F73232] rounded-full flex items-center justify-center mr-1 flex-shrink-0">
-                        <i class="fa-solid fa-exclamation-circle text-white"></i>
+                    <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
                     </div>
                     <p class="text-[#F73232] text-sm">{{ errors.bonus }}</p>
                 </div>
@@ -101,7 +102,8 @@ const handleInput = () => {
                 <label class="block text-gray-800 font-medium text-[15px] mb-1">
                     รายได้อื่นๆ (บาท)
                 </label>
-                <p class="text-sm text-gray-500 mb-2 text-[15px]">รายได้อื่นๆ นอกจากเงินเดือน และโบนัส หรือคุณสามารถกรอกรายได้รวมทั้งปีที่ตรงนี้ได้</p>
+                <p class="text-sm text-gray-500 mb-2 text-[15px]">รายได้อื่นๆ นอกจากเงินเดือน และโบนัส
+                    หรือคุณสามารถกรอกรายได้รวมทั้งปีที่ตรงนี้ได้</p>
                 <div class="relative">
                     <input type="text" v-model="formData.otherIncome" placeholder="กรอกรายได้ทั้งปี"
                         @input="handleInput" :class="[
@@ -116,8 +118,8 @@ const handleInput = () => {
                 </div>
                 <!-- Error message with icon -->
                 <div v-if="errors.otherIncome" class="flex items-center mt-2">
-                    <div class="w-5 h-5 bg-[#F73232] rounded-full flex items-center justify-center mr-1 flex-shrink-0">
-                        <i class="fa-solid fa-exclamation-circle text-white"></i>
+                    <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
                     </div>
                     <p class="text-[#F73232] text-sm">{{ errors.otherIncome }}</p>
                 </div>
@@ -142,8 +144,8 @@ const handleInput = () => {
                 </div>
                 <!-- Error message with icon -->
                 <div v-if="errors.withholdingTax" class="flex items-center mt-2">
-                    <div class="w-5 h-5 bg-[#F73232] rounded-full flex items-center justify-center mr-1 flex-shrink-0">
-                        <i class="fa-solid fa-exclamation-circle text-white"></i>
+                    <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
                     </div>
                     <p class="text-[#F73232] text-sm">{{ errors.withholdingTax }}</p>
                 </div>
