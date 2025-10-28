@@ -134,28 +134,33 @@ const currentFormData = computed(() => {
 
 // Handle next button click
 const handleNext = () => {
-	if (currentStep.value === 1) {
-		// Validate income form
-		const errors = validateIncomeForm()
-		incomeErrors.value = errors
-
-		// If there are errors, don't proceed
-		if (Object.keys(errors).length > 0) {
-			return
-		}
-
-		currentStep.value = 2
-	} else if (currentStep.value === 2) {
-		calculateTax()
-		currentStep.value = 3
-	}
+  if (currentStep.value === 1) {
+    // Validate income form
+    const errors = validateIncomeForm()
+    incomeErrors.value = errors
+    
+    // If there are errors, don't proceed
+    if (Object.keys(errors).length > 0) {
+      return
+    }
+    
+    currentStep.value = 2
+  } else if (currentStep.value === 2) {
+    calculateTax()
+    currentStep.value = 3
+  }
+  
+  // Scroll to top after step change
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 // Handle back button click
 const handleBack = () => {
-	if (currentStep.value > 1) {
-		currentStep.value--
-	}
+  if (currentStep.value > 1) {
+    currentStep.value--
+    // Scroll to top after step change
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 }
 
 // Calculate tax function using the simplified composable
@@ -178,31 +183,35 @@ const calculateTax = () => {
 
 // Handle recalculate button click
 const handleRecalculate = () => {
-	currentStep.value = 1
+  currentStep.value = 1
+  // Scroll to top after step change
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 // Handle step click from StepIndicator
 const handleStepClick = (stepId) => {
-	// Only allow navigation to completed steps or the next step
-	if (stepId <= currentStep.value || stepId === currentStep.value + 1) {
-		// If trying to go to step 2 from step 1, validate income form first
-		if (currentStep.value === 1 && stepId === 2) {
-			const errors = validateIncomeForm()
-			incomeErrors.value = errors
-
-			// If there are errors, don't proceed
-			if (Object.keys(errors).length > 0) {
-				return
-			}
-		}
-
-		// If trying to go to step 3 from step 2, calculate tax first
-		if (currentStep.value === 2 && stepId === 3) {
-			calculateTax()
-		}
-
-		currentStep.value = stepId
-	}
+  // Only allow navigation to completed steps or the next step
+  if (stepId <= currentStep.value || stepId === currentStep.value + 1) {
+    // If trying to go to step 2 from step 1, validate income form first
+    if (currentStep.value === 1 && stepId === 2) {
+      const errors = validateIncomeForm()
+      incomeErrors.value = errors
+      
+      // If there are errors, don't proceed
+      if (Object.keys(errors).length > 0) {
+        return
+      }
+    }
+    
+    // If trying to go to step 3 from step 2, calculate tax first
+    if (currentStep.value === 2 && stepId === 3) {
+      calculateTax()
+    }
+    
+    currentStep.value = stepId
+    // Scroll to top after step change
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 }
 
 // Clear errors when user starts typing
