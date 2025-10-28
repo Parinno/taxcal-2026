@@ -2,14 +2,19 @@
   <div class="space-y-6">
     <!-- Tax Year Summary Card -->
     <div class="bg-white border border-gray-200 rounded-lg p-6">
-      <h3 class="text-xl font-bold text-gray-800 mb-6">สรุปปีภาษี 2568</h3>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">สรุปปีภาษี 2568</h3>
+      <h1 class="text-xl font-bold text-gray-800 mb-6">(ก่อนวางแผน RMF, ThaiESG)</h1>
       
       <!-- Tax Payable -->
       <div class="text-left mb-6">
-        <div class="text-lg text-gray-700 mb-2">ภาษีที่ต้องจ่าย</div>
-        <div class="text-3xl font-bold">
-          {{ formatCurrency(calculationData.netTaxPayable) }}
-          <span class="text-lg text-gray-500">THB</span>
+        <div class="text-lg text-gray-800 mb-2">
+          {{ calculationData.netTaxPayable >= 0 ? 'ภาษีที่ต้องจ่าย' : 'ภาษีที่ได้รับคืน' }}
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="text-3xl font-bold" :class="calculationData.netTaxPayable >= 0 ? 'text-red-600' : 'text-green-600'">
+            {{ formatCurrency(Math.abs(calculationData.netTaxPayable)) }}
+          </div>
+          <div class="text-lg text-gray-500">THB</div>
         </div>
       </div>
 
@@ -89,7 +94,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { formatCurrencyTHB } from '~/utils/format'
+import { formatCurrencyTHB, formatCurrencyTHBWithDecimals } from '~/utils/format'
 
 const props = defineProps({
   calculationData: {

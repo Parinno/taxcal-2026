@@ -146,12 +146,17 @@ const handleNext = () => {
     calculateTax()
     currentStep.value = 3
   }
+  
+  // Scroll to top after step change
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 // Handle back button click
 const handleBack = () => {
   if (currentStep.value > 1) {
     currentStep.value--
+    // Scroll to top after step change
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
 
@@ -179,6 +184,8 @@ const calculateTax = () => {
 // Handle recalculate button click
 const handleRecalculate = () => {
   currentStep.value = 1
+  // Scroll to top after step change
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 // Handle step click from StepIndicator
@@ -202,6 +209,8 @@ const handleStepClick = (stepId) => {
     }
     
     currentStep.value = stepId
+    // Scroll to top after step change
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
 

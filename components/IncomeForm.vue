@@ -56,7 +56,7 @@ const handleInput = () => {
                             errors.salary ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
                         ]" />
                     <!-- Clear button -->
-                    <button v-if="formData.salary" @click="formData.salary = ''" type="button"
+                    <button v-if="formData.salary" @click="formData.salary = ''" type="button" tabindex="-1"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>
                     </button>
@@ -82,7 +82,7 @@ const handleInput = () => {
                         errors.bonus ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
                     ]" />
                     <!-- Clear button -->
-                    <button v-if="formData.bonus" @click="formData.bonus = ''" type="button"
+                    <button v-if="formData.bonus" @click="formData.bonus = ''" type="button" tabindex="-1"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>
                     </button>
@@ -109,7 +109,7 @@ const handleInput = () => {
                             errors.otherIncome ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
                         ]" />
                     <!-- Clear button -->
-                    <button v-if="formData.otherIncome" @click="formData.otherIncome = ''" type="button"
+                    <button v-if="formData.otherIncome" @click="formData.otherIncome = ''" type="button" tabindex="-1"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>
                     </button>
@@ -135,7 +135,7 @@ const handleInput = () => {
                             errors.withholdingTax ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
                         ]" />
                     <!-- Clear button -->
-                    <button v-if="formData.withholdingTax" @click="formData.withholdingTax = ''" type="button"
+                    <button v-if="formData.withholdingTax" @click="formData.withholdingTax = ''" type="button" tabindex="-1"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>
                     </button>

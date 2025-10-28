@@ -15,6 +15,11 @@
           <div class="relative">
             <input type="text" v-model="formData.personalDeduction" placeholder="กรอกจำนวนเงิน"
               class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
+            <!-- Clear button -->
+            <button v-if="formData.personalDeduction" @click="formData.personalDeduction = ''" type="button" tabindex="-1"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
+              <i class="fa-solid fa-xmark text-white"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -33,6 +38,11 @@
           <div class="relative">
             <input type="text" v-model="formData.socialSecurity" placeholder="กรอกจำนวนเงิน"
               class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
+            <!-- Clear button -->
+            <button v-if="formData.socialSecurity" @click="formData.socialSecurity = ''" type="button" tabindex="-1"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
+              <i class="fa-solid fa-xmark text-white"></i>
+            </button>
           </div>
           <div class="flex items-center mt-2">
             <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
@@ -52,6 +62,11 @@
           <div class="relative">
             <input type="text" v-model="formData.providentFund" placeholder="กรอกจำนวนเงิน"
               class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
+            <!-- Clear button -->
+            <button v-if="formData.providentFund" @click="formData.providentFund = ''" type="button" tabindex="-1"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
+              <i class="fa-solid fa-xmark text-white"></i>
+            </button>
           </div>
           <div class="flex items-center mt-2">
             <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
@@ -71,6 +86,11 @@
           <div class="relative">
             <input type="text" v-model="formData.thaiESGX" placeholder="กรอกจำนวนเงิน"
               class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
+            <!-- Clear button -->
+            <button v-if="formData.thaiESGX" @click="formData.thaiESGX = ''" type="button" tabindex="-1"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
+              <i class="fa-solid fa-xmark text-white"></i>
+            </button>
           </div>
         </div>
 
@@ -83,6 +103,11 @@
           <div class="relative">
             <input type="text" v-model="formData.thaiESGXTransferred" placeholder="กรอกจำนวนเงิน"
               class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
+            <!-- Clear button -->
+            <button v-if="formData.thaiESGXTransferred" @click="formData.thaiESGXTransferred = ''" type="button" tabindex="-1"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
+              <i class="fa-solid fa-xmark text-white"></i>
+            </button>
           </div>
         </div>
 
@@ -98,6 +123,11 @@
               placeholder="ระบุจำนวนเงิน"
               class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none font-medium text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:font-medium placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]"
             />
+            <!-- Clear button -->
+            <button v-if="formData.otherDeduction" @click="formData.otherDeduction = ''" type="button" tabindex="-1"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
+              <i class="fa-solid fa-xmark text-white"></i>
+            </button>
           </div>
           <div class="flex items-center mt-2">
             <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">

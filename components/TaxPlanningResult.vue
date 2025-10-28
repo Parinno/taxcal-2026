@@ -26,6 +26,14 @@
           </div>
         </div> -->
 
+        <!-- Tax Planning Header -->
+        <div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">วางแผนลดหย่อนภาษี</h3>
+          <!-- <p class="text-sm text-gray-600 mb-6">
+            แสดงผลเปรียบเทียบภาษี 'ก่อน-หลัง' การซื้อกองทุนเพื่อประหยัดภาษีได้สูงสุด
+          </p> -->
+        </div>
+
         <!-- Tax Summary Card -->
         <div class="bg-gray-50 rounded-lg p-6 mb-8">
           <div class="text-left mb-4">
@@ -39,7 +47,7 @@
               <div class="text-sm text-gray-600">THB</div>
             </div>
             <div class="text-sm text-gray-600">
-              วางแผนภาษีเพื่อเงินคืนสูงสุด {{ formatCurrency(maxTaxSavings) }} THB
+              วางแผนเพื่อประหยัดภาษีเพิ่มขึ้นสูงสุด {{ formatCurrency(maxTaxSavings) }} THB
             </div>
           </div>
           
@@ -53,14 +61,6 @@
               <div class="text-sm font-medium text-gray-800">{{ formatCurrency(calculationData.taxableIncome) }}</div>
             </div>
           </div> -->
-        </div>
-
-        <!-- Tax Planning Header -->
-        <div>
-          <h3 class="text-2xl font-bold text-gray-800 mb-2">วางแผนลดหย่อนภาษี</h3>
-          <!-- <p class="text-sm text-gray-600 mb-6">
-            แสดงผลเปรียบเทียบภาษี 'ก่อน-หลัง' การซื้อกองทุนเพื่อประหยัดภาษีได้สูงสุด
-          </p> -->
         </div>
 
         <!-- Tax Comparison Section -->
