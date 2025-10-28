@@ -39,30 +39,32 @@ const handleInput = () => {
 <template>
     <div class="max-w-2xl mx-auto">
         <!-- Section Title -->
-        <h2 class="font-bold text-color-primary mb-[16px] text-[20px]">รายได้ทั้งหมดของคุณ</h2>
+        <h2 class="font-bold text-color-primary mb-[16px] text-[20px]" data-test-id="tax-calculator__income-form--title">รายได้ทั้งหมดของคุณ</h2>
 
         <!-- Form Fields -->
         <div class="space-y-6 mb-[20px]">
             <!-- Salary Input -->
-            <div>
-                <label class="block text-gray-800 font-medium text-[15px] mb-1">
+            <div data-test-id="tax-calculator__income-form--salary-container">
+                <label class="block text-gray-800 font-medium text-[15px] mb-1" data-test-id="tax-calculator__income-form--salary-label">
                     เงินเดือน (บาท)
                 </label>
-                <p class="text-sm text-gray-500 mb-2 text-[15px]">ระบบจะคำนวณคูณ 12 เดือน เมื่อคำนวณภาษี</p>
+                <p class="text-sm text-gray-500 mb-2 text-[15px]" data-test-id="tax-calculator__income-form--salary-description">ระบบจะคำนวณคูณ 12 เดือน เมื่อคำนวณภาษี</p>
                 <div class="relative">
                     <input type="text" v-model="formData.salary" placeholder="กรอกจำนวนเงิน" @input="handleInput"
+                        data-test-id="tax-calculator__income-form--salary-input"
                         :class="[
                             'form-input',
                             errors.salary ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
                     <button v-if="formData.salary" @click="formData.salary = ''" type="button"
+                        data-test-id="tax-calculator__income-form--salary-clear"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>
                     </button>
                 </div>
                 <!-- Error message with icon -->
-                <div v-if="errors.salary" class="flex items-center mt-2">
+                <div v-if="errors.salary" class="flex items-center mt-2" data-test-id="tax-calculator__income-form--salary-error">
                     <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
                         <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
 
@@ -72,24 +74,27 @@ const handleInput = () => {
             </div>
 
             <!-- Bonus Input -->
-            <div>
-                <label class="block text-gray-800 font-medium text-[15px] mb-1">
+            <div data-test-id="tax-calculator__income-form--bonus-container">
+                <label class="block text-gray-800 font-medium text-[15px] mb-1" data-test-id="tax-calculator__income-form--bonus-label">
                     โบนัส (บาท)
                 </label>
-                <p class="text-sm text-gray-500 mb-2 text-[15px]">รวมโบนัสทั้งหมดที่ได้รับในปี</p>
+                <p class="text-sm text-gray-500 mb-2 text-[15px]" data-test-id="tax-calculator__income-form--bonus-description">รวมโบนัสทั้งหมดที่ได้รับในปี</p>
                 <div class="relative">
-                    <input type="text" v-model="formData.bonus" placeholder="กรอกจำนวนเงิน" @input="handleInput" :class="[
+                    <input type="text" v-model="formData.bonus" placeholder="กรอกจำนวนเงิน" @input="handleInput" 
+                        data-test-id="tax-calculator__income-form--bonus-input"
+                        :class="[
                         'form-input',
                         errors.bonus ? 'form-input--error' : ''
                     ]" />
                     <!-- Clear button -->
                     <button v-if="formData.bonus" @click="formData.bonus = ''" type="button"
+                        data-test-id="tax-calculator__income-form--bonus-clear"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>
                     </button>
                 </div>
                 <!-- Error message with icon -->
-                <div v-if="errors.bonus" class="flex items-center mt-2">
+                <div v-if="errors.bonus" class="flex items-center mt-2" data-test-id="tax-calculator__income-form--bonus-error">
                     <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
                         <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
                     </div>
@@ -98,26 +103,29 @@ const handleInput = () => {
             </div>
 
             <!-- Other Income Input -->
-            <div>
-                <label class="block text-gray-800 font-medium text-[15px] mb-1">
+            <div data-test-id="tax-calculator__income-form--other-income-container">
+                <label class="block text-gray-800 font-medium text-[15px] mb-1" data-test-id="tax-calculator__income-form--other-income-label">
                     รายได้อื่นๆ (บาท)
                 </label>
-                <p class="text-sm text-gray-500 mb-2 text-[15px]">รายได้อื่นๆ นอกจากเงินเดือน และโบนัส
+                <p class="text-sm text-gray-500 mb-2 text-[15px]" data-test-id="tax-calculator__income-form--other-income-description">รายได้อื่นๆ นอกจากเงินเดือน และโบนัส
                     หรือคุณสามารถกรอกรายได้รวมทั้งปีที่ตรงนี้ได้</p>
                 <div class="relative">
                     <input type="text" v-model="formData.otherIncome" placeholder="กรอกรายได้ทั้งปี"
-                        @input="handleInput" :class="[
+                        @input="handleInput" 
+                        data-test-id="tax-calculator__income-form--other-income-input"
+                        :class="[
                             'form-input',
                             errors.otherIncome ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
                     <button v-if="formData.otherIncome" @click="formData.otherIncome = ''" type="button"
+                        data-test-id="tax-calculator__income-form--other-income-clear"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>
                     </button>
                 </div>
                 <!-- Error message with icon -->
-                <div v-if="errors.otherIncome" class="flex items-center mt-2">
+                <div v-if="errors.otherIncome" class="flex items-center mt-2" data-test-id="tax-calculator__income-form--other-income-error">
                     <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
                         <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
                     </div>
@@ -126,24 +134,27 @@ const handleInput = () => {
             </div>
 
             <!-- Withholding Tax Input -->
-            <div>
-                <label class="block text-gray-800 font-medium text-[15px] mb-1">
+            <div data-test-id="tax-calculator__income-form--withholding-tax-container">
+                <label class="block text-gray-800 font-medium text-[15px] mb-1" data-test-id="tax-calculator__income-form--withholding-tax-label">
                     ภาษีหัก ณ ที่จ่าย (บาท)
                 </label>
                 <div class="relative">
                     <input type="text" v-model="formData.withholdingTax" placeholder="กรอกภาษีทั้งปี"
-                        @input="handleInput" :class="[
+                        @input="handleInput" 
+                        data-test-id="tax-calculator__income-form--withholding-tax-input"
+                        :class="[
                             'form-input',
                             errors.withholdingTax ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
                     <button v-if="formData.withholdingTax" @click="formData.withholdingTax = ''" type="button"
+                        data-test-id="tax-calculator__income-form--withholding-tax-clear"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>
                     </button>
                 </div>
                 <!-- Error message with icon -->
-                <div v-if="errors.withholdingTax" class="flex items-center mt-2">
+                <div v-if="errors.withholdingTax" class="flex items-center mt-2" data-test-id="tax-calculator__income-form--withholding-tax-error">
                     <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
                         <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
                     </div>

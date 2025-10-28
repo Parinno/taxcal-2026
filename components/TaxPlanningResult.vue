@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-4xl mx-auto" data-test-id="tax-calculator__tax-planning-result--container">
     <!-- Main Content -->
     <div class="space-y-8">
       <!-- Tax Summary Section -->
@@ -27,19 +27,20 @@
         </div> -->
 
       <!-- Tax Summary Card -->
-      <div class="bg-gray-50 rounded-lg p-6 mb-8">
+      <div class="bg-gray-50 rounded-lg p-6 mb-8" data-test-id="tax-calculator__tax-planning-result--tax-summary-card">
         <div class="text-left mb-4">
-          <div class="text-lg font-bold text-gray-800 mb-2">
+          <div class="text-lg font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-planning-result--tax-summary-title">
             {{ (beforeTaxAmount - taxSavings) >= 0 ? 'ภาษีที่ต้องจ่ายเพิ่ม' : 'ภาษีที่ได้รับคืน' }}
           </div>
           <div class="flex items-center gap-2">
             <div class="text-4xl font-bold mb-2"
-              :class="(beforeTaxAmount - taxSavings) >= 0 ? 'text-red-600' : 'text-green-600'">
+              :class="(beforeTaxAmount - taxSavings) >= 0 ? 'text-red-600' : 'text-green-600'"
+              data-test-id="tax-calculator__tax-planning-result--tax-amount">
               {{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount - taxSavings)) }}
             </div>
-            <div class="text-sm text-gray-600">THB</div>
+            <div class="text-sm text-gray-600" data-test-id="tax-calculator__tax-planning-result--tax-currency">THB</div>
           </div>
-          <div class="text-sm text-gray-600">
+          <div class="text-sm text-gray-600" data-test-id="tax-calculator__tax-planning-result--max-tax-savings">
             วางแผนภาษีเพื่อเงินคืนสูงสุด {{ formatCurrency(maxTaxSavings) }} THB
           </div>
         </div>
@@ -57,8 +58,8 @@
       </div>
 
       <!-- Tax Planning Header -->
-      <div>
-        <h3 class="text-2xl font-bold text-gray-800 mb-2">วางแผนลดหย่อนภาษี</h3>
+      <div data-test-id="tax-calculator__tax-planning-result--planning-header">
+        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-planning-result--planning-title">วางแผนลดหย่อนภาษี</h3>
         <!-- <p class="text-sm text-gray-600 mb-6">
             แสดงผลเปรียบเทียบภาษี 'ก่อน-หลัง' การซื้อกองทุนเพื่อประหยัดภาษีได้สูงสุด
           </p> -->
@@ -92,17 +93,18 @@
         </div> -->
 
       <!-- Investment Planning Section -->
-      <div class="space-y-6">
+      <div class="space-y-6" data-test-id="tax-calculator__tax-planning-result--investment-planning">
         <!-- RMF Investment -->
-        <div class="space-y-3">
+        <div class="space-y-3" data-test-id="tax-calculator__tax-planning-result--rmf-investment">
           <div class="flex items-center gap-3">
-            <div class="w-4 h-4 bg-purple-500 rounded-full"></div>
+            <div class="w-4 h-4 bg-purple-500 rounded-full" data-test-id="tax-calculator__tax-planning-result--rmf-indicator"></div>
             <div>
-              <div class="font-medium text-gray-800">RMF</div>
-              <div class="text-sm text-gray-500">Description</div>
+              <div class="font-medium text-gray-800" data-test-id="tax-calculator__tax-planning-result--rmf-title">RMF</div>
+              <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--rmf-description">Description</div>
             </div>
             <div class="ml-auto">
               <input type="text" v-model="rmfInvestmentFormatted" @input="updateRmfInvestment"
+                data-test-id="tax-calculator__tax-planning-result--rmf-input"
                 class="w-32 px-3 py-2 bg-gray-100 rounded-lg text-right font-medium" />
             </div>
           </div>
@@ -110,10 +112,12 @@
           <!-- RMF Slider -->
           <div class="relative">
             <input type="range" v-model="rmfSliderValue" @input="updateRmfFromSlider" min="0" :max="rmfMaxValue"
-              step="1000" class="w-full h-2 bg-gray-300 appearance-none cursor-pointer slider" />
+              step="1000" 
+              data-test-id="tax-calculator__tax-planning-result--rmf-slider"
+              class="w-full h-2 bg-gray-300 appearance-none cursor-pointer slider" />
           </div>
 
-          <div class="flex items-center gap-2 text-sm text-gray-600">
+          <div class="flex items-center gap-2 text-sm text-gray-600" data-test-id="tax-calculator__tax-planning-result--rmf-info">
             <div class="w-4 h-4 rounded-full flex items-center justify-center">
               <i class="fa fa-info-circle" style="color: #01172BA6;"></i> 
             </div>
@@ -122,15 +126,16 @@
         </div>
 
         <!-- ThaiESG Investment -->
-        <div class="space-y-3">
+        <div class="space-y-3" data-test-id="tax-calculator__tax-planning-result--thai-esg-investment">
           <div class="flex items-center gap-3">
-            <div class="w-4 h-4 bg-green-500 rounded-full"></div>
+            <div class="w-4 h-4 bg-green-500 rounded-full" data-test-id="tax-calculator__tax-planning-result--thai-esg-indicator"></div>
             <div>
-              <div class="font-medium text-gray-800">ThaiESG</div>
-              <div class="text-sm text-gray-500">Description</div>
+              <div class="font-medium text-gray-800" data-test-id="tax-calculator__tax-planning-result--thai-esg-title">ThaiESG</div>
+              <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--thai-esg-description">Description</div>
             </div>
             <div class="ml-auto">
               <input type="text" v-model="thaiEsgInvestmentFormatted" @input="updateThaiEsgInvestment"
+                data-test-id="tax-calculator__tax-planning-result--thai-esg-input"
                 class="w-32 px-3 py-2 bg-gray-100 rounded-lg text-right font-medium" />
             </div>
           </div>
@@ -138,10 +143,12 @@
           <!-- ThaiESG Slider -->
           <div class="relative">
             <input type="range" v-model="thaiEsgSliderValue" @input="updateThaiEsgFromSlider" min="0"
-              :max="thaiEsgMaxValue" step="1000" class="w-full h-2 bg-gray-200 appearance-none cursor-pointer slider" />
+              :max="thaiEsgMaxValue" step="1000" 
+              data-test-id="tax-calculator__tax-planning-result--thai-esg-slider"
+              class="w-full h-2 bg-gray-200 appearance-none cursor-pointer slider" />
           </div>
 
-          <div class="flex items-center gap-2 text-sm text-gray-600">
+          <div class="flex items-center gap-2 text-sm text-gray-600" data-test-id="tax-calculator__tax-planning-result--thai-esg-info">
             <div class="w-4 h-4 rounded-full flex items-center justify-center">
               <i class="fa fa-info-circle" style="color: #01172BA6;"></i>
             </div>

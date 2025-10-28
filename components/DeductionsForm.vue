@@ -2,19 +2,20 @@
 	<div class="max-w-2xl mx-auto">
 		<!-- Form Fields -->
 		<!-- Basic Deductions Section -->
-		<div>
-			<h2 class="font-bold text-color-primary mb-[16px] text-[20px]">ค่าลดหย่อนพื้นฐาน</h2>
+		<div data-test-id="tax-calculator__deductions-form--basic-deductions-section">
+			<h2 class="font-bold text-color-primary mb-[16px] text-[20px]" data-test-id="tax-calculator__deductions-form--basic-deductions-title">ค่าลดหย่อนพื้นฐาน</h2>
 
 			<!-- Personal Deduction -->
 			<div class="space-y-4 mb-[20px]">
-				<div>
-					<label class="block text-gray-800 font-medium text-[15px]"> ลดหย่อนส่วนบุคคล </label>
-					<p class="text-sm text-gray-500 mb-2 text-[15px]">Description</p>
+				<div data-test-id="tax-calculator__deductions-form--personal-deduction-container">
+					<label class="block text-gray-800 font-medium text-[15px]" data-test-id="tax-calculator__deductions-form--personal-deduction-label"> ลดหย่อนส่วนบุคคล </label>
+					<p class="text-sm text-gray-500 mb-2 text-[15px]" data-test-id="tax-calculator__deductions-form--personal-deduction-description">Description</p>
 					<div class="relative">
 						<input
 							type="text"
 							v-model="formData.personalDeduction"
 							placeholder="กรอกจำนวนเงิน"
+							data-test-id="tax-calculator__deductions-form--personal-deduction-input"
 							:class="['form-input']"
 						/>
 					</div>
@@ -23,22 +24,23 @@
 		</div>
 
 		<!-- Savings/Investment Deductions Section -->
-		<div class="space-y-4 pt-[16px] mb-[20px]">
-			<h2 class="font-bold text-color-primary mb-[16px] text-[20px]">ค่าลดหย่อนการออม/การลงทุน</h2>
+		<div class="space-y-4 pt-[16px] mb-[20px]" data-test-id="tax-calculator__deductions-form--savings-investment-section">
+			<h2 class="font-bold text-color-primary mb-[16px] text-[20px]" data-test-id="tax-calculator__deductions-form--savings-investment-title">ค่าลดหย่อนการออม/การลงทุน</h2>
 
 			<div class="space-y-6 mb-[20px]">
 				<!-- Social Security Fund -->
-				<div class="mb-6">
-					<label class="block text-gray-800 font-medium text-[15px]"> เงินประกันสังคม </label>
+				<div class="mb-6" data-test-id="tax-calculator__deductions-form--social-security-container">
+					<label class="block text-gray-800 font-medium text-[15px]" data-test-id="tax-calculator__deductions-form--social-security-label"> เงินประกันสังคม </label>
 					<div class="relative">
 						<input
 							type="text"
 							v-model="formData.socialSecurity"
 							placeholder="กรอกจำนวนเงิน"
+							data-test-id="tax-calculator__deductions-form--social-security-input"
 							:class="['form-input']"
 						/>
 					</div>
-					<div class="flex items-center mt-2">
+					<div class="flex items-center mt-2" data-test-id="tax-calculator__deductions-form--social-security-info">
 						<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
 							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
 						</div>
@@ -47,8 +49,8 @@
 				</div>
 
 				<!-- Provident Fund (PVD) -->
-				<div>
-					<label class="block text-gray-800 font-medium text-[15px]">
+				<div data-test-id="tax-calculator__deductions-form--provident-fund-container">
+					<label class="block text-gray-800 font-medium text-[15px]" data-test-id="tax-calculator__deductions-form--provident-fund-label">
 						ค่าลดหย่อนกองทุนสำรองเลี้ยงชีพ (PVD)
 					</label>
 					<div class="relative">
@@ -56,10 +58,11 @@
 							type="text"
 							v-model="formData.providentFund"
 							placeholder="กรอกจำนวนเงิน"
+							data-test-id="tax-calculator__deductions-form--provident-fund-input"
 							:class="['form-input']"
 						/>
 					</div>
-					<div class="flex items-center mt-2">
+					<div class="flex items-center mt-2" data-test-id="tax-calculator__deductions-form--provident-fund-info">
 						<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
 							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
 						</div>
@@ -70,46 +73,49 @@
 				</div>
 
 				<!-- ThaiESGX Fund -->
-				<div>
-					<label class="block text-gray-800 font-medium text-[15px]"> กองทุน ThaiESGX </label>
+				<div data-test-id="tax-calculator__deductions-form--thai-esgx-container">
+					<label class="block text-gray-800 font-medium text-[15px]" data-test-id="tax-calculator__deductions-form--thai-esgx-label"> กองทุน ThaiESGX </label>
 					<div class="relative">
 						<input
 							type="text"
 							v-model="formData.thaiESGX"
 							placeholder="กรอกจำนวนเงิน"
+							data-test-id="tax-calculator__deductions-form--thai-esgx-input"
 							:class="['form-input']"
 						/>
 					</div>
 				</div>
 
 				<!-- ThaiESGX Fund (Transferred from LTF) -->
-				<div class="mb-6">
-					<label class="block text-gray-800 font-medium mb-2">
+				<div class="mb-6" data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-container">
+					<label class="block text-gray-800 font-medium mb-2" data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-label">
 						กองทุน ThaiESGX (Thai ESGX โอนจาก LTF)
 					</label>
-					<p class="text-sm text-gray-500 mb-2 text-[15px]">(Thai ESGX โอนจาก LTF)</p>
+					<p class="text-sm text-gray-500 mb-2 text-[15px]" data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-description">(Thai ESGX โอนจาก LTF)</p>
 					<div class="relative">
 						<input
 							type="text"
 							v-model="formData.thaiESGXTransferred"
 							placeholder="กรอกจำนวนเงิน"
+							data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-input"
 							:class="['form-input']"
 						/>
 					</div>
 				</div>
 
 				<!-- Other Deductions -->
-				<div>
-					<label class="block text-gray-800 font-medium mb-2"> ค่าลดหย่อนอื่นๆ </label>
+				<div data-test-id="tax-calculator__deductions-form--other-deduction-container">
+					<label class="block text-gray-800 font-medium mb-2" data-test-id="tax-calculator__deductions-form--other-deduction-label"> ค่าลดหย่อนอื่นๆ </label>
 					<div class="relative">
 						<input
 							type="text"
 							v-model="formData.otherDeduction"
 							placeholder="ระบุจำนวนเงิน"
+							data-test-id="tax-calculator__deductions-form--other-deduction-input"
 							:class="['form-input']"
 						/>
 					</div>
-					<div class="flex items-center mt-2">
+					<div class="flex items-center mt-2" data-test-id="tax-calculator__deductions-form--other-deduction-info">
 						<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
 							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
 						</div>
