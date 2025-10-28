@@ -1,20 +1,20 @@
 <template>
-    <div class="sm:container xs:mx-auto xs:w-full xs:px-3 md:mx-auto md:max-w-7xl lg:max-w-[1272px] pb-[32px]">
+    <div class="sm:container xs:mx-auto xs:w-full xs:px-3 md:mx-auto md:max-w-7xl lg:max-w-[1272px] pb-[32px]" data-test-id="tax-calculator__header-content--container">
         <div class="flex justify-between w-full">
             <div class="w-[288px]"></div>
-            <div class="w-[648px] px-[16px]">
-                <div class="py-[32px]">
-                    <a href="/" class="pointer-events-auto text-colors-background-navy-100 font-bold py-[4px]">
+            <div class="w-[648px] px-[16px]" data-test-id="tax-calculator__header-content--main-content">
+                <div class="py-[32px]" data-test-id="tax-calculator__header-content--back-section">
+                    <a href="/" class="pointer-events-auto text-colors-background-navy-100 font-bold py-[4px]" data-test-id="tax-calculator__header-content--back-link">
                         <i class="fas fa-chevron-left size-[20px]"></i>
-                        <span class="text-[15px]">กลับหน้าหลัก
+                        <span class="text-[15px]" data-test-id="tax-calculator__header-content--back-text">กลับหน้าหลัก
                         </span>
                     </a>
                 </div>
-                <div>
-                    <h1 class="text-[34px] font-bold text-color-primaryGray">
+                <div data-test-id="tax-calculator__header-content--title-section">
+                    <h1 class="text-[34px] font-bold text-color-primaryGray" data-test-id="tax-calculator__header-content--main-title">
                         คำนวณภาษีและวางแผนลดหย่อนภาษี
                     </h1>
-                    <p class="text-[17px] font-bold text-color-secondary">
+                    <p class="text-[17px] font-bold text-color-secondary" data-test-id="tax-calculator__header-content--subtitle">
                         คำนวณภาษีเงินได้สำหรับบุคคลธรรมดาได้เงินคืนภาษีสูงสุด
                     </p>
                 </div>

@@ -1,10 +1,11 @@
 <template>
-  <div class="progress-container">
+  <div class="progress-container" data-test-id="tax-calculator__step-indicator--container">
     <div 
       v-for="(step, index) in steps" 
       :key="step.id"
       class="step-frame"
       :class="{ 'step-frame-last': index === steps.length - 1 }"
+      :data-test-id="`tax-calculator__step-indicator--step-${step.id}`"
     >
       <div class="step-row">
         <div class="step-status">
@@ -12,10 +13,12 @@
             class="step-circle"
             :class="getStepClasses(step.id).circle"
             @click="handleStepClick(step.id)"
+            :data-test-id="`tax-calculator__step-indicator--step-${step.id}-circle`"
           >
             <span 
               class="step-number"
               :class="getStepClasses(step.id).number"
+              :data-test-id="`tax-calculator__step-indicator--step-${step.id}-number`"
             >
               {{ getStepIcon(step.id) }}
             </span>
@@ -25,12 +28,13 @@
           v-if="index < steps.length - 1"
           class="step-line" 
           :class="getStepLineClasses(step.id)"
+          :data-test-id="`tax-calculator__step-indicator--step-${step.id}-line`"
         ></div>
       </div>
       <div class="step-content">
         <div class="step-text">
-          <div class="step-caption text-color-information">{{ step.caption }}</div>
-          <div class="step-detail text-color-primary">{{ step.title }}</div>
+          <div class="step-caption text-color-information" :data-test-id="`tax-calculator__step-indicator--step-${step.id}-caption`">{{ step.caption }}</div>
+          <div class="step-detail text-color-primary" :data-test-id="`tax-calculator__step-indicator--step-${step.id}-title`">{{ step.title }}</div>
         </div>
       </div>
     </div>

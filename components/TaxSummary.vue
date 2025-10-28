@@ -1,85 +1,92 @@
 <template>
-  <div class="space-y-6">
+  <div class="space-y-6" data-test-id="tax-calculator__tax-summary--container">
     <!-- Tax Year Summary Card -->
-    <div class="bg-white border border-gray-200 rounded-lg p-6">
-      <h3 class="text-xl font-bold text-gray-800 mb-6">สรุปปีภาษี 2568</h3>
+    <div class="bg-white border border-gray-200 rounded-lg p-6" data-test-id="tax-calculator__tax-summary--tax-year-card">
+      <h3 class="text-xl font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-summary--tax-year-title">สรุปปีภาษี 2568</h3>
+      <h1 class="text-xl text-gray-800 mb-6">(ก่อนวางแผน RMF, ThaiESG)</h1>
       
       <!-- Tax Payable -->
-      <div class="text-left mb-6">
-        <div class="text-lg text-gray-700 mb-2">ภาษีที่ต้องจ่าย</div>
-        <div class="text-3xl font-bold">
-          {{ formatCurrency(calculationData.netTaxPayable) }}
-          <span class="text-lg text-gray-500">THB</span>
+      <div class="text-left mb-6" data-test-id="tax-calculator__tax-summary--tax-payable-section">
+        <div class="text-lg text-gray-800 mb-2" data-test-id="tax-calculator__tax-summary--tax-payable-label">
+          {{ calculationData.netTaxPayable >= 0 ? 'ภาษีที่ต้องจ่าย' : 'ภาษีที่ได้รับคืน' }}
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="text-3xl font-bold" :class="calculationData.netTaxPayable >= 0 ? 'text-red-600' : 'text-green-600'"
+            data-test-id="tax-calculator__tax-summary--tax-payable-amount">
+            {{ formatCurrency(Math.abs(calculationData.netTaxPayable)) }}
+          </div>
+          <div class="text-lg text-gray-500" data-test-id="tax-calculator__tax-summary--tax-payable-currency">THB</div>
         </div>
       </div>
 
       <!-- Detailed Breakdown -->
-      <div class="space-y-3 border-t border-gray-300 pt-4">
-        <div class="flex justify-between">
-          <span class="text-gray-600">เงินได้</span>
-          <span class="font-semibold">{{ formatCurrency(calculationData.totalIncome) }}</span>
+      <div class="space-y-3 border-t border-gray-300 pt-4" data-test-id="tax-calculator__tax-summary--breakdown-section">
+        <div class="flex justify-between" data-test-id="tax-calculator__tax-summary--total-income-row">
+          <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--total-income-label">เงินได้</span>
+          <span class="font-semibold" data-test-id="tax-calculator__tax-summary--total-income-value">{{ formatCurrency(calculationData.totalIncome) }}</span>
         </div>
-        <div class="flex justify-between">
-          <span class="text-gray-600">หักค่าใช้จ่าย</span>
-          <span class="font-semibold">{{ formatCurrency(calculationData.totalExpenses) }}</span>
+        <div class="flex justify-between" data-test-id="tax-calculator__tax-summary--total-expenses-row">
+          <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--total-expenses-label">หักค่าใช้จ่าย</span>
+          <span class="font-semibold" data-test-id="tax-calculator__tax-summary--total-expenses-value">{{ formatCurrency(calculationData.totalExpenses) }}</span>
         </div>
-        <div class="flex justify-between">
-          <span class="text-gray-600">ค่าลดหย่อน</span>
-          <span class="font-semibold">{{ formatCurrency(calculationData.totalDeductions) }}</span>
+        <div class="flex justify-between" data-test-id="tax-calculator__tax-summary--total-deductions-row">
+          <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--total-deductions-label">ค่าลดหย่อน</span>
+          <span class="font-semibold" data-test-id="tax-calculator__tax-summary--total-deductions-value">{{ formatCurrency(calculationData.totalDeductions) }}</span>
         </div>
-        <span class="text-xs text-gray-500">(ไม่รวม RMF, ThaiESG)</span>
-        <div class="flex justify-between border-t border-gray-300 pt-4">
-          <span class="text-gray-600">เงินได้สุทธิ</span>
-          <span class="font-semibold">{{ formatCurrency(calculationData.taxableIncome) }}</span>
+        <span class="text-xs text-gray-500" data-test-id="tax-calculator__tax-summary--deductions-note">(ไม่รวม RMF, ThaiESG)</span>
+        <div class="flex justify-between border-t border-gray-300 pt-4" data-test-id="tax-calculator__tax-summary--taxable-income-row">
+          <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--taxable-income-label">เงินได้สุทธิ</span>
+          <span class="font-semibold" data-test-id="tax-calculator__tax-summary--taxable-income-value">{{ formatCurrency(calculationData.taxableIncome) }}</span>
         </div>
-        <div class="flex justify-between">
-          <span class="text-gray-600">ค่าภาษี</span>
-          <span class="font-semibold">{{ formatCurrency(calculationData.taxAmount) }}</span>
+        <div class="flex justify-between" data-test-id="tax-calculator__tax-summary--tax-amount-row">
+          <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--tax-amount-label">ค่าภาษี</span>
+          <span class="font-semibold" data-test-id="tax-calculator__tax-summary--tax-amount-value">{{ formatCurrency(calculationData.taxAmount) }}</span>
         </div>
-        <div class="flex justify-between">
-          <span class="text-gray-600">ภาษีหัก ณ ที่จ่าย</span>
-          <span class="font-semibold">{{ formatCurrency(calculationData.withholdingTax) }}</span>
+        <div class="flex justify-between" data-test-id="tax-calculator__tax-summary--withholding-tax-row">
+          <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--withholding-tax-label">ภาษีหัก ณ ที่จ่าย</span>
+          <span class="font-semibold" data-test-id="tax-calculator__tax-summary--withholding-tax-value">{{ formatCurrency(calculationData.withholdingTax) }}</span>
         </div>
       </div>
     </div>
 
     <!-- Tax Planning Card -->
-    <div class="bg-white border border-gray-200 rounded-lg p-6">
-      <h3 class="text-xl font-bold text-gray-800 mb-6">วางแผนลดหย่อนภาษี</h3>
+    <div class="bg-white border border-gray-200 rounded-lg p-6" data-test-id="tax-calculator__tax-summary--tax-planning-card">
+      <h3 class="text-xl font-bold text-gray-800 mb-6" data-test-id="tax-calculator__tax-summary--tax-planning-title">วางแผนลดหย่อนภาษี</h3>
       
       <!-- Additional Investment -->
-      <div class="text-left mb-2">
-        <div class="text-lg text-gray-700 mb-2">เงินลงทุนเพิ่ม</div>
-        <div class="text-3xl font-bold">
+      <div class="text-left mb-2" data-test-id="tax-calculator__tax-summary--additional-investment-section">
+        <div class="text-lg text-gray-700 mb-2" data-test-id="tax-calculator__tax-summary--additional-investment-label">เงินลงทุนเพิ่ม</div>
+        <div class="text-3xl font-bold" data-test-id="tax-calculator__tax-summary--additional-investment-amount">
           {{ formatCurrencyWithDecimals(taxPlanning.totalInvestment) }}
-          <span class="text-lg text-gray-500">THB</span>
+          <span class="text-lg text-gray-500" data-test-id="tax-calculator__tax-summary--additional-investment-currency">THB</span>
         </div>
       </div>
 
       <!-- Tax Savings -->
-      <div class="text-left mb-6 flex items-center gap-2">
-        <div class="text-lg text-gray-700">ประหยัดภาษีเพิ่มขึ้น</div>
-        <div class="text-lg font-bold">
+      <div class="text-left mb-6 flex items-center gap-2" data-test-id="tax-calculator__tax-summary--tax-savings-section">
+        <div class="text-lg text-gray-700" data-test-id="tax-calculator__tax-summary--tax-savings-label">ประหยัดภาษีเพิ่มขึ้น</div>
+        <div class="text-lg font-bold" data-test-id="tax-calculator__tax-summary--tax-savings-amount">
           {{ formatCurrency(taxPlanning.taxSavings) }}
         </div>
       </div>
 
       <!-- Investment Breakdown -->
-      <div class="space-y-3 mb-6 border-t border-gray-300 pt-4">
-        <div class="flex justify-between">
-          <span class="text-gray-600">RMF</span>
-          <span class="font-semibold">{{ formatCurrency(Number(rmfInvestment)) }}</span>
+      <div class="space-y-3 mb-6 border-t border-gray-300 pt-4" data-test-id="tax-calculator__tax-summary--investment-breakdown">
+        <div class="flex justify-between" data-test-id="tax-calculator__tax-summary--rmf-investment-row">
+          <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--rmf-investment-label">RMF</span>
+          <span class="font-semibold" data-test-id="tax-calculator__tax-summary--rmf-investment-value">{{ formatCurrency(Number(rmfInvestment)) }}</span>
         </div>
-        <div class="flex justify-between">
-          <span class="text-gray-600">Thai ESG</span>
-          <span class="font-semibold">{{ formatCurrency(Number(thaiEsgInvestment)) }}</span>
+        <div class="flex justify-between" data-test-id="tax-calculator__tax-summary--thai-esg-investment-row">
+          <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--thai-esg-investment-label">Thai ESG</span>
+          <span class="font-semibold" data-test-id="tax-calculator__tax-summary--thai-esg-investment-value">{{ formatCurrency(Number(thaiEsgInvestment)) }}</span>
         </div>
       </div>
 
       <!-- Action Button -->
-      <button class="w-full bg-gray-500 text-white py-3 px-4 rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center">
-        <span>ดูกองทุนประหยัดภาษี</span>
-        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <button class="w-full bg-gray-500 text-white py-3 px-4 rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center"
+        data-test-id="tax-calculator__tax-summary--view-funds-button">
+        <span data-test-id="tax-calculator__tax-summary--view-funds-text">ดูกองทุนประหยัดภาษี</span>
+        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-test-id="tax-calculator__tax-summary--view-funds-icon">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
       </button>
@@ -89,7 +96,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { formatCurrencyTHB } from '~/utils/format'
+import { formatCurrencyTHB, formatCurrencyTHBWithDecimals } from '~/utils/format'
 
 const props = defineProps({
   calculationData: {
