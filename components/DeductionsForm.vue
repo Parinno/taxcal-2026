@@ -36,7 +36,7 @@
           </div>
           <div class="flex items-center mt-2">
             <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
-              <i class="fa fa-info-circle"></i>
+              <i class="fa fa-info-circle" style="color: #01172BA6;"></i>
             </div>
             <p class="text-[15px] text-color-secondary">
               ไม่เกิน 9,000 บาท
@@ -55,7 +55,7 @@
           </div>
           <div class="flex items-center mt-2">
             <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
-              <i class="fa fa-info-circle"></i>
+              <i class="fa fa-info-circle" style="color: #01172BA6;"></i>
             </div>
             <p class="text-[15px] text-color-secondary">
               ไม่เกิน 15% ของเงินเดือน (ไม่รวมเงินสมทบจากนายจ้าง)
@@ -92,16 +92,12 @@
             ค่าลดหย่อนอื่นๆ
           </label>
           <div class="relative">
-            <input
-              type="text"
-              v-model="formData.otherDeduction"
-              placeholder="ระบุจำนวนเงิน"
-              class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none font-medium text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:font-medium placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]"
-            />
+            <input type="text" v-model="formData.otherDeduction" placeholder="ระบุจำนวนเงิน"
+              class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none font-medium text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:font-medium placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
           </div>
           <div class="flex items-center mt-2">
             <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
-              <i class="fa fa-info-circle"></i>
+              <i class="fa fa-info-circle" style="color: #01172BA6;"></i>
             </div>
             <p class="text-sm text-gray-600">
               เช่น ช้อปดีมีคืน ดอกเบี้ยบ้าน อุปการะบิดามารดา ค่าคลอดบุตร และอื่นๆ ที่สามารถหักได้ตามกฎหมาย
