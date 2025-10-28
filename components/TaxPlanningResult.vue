@@ -156,6 +156,14 @@
           </div>
         </div>
       </div>
+
+      <!-- Recommended Tax Funds Section -->
+      <div class="mt-8">
+        <RecommendedTaxFunds 
+          @fund-click="handleFundClick"
+          @view-all="handleViewAll"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -164,6 +172,7 @@
 import { ref, computed, watch } from 'vue'
 import { formatCurrencyTHB } from '~/utils/format'
 import { useTaxCalculator } from '~/composables/useTaxCalculator'
+import RecommendedTaxFunds from '~/components/RecommendedTaxFunds.vue'
 
 const props = defineProps({
   modelValue: {
@@ -291,6 +300,17 @@ const handleBack = () => {
 
 const handleRecalculate = () => {
   emit('recalculate')
+}
+
+// Fund recommendation handlers
+const handleFundClick = (fund) => {
+  console.log('Fund clicked:', fund)
+  // You can add navigation logic here or emit to parent
+}
+
+const handleViewAll = (tabType) => {
+  console.log('View all clicked for tab:', tabType)
+  // You can add navigation logic here or emit to parent
 }
 </script>
 
