@@ -2,16 +2,16 @@
   <div class="max-w-4xl mx-auto">
     <!-- Main Content -->
     <div class="space-y-8">
-        <!-- Tax Summary Section -->
-        <!-- <div class="text-center mb-8">
+      <!-- Tax Summary Section -->
+      <!-- <div class="text-center mb-8">
           <div class="text-lg text-gray-700 mb-2">ภาษีที่ต้องจ่ายเพิ่ม</div>
           <div class="text-4xl font-bold text-gray-800">
             {{ formatCurrency(beforeTaxAmount - taxSavings) }}({{ formatCurrency(-taxSavings) }})
           </div>
         </div> -->
 
-        <!-- Income Summary -->
-        <!-- <div class="grid grid-cols-2 gap-8 mb-8">
+      <!-- Income Summary -->
+      <!-- <div class="grid grid-cols-2 gap-8 mb-8">
           <div class="text-center">
             <div class="text-sm text-gray-600 mb-2">รายได้ทั้งปี</div>
             <div class="text-2xl font-bold text-gray-800">
@@ -26,32 +26,33 @@
           </div>
         </div> -->
 
-        <!-- Tax Planning Header -->
-        <div>
-          <h3 class="text-2xl font-bold text-gray-800 mb-2">วางแผนลดหย่อนภาษี</h3>
-          <!-- <p class="text-sm text-gray-600 mb-6">
-            แสดงผลเปรียบเทียบภาษี 'ก่อน-หลัง' การซื้อกองทุนเพื่อประหยัดภาษีได้สูงสุด
-          </p> -->
+      <!-- Tax Planning Header -->
+       <div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">วางแผนลดหย่อนภาษี</h3>
+        <!-- <p class="text-sm text-gray-600 mb-6">
+          แสดงผลเปรียบเทียบภาษี 'ก่อน-หลัง' การซื้อกองทุนเพื่อประหยัดภาษีได้สูงสุด
+        </p> -->
+      </div>
+
+      <!-- Tax Summary Card -->
+      <div class="bg-gray-50 rounded-lg p-6 mb-8">
+        <div class="text-left mb-4">
+          <div class="text-lg font-bold text-gray-800 mb-2">
+            {{ (beforeTaxAmount - taxSavings) >= 0 ? 'ภาษีที่ต้องจ่ายเพิ่ม' : 'ภาษีที่ได้รับคืน' }}
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="text-4xl font-bold mb-2"
+              :class="(beforeTaxAmount - taxSavings) >= 0 ? 'text-red-600' : 'text-green-600'">
+              {{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount - taxSavings)) }}
+            </div>
+            <div class="text-sm text-gray-600">THB</div>
+          </div>
+          <div class="text-sm text-gray-600">
+            วางแผนภาษีเพื่อเงินคืนสูงสุด {{ formatCurrency(maxTaxSavings) }} THB
+          </div>
         </div>
 
-        <!-- Tax Summary Card -->
-        <div class="bg-gray-50 rounded-lg p-6 mb-8">
-          <div class="text-left mb-4">
-            <div class="text-lg font-bold text-gray-800 mb-2">
-              {{ (beforeTaxAmount - taxSavings) >= 0 ? 'ภาษีที่ต้องจ่ายเพิ่ม' : 'ภาษีที่ได้รับคืน' }}
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="text-4xl font-bold mb-2" :class="(beforeTaxAmount - taxSavings) >= 0 ? 'text-red-600' : 'text-green-600'">
-                {{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount - taxSavings)) }}
-              </div>
-              <div class="text-sm text-gray-600">THB</div>
-            </div>
-            <div class="text-sm text-gray-600">
-              วางแผนเพื่อประหยัดภาษีเพิ่มขึ้นสูงสุด {{ formatCurrency(maxTaxSavings) }} THB
-            </div>
-          </div>
-          
-          <!-- <div class="border-t border-gray-300 pt-4">
+        <!-- <div class="border-t border-gray-300 pt-4">
             <div class="flex justify-between items-center mb-2">
               <div class="text-sm text-gray-600">รายได้ทั้งปี</div>
               <div class="text-sm font-medium text-gray-800">{{ formatCurrency(calculationData.totalIncome) }}</div>
@@ -61,14 +62,14 @@
               <div class="text-sm font-medium text-gray-800">{{ formatCurrency(calculationData.taxableIncome) }}</div>
             </div>
           </div> -->
-        </div>
+      </div>
 
         <!-- Tax Comparison Section -->
         <!-- <div class="bg-gray-100 rounded-lg p-6">
           <div class="text-lg font-bold text-gray-800 mb-4">จำนวนเงินภาษีที่ต้องจ่าย</div> -->
-          
-          <!-- Before Tax Planning -->
-          <!-- <div class="flex justify-between items-center mb-3">
+
+      <!-- Before Tax Planning -->
+      <!-- <div class="flex justify-between items-center mb-3">
             <div>
               <div class="font-medium text-gray-800">ก่อนวางแผนภาษี</div>
               <div class="text-sm text-gray-600">(จ่ายภาษีเพิ่ม)</div>
@@ -77,9 +78,9 @@
               {{ formatCurrency(beforeTaxAmount) }}
             </div>
           </div> -->
-          
-          <!-- After Tax Planning -->
-          <!-- <div class="flex justify-between items-center">
+
+      <!-- After Tax Planning -->
+      <!-- <div class="flex justify-between items-center">
             <div>
               <div class="font-medium text-gray-800">หลังวางแผนภาษี</div>
               <div class="text-sm text-gray-600">(จ่ายภาษีเพิ่ม/คืนเงินภาษี)</div>
@@ -90,86 +91,64 @@
           </div>
         </div> -->
 
-        <!-- Investment Planning Section -->
-        <div class="space-y-6">
-          <!-- RMF Investment -->
-          <div class="space-y-3">
-            <div class="flex items-center gap-3">
-              <div class="w-4 h-4 bg-purple-500 rounded-full"></div>
-              <div>
-                <div class="font-medium text-gray-800">RMF</div>
-                <div class="text-sm text-gray-500">Description</div>
-              </div>
-              <div class="ml-auto">
-                <input 
-                  type="text" 
-                  v-model="rmfInvestmentFormatted"
-                  @input="updateRmfInvestment"
-                  class="w-32 px-3 py-2 bg-gray-100 rounded-lg text-right font-medium"
-                />
-              </div>
+      <!-- Investment Planning Section -->
+      <div class="space-y-6">
+        <!-- RMF Investment -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-4 h-4 bg-purple-500 rounded-full"></div>
+            <div>
+              <div class="font-medium text-gray-800">RMF</div>
+              <div class="text-sm text-gray-500">Description</div>
             </div>
-            
-            <!-- RMF Slider -->
-            <div class="relative">
-              <input 
-                type="range" 
-                v-model="rmfSliderValue"
-                @input="updateRmfFromSlider"
-                min="0" 
-                :max="rmfMaxValue"
-                step="1000"
-                class="w-full h-2 bg-gray-300 appearance-none cursor-pointer slider"
-              />
-            </div>
-            
-            <div class="flex items-center gap-2 text-sm text-gray-600">
-              <div class="w-4 h-4 bg-gray-400 rounded-full flex items-center justify-center">
-                <span class="text-white text-xs">i</span>
-              </div>
-              <span>ไม่เกิน 30% รายได้ทั้งปีสูงสุด 500,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ</span>
+            <div class="ml-auto">
+              <input type="text" v-model="rmfInvestmentFormatted" @input="updateRmfInvestment"
+                class="w-32 px-3 py-2 bg-gray-100 rounded-lg text-right font-medium" />
             </div>
           </div>
 
-          <!-- ThaiESG Investment -->
-          <div class="space-y-3">
-            <div class="flex items-center gap-3">
-              <div class="w-4 h-4 bg-green-500 rounded-full"></div>
-              <div>
-                <div class="font-medium text-gray-800">ThaiESG</div>
-                <div class="text-sm text-gray-500">Description</div>
-              </div>
-              <div class="ml-auto">
-                <input 
-                  type="text" 
-                  v-model="thaiEsgInvestmentFormatted"
-                  @input="updateThaiEsgInvestment"
-                  class="w-32 px-3 py-2 bg-gray-100 rounded-lg text-right font-medium"
-                />
-              </div>
+          <!-- RMF Slider -->
+          <div class="relative">
+            <input type="range" v-model="rmfSliderValue" @input="updateRmfFromSlider" min="0" :max="rmfMaxValue"
+              step="1000" class="w-full h-2 bg-gray-300 appearance-none cursor-pointer slider" />
+          </div>
+
+          <div class="flex items-center gap-2 text-sm text-gray-600">
+            <div class="w-4 h-4 rounded-full flex items-center justify-center">
+              <i class="fa fa-info-circle" style="color: #01172BA6;"></i> 
             </div>
-            
-            <!-- ThaiESG Slider -->
-            <div class="relative">
-              <input 
-                type="range" 
-                v-model="thaiEsgSliderValue"
-                @input="updateThaiEsgFromSlider"
-                min="0" 
-                :max="thaiEsgMaxValue"
-                step="1000"
-                class="w-full h-2 bg-gray-200 appearance-none cursor-pointer slider"
-              />
-            </div>
-            
-            <div class="flex items-center gap-2 text-sm text-gray-600">
-              <div class="w-4 h-4 bg-gray-400 rounded-full flex items-center justify-center">
-                <span class="text-white text-xs">i</span>
-              </div>
-              <span>ไม่เกิน 30% รายได้ทั้งปีสูงสุด 300,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ</span>
-            </div>
+            <span>ไม่เกิน 30% รายได้ทั้งปีสูงสุด 500,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ</span>
           </div>
         </div>
+
+        <!-- ThaiESG Investment -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-4 h-4 bg-green-500 rounded-full"></div>
+            <div>
+              <div class="font-medium text-gray-800">ThaiESG</div>
+              <div class="text-sm text-gray-500">Description</div>
+            </div>
+            <div class="ml-auto">
+              <input type="text" v-model="thaiEsgInvestmentFormatted" @input="updateThaiEsgInvestment"
+                class="w-32 px-3 py-2 bg-gray-100 rounded-lg text-right font-medium" />
+            </div>
+          </div>
+
+          <!-- ThaiESG Slider -->
+          <div class="relative">
+            <input type="range" v-model="thaiEsgSliderValue" @input="updateThaiEsgFromSlider" min="0"
+              :max="thaiEsgMaxValue" step="1000" class="w-full h-2 bg-gray-200 appearance-none cursor-pointer slider" />
+          </div>
+
+          <div class="flex items-center gap-2 text-sm text-gray-600">
+            <div class="w-4 h-4 rounded-full flex items-center justify-center">
+              <i class="fa fa-info-circle" style="color: #01172BA6;"></i>
+            </div>
+            <span>ไม่เกิน 30% รายได้ทั้งปีสูงสุด 300,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

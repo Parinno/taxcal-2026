@@ -1,9 +1,9 @@
 <template>
-  <div class="max-w-2xl mx-auto">
-    <!-- Form Fields -->
-    <!-- Basic Deductions Section -->
-    <div>
-      <h2 class="font-bold text-color-primary mb-[16px] text-[20px]"> ค่าลดหย่อนพื้นฐาน</h2>
+	<div class="max-w-2xl mx-auto">
+		<!-- Form Fields -->
+		<!-- Basic Deductions Section -->
+		<div>
+			<h2 class="font-bold text-color-primary mb-[16px] text-[20px]">ค่าลดหย่อนพื้นฐาน</h2>
 
       <!-- Personal Deduction -->
       <div class="space-y-4 mb-[20px]">
@@ -13,8 +13,12 @@
           </label>
           <p class="text-sm text-gray-500 mb-2 text-[15px]">Description</p>
           <div class="relative">
-            <input type="text" v-model="formData.personalDeduction" placeholder="กรอกจำนวนเงิน"
-              class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
+            <input 
+              type="text" 
+              v-model="formData.personalDeduction" 
+              placeholder="กรอกจำนวนเงิน"
+              :class="['form-input']"
+            />
             <!-- Clear button -->
             <button v-if="formData.personalDeduction" @click="formData.personalDeduction = ''" type="button" tabindex="-1"
               class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
@@ -25,9 +29,9 @@
       </div>
     </div>
 
-    <!-- Savings/Investment Deductions Section -->
-    <div class="space-y-4 pt-[16px] mb-[20px]">
-      <h2 class="font-bold text-color-primary mb-[16px] text-[20px]">ค่าลดหย่อนการออม/การลงทุน</h2>
+		<!-- Savings/Investment Deductions Section -->
+		<div class="space-y-4 pt-[16px] mb-[20px]">
+			<h2 class="font-bold text-color-primary mb-[16px] text-[20px]">ค่าลดหย่อนการออม/การลงทุน</h2>
 
       <div class="space-y-6 mb-[20px]">
         <!-- Social Security Fund -->
@@ -36,8 +40,12 @@
             เงินประกันสังคม
           </label>
           <div class="relative">
-            <input type="text" v-model="formData.socialSecurity" placeholder="กรอกจำนวนเงิน"
-              class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
+            <input 
+              type="text" 
+              v-model="formData.socialSecurity" 
+              placeholder="กรอกจำนวนเงิน"
+              :class="['form-input']"
+            />
             <!-- Clear button -->
             <button v-if="formData.socialSecurity" @click="formData.socialSecurity = ''" type="button" tabindex="-1"
               class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
@@ -60,8 +68,12 @@
             ค่าลดหย่อนกองทุนสำรองเลี้ยงชีพ (PVD)
           </label>
           <div class="relative">
-            <input type="text" v-model="formData.providentFund" placeholder="กรอกจำนวนเงิน"
-              class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
+            <input 
+              type="text" 
+              v-model="formData.providentFund" 
+              placeholder="กรอกจำนวนเงิน"
+              :class="['form-input']"
+            />
             <!-- Clear button -->
             <button v-if="formData.providentFund" @click="formData.providentFund = ''" type="button" tabindex="-1"
               class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
@@ -84,8 +96,12 @@
             กองทุน ThaiESGX
           </label>
           <div class="relative">
-            <input type="text" v-model="formData.thaiESGX" placeholder="กรอกจำนวนเงิน"
-              class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
+            <input 
+              type="text" 
+              v-model="formData.thaiESGX" 
+              placeholder="กรอกจำนวนเงิน"
+              :class="['form-input']"
+            />
             <!-- Clear button -->
             <button v-if="formData.thaiESGX" @click="formData.thaiESGX = ''" type="button" tabindex="-1"
               class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
@@ -101,8 +117,12 @@
           </label>
           <p class="text-sm text-gray-500 mb-2 text-[15px]">(Thai ESGX โอนจาก LTF)</p>
           <div class="relative">
-            <input type="text" v-model="formData.thaiESGXTransferred" placeholder="กรอกจำนวนเงิน"
-              class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]" />
+            <input 
+              type="text" 
+              v-model="formData.thaiESGXTransferred" 
+              placeholder="กรอกจำนวนเงิน"
+              :class="['form-input']"
+            />
             <!-- Clear button -->
             <button v-if="formData.thaiESGXTransferred" @click="formData.thaiESGXTransferred = ''" type="button" tabindex="-1"
               class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
@@ -121,7 +141,7 @@
               type="text"
               v-model="formData.otherDeduction"
               placeholder="ระบุจำนวนเงิน"
-              class="flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 bg-[rgba(1,23,43,0.03)] rounded-2xl border-none outline-none font-medium text-xl leading-8 text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)] placeholder:font-medium placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]"
+              :class="['form-input']"
             />
             <!-- Clear button -->
             <button v-if="formData.otherDeduction" @click="formData.otherDeduction = ''" type="button" tabindex="-1"
@@ -147,34 +167,34 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  modelValue: {
-    type: Object,
-    required: true,
-    default: () => ({
-      personalDeduction: '',
-      socialSecurity: '',
-      providentFund: '',
-      thaiESGX: '',
-      thaiESGXTransferred: '',
-      otherDeduction: ''
-    })
-  }
+	modelValue: {
+		type: Object,
+		required: true,
+		default: () => ({
+			personalDeduction: '',
+			socialSecurity: '',
+			providentFund: '',
+			thaiESGX: '',
+			thaiESGXTransferred: '',
+			otherDeduction: ''
+		})
+	}
 })
 
 const emit = defineEmits(['update:modelValue', 'submit', 'back'])
 
 // Two-way binding helper
 const formData = computed({
-  get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+	get: () => props.modelValue,
+	set: (val) => emit('update:modelValue', val)
 })
 
 const handleNext = () => {
-  emit('submit')
+	emit('submit')
 }
 
 const handleBack = () => {
-  emit('back')
+	emit('back')
 }
 </script>
 

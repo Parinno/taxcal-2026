@@ -52,8 +52,8 @@ const handleInput = () => {
                 <div class="relative">
                     <input type="text" v-model="formData.salary" placeholder="กรอกจำนวนเงิน" @input="handleInput"
                         :class="[
-                            'flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 rounded-2xl outline-none text-xl leading-8 placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]',
-                            errors.salary ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
+                            'form-input',
+                            errors.salary ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
                     <button v-if="formData.salary" @click="formData.salary = ''" type="button" tabindex="-1"
@@ -63,8 +63,9 @@ const handleInput = () => {
                 </div>
                 <!-- Error message with icon -->
                 <div v-if="errors.salary" class="flex items-center mt-2">
-                    <div class="w-5 h-5 bg-[#F73232] rounded-full flex items-center justify-center mr-1 flex-shrink-0">
-                        <i class="fa-solid fa-exclamation-circle text-white"></i>
+                    <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
+
                     </div>
                     <p class="text-[#F73232] text-sm">{{ errors.salary }}</p>
                 </div>
@@ -78,8 +79,8 @@ const handleInput = () => {
                 <p class="text-sm text-gray-500 mb-2 text-[15px]">รวมโบนัสทั้งหมดที่ได้รับในปี</p>
                 <div class="relative">
                     <input type="text" v-model="formData.bonus" placeholder="กรอกจำนวนเงิน" @input="handleInput" :class="[
-                        'flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 rounded-2xl outline-none text-xl leading-8 placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]',
-                        errors.bonus ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
+                        'form-input',
+                        errors.bonus ? 'form-input--error' : ''
                     ]" />
                     <!-- Clear button -->
                     <button v-if="formData.bonus" @click="formData.bonus = ''" type="button" tabindex="-1"
@@ -89,8 +90,8 @@ const handleInput = () => {
                 </div>
                 <!-- Error message with icon -->
                 <div v-if="errors.bonus" class="flex items-center mt-2">
-                    <div class="w-5 h-5 bg-[#F73232] rounded-full flex items-center justify-center mr-1 flex-shrink-0">
-                        <i class="fa-solid fa-exclamation-circle text-white"></i>
+                    <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
                     </div>
                     <p class="text-[#F73232] text-sm">{{ errors.bonus }}</p>
                 </div>
@@ -101,12 +102,13 @@ const handleInput = () => {
                 <label class="block text-gray-800 font-medium text-[15px] mb-1">
                     รายได้อื่นๆ (บาท)
                 </label>
-                <p class="text-sm text-gray-500 mb-2 text-[15px]">รายได้อื่นๆ นอกจากเงินเดือน และโบนัส หรือคุณสามารถกรอกรายได้รวมทั้งปีที่ตรงนี้ได้</p>
+                <p class="text-sm text-gray-500 mb-2 text-[15px]">รายได้อื่นๆ นอกจากเงินเดือน และโบนัส
+                    หรือคุณสามารถกรอกรายได้รวมทั้งปีที่ตรงนี้ได้</p>
                 <div class="relative">
                     <input type="text" v-model="formData.otherIncome" placeholder="กรอกรายได้ทั้งปี"
                         @input="handleInput" :class="[
-                            'flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 rounded-2xl outline-none text-xl leading-8 placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]',
-                            errors.otherIncome ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
+                            'form-input',
+                            errors.otherIncome ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
                     <button v-if="formData.otherIncome" @click="formData.otherIncome = ''" type="button" tabindex="-1"
@@ -116,8 +118,8 @@ const handleInput = () => {
                 </div>
                 <!-- Error message with icon -->
                 <div v-if="errors.otherIncome" class="flex items-center mt-2">
-                    <div class="w-5 h-5 bg-[#F73232] rounded-full flex items-center justify-center mr-1 flex-shrink-0">
-                        <i class="fa-solid fa-exclamation-circle text-white"></i>
+                    <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
                     </div>
                     <p class="text-[#F73232] text-sm">{{ errors.otherIncome }}</p>
                 </div>
@@ -131,8 +133,8 @@ const handleInput = () => {
                 <div class="relative">
                     <input type="text" v-model="formData.withholdingTax" placeholder="กรอกภาษีทั้งปี"
                         @input="handleInput" :class="[
-                            'flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 rounded-2xl outline-none text-xl leading-8 placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]',
-                            errors.withholdingTax ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
+                            'form-input',
+                            errors.withholdingTax ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
                     <button v-if="formData.withholdingTax" @click="formData.withholdingTax = ''" type="button" tabindex="-1"
@@ -142,8 +144,8 @@ const handleInput = () => {
                 </div>
                 <!-- Error message with icon -->
                 <div v-if="errors.withholdingTax" class="flex items-center mt-2">
-                    <div class="w-5 h-5 bg-[#F73232] rounded-full flex items-center justify-center mr-1 flex-shrink-0">
-                        <i class="fa-solid fa-exclamation-circle text-white"></i>
+                    <div class="w-4 h-4 rounded-full flex items-center justify-center mr-1 flex-shrink-0">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #F73232;"></i>
                     </div>
                     <p class="text-[#F73232] text-sm">{{ errors.withholdingTax }}</p>
                 </div>
