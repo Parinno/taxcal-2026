@@ -1,10 +1,4 @@
 import { google } from 'googleapis'
-import { readFileSync } from 'fs'
-import { join } from 'path'
-
-// Read service account from JSON file
-const serviceAccountPath = join(process.cwd(), 'service-account.json')
-const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'))
 
 export default defineEventHandler(async (event) => {
   try {
@@ -32,7 +26,6 @@ export default defineEventHandler(async (event) => {
 
     // Initialize Google Sheets API
     const auth = new google.auth.GoogleAuth({
-      credentials: serviceAccount,
       scopes: ['https://www.googleapis.com/auth/spreadsheets']
     })
 

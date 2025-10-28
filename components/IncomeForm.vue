@@ -52,8 +52,8 @@ const handleInput = () => {
                 <div class="relative">
                     <input type="text" v-model="formData.salary" placeholder="กรอกจำนวนเงิน" @input="handleInput"
                         :class="[
-                            'flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 rounded-2xl outline-none text-xl leading-8 placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]',
-                            errors.salary ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
+                            'form-input',
+                            errors.salary ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
                     <button v-if="formData.salary" @click="formData.salary = ''" type="button"
@@ -79,8 +79,8 @@ const handleInput = () => {
                 <p class="text-sm text-gray-500 mb-2 text-[15px]">รวมโบนัสทั้งหมดที่ได้รับในปี</p>
                 <div class="relative">
                     <input type="text" v-model="formData.bonus" placeholder="กรอกจำนวนเงิน" @input="handleInput" :class="[
-                        'flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 rounded-2xl outline-none text-xl leading-8 placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]',
-                        errors.bonus ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
+                        'form-input',
+                        errors.bonus ? 'form-input--error' : ''
                     ]" />
                     <!-- Clear button -->
                     <button v-if="formData.bonus" @click="formData.bonus = ''" type="button"
@@ -107,8 +107,8 @@ const handleInput = () => {
                 <div class="relative">
                     <input type="text" v-model="formData.otherIncome" placeholder="กรอกรายได้ทั้งปี"
                         @input="handleInput" :class="[
-                            'flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 rounded-2xl outline-none text-xl leading-8 placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]',
-                            errors.otherIncome ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
+                            'form-input',
+                            errors.otherIncome ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
                     <button v-if="formData.otherIncome" @click="formData.otherIncome = ''" type="button"
@@ -133,8 +133,8 @@ const handleInput = () => {
                 <div class="relative">
                     <input type="text" v-model="formData.withholdingTax" placeholder="กรอกภาษีทั้งปี"
                         @input="handleInput" :class="[
-                            'flex flex-row items-center px-4 py-2 gap-2 w-[616px] h-14 rounded-2xl outline-none text-xl leading-8 placeholder:text-xl placeholder:leading-8 focus:bg-[rgba(1,23,43,0.05)] focus:text-[rgba(1,23,43,0.8)]',
-                            errors.withholdingTax ? 'bg-white border-2 border-[#F73232] text-[#F73232]' : 'bg-[rgba(1,23,43,0.03)] border-2 border-transparent text-[rgba(1,23,43,0.35)] placeholder:text-[rgba(1,23,43,0.35)]'
+                            'form-input',
+                            errors.withholdingTax ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
                     <button v-if="formData.withholdingTax" @click="formData.withholdingTax = ''" type="button"

@@ -59,9 +59,7 @@ const steps = [
 ]
 
 // Helper function to get step classes
-const getStepClasses = (step) => {
-  console.log(step);
-  
+const getStepClasses = (step) => {  
   const isActive = props.currentStep === step
   const isCompleted = props.currentStep > step
   const isClickable = step <= props.currentStep || step === props.currentStep + 1

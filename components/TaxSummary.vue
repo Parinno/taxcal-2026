@@ -27,7 +27,7 @@
           <span class="text-gray-600">ค่าลดหย่อน</span>
           <span class="font-semibold">{{ formatCurrency(calculationData.totalDeductions) }}</span>
         </div>
-        <span class="text-xs text-gray-500">(ไม่รวม RMF, ThaiESGX)</span>
+        <span class="text-xs text-gray-500">(ไม่รวม RMF, ThaiESG)</span>
         <div class="flex justify-between border-t border-gray-300 pt-4">
           <span class="text-gray-600">เงินได้สุทธิ</span>
           <span class="font-semibold">{{ formatCurrency(calculationData.taxableIncome) }}</span>
