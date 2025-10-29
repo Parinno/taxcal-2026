@@ -9,7 +9,7 @@ import HeaderContent from '~/components/HeaderContent.vue'
 import StepIndicator from '~/components/StepIndicator.vue'
 
 // Current step state
-const currentStep = ref(3)
+const currentStep = ref(1)
 
 // Inject currentStep from layout and update it
 const layoutCurrentStep = inject('currentStep')
