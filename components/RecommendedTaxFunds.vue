@@ -7,6 +7,7 @@
 		<div class="flex border-b border-gray-200 mb-4">
 			<button
 				@click="activeTab = 'rmf'"
+				data-test-id="tax-calculator__RecommendedTaxFunds--tab-rmf"
 				:class="[
 					'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
 					activeTab === 'rmf'
@@ -18,6 +19,7 @@
 			</button>
 			<button
 				@click="activeTab = 'thaiEsg'"
+				data-test-id="tax-calculator__RecommendedTaxFunds--tab-thaiesg"
 				:class="[
 					'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
 					activeTab === 'thaiEsg'
@@ -33,6 +35,7 @@
 		<div v-if="activeTab === 'rmf'" class="flex mb-4 space-x-2">
 			<button
 				@click="rmfSubTab = 'individual'"
+				data-test-id="tax-calculator__RecommendedTaxFunds--subtab-individual"
 				:class="[
 					'px-4 py-2 text-sm font-medium border-2 p-2 rounded transition-colors focus:outline-none',
 					rmfSubTab === 'individual'
@@ -44,6 +47,7 @@
 			</button>
 			<button
 				@click="rmfSubTab = 'combo'"
+				data-test-id="tax-calculator__RecommendedTaxFunds--subtab-combo"
 				:class="[
 					'px-4 py-2 text-sm font-medium border-2 p-2 rounded transition-colors focus:outline-none',
 					rmfSubTab === 'combo'
@@ -286,6 +290,7 @@
 					<button
 						class="px-4 py-2 bg-gray-800 text-sm text-white rounded-lg hover:bg-gray-700 transition-colors"
 						@click="openAllocateModal(combo)"
+						:data-test-id="`tax-calculator__RecommendedTaxFunds--select-combo-${combo.comboId}`"
 					>
 						คำนวณสัดส่วนการลงทุน
 					</button>
@@ -355,10 +360,6 @@ const {
 // Risk level configuration
 const riskColors = ['bg-green-500', 'bg-orange-500', 'bg-red-500']
 const riskLabels = ['เสี่ยงต่ำ', 'เสี่ยงกลาง', 'เสี่ยงสูง']
-
-const currentFunds = computed(() => {
-	return activeTab.value === 'thaiEsg' ? thaiEsgFunds.value : rmfFunds.value
-})
 
 // Fetch data when component mounts
 onMounted(async () => {
