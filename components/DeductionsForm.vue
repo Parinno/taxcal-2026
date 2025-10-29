@@ -272,9 +272,9 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import {
-	formatNumberWithSeparators,
-	parseNumberFromFormatted,
-	sanitizeAndFormatNumberInput
+	formatNumberWithSeparatorsPreserveDecimals,
+	parseNumberFromFormattedWithDecimals,
+	sanitizeAndFormatNumberInputWithDecimals
 } from '~/utils/format'
 
 const props = defineProps({
@@ -318,15 +318,15 @@ const displayOtherDeduction = ref('')
 
 // Personal deduction display <-> model
 watch(
-	() => formData.value.personalDeduction,
+    () => formData.value.personalDeduction,
 	(newVal) => {
-		displayPersonalDeduction.value = formatNumberWithSeparators(newVal)
+        displayPersonalDeduction.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displayPersonalDeduction, (newVal) => {
-	const parsed = parseNumberFromFormatted(newVal)
+const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.personalDeduction) {
 		formData.value.personalDeduction = parsed
 	}
@@ -334,15 +334,15 @@ watch(displayPersonalDeduction, (newVal) => {
 
 // Social security display <-> model
 watch(
-	() => formData.value.socialSecurity,
+    () => formData.value.socialSecurity,
 	(newVal) => {
-		displaySocialSecurity.value = formatNumberWithSeparators(newVal)
+        displaySocialSecurity.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displaySocialSecurity, (newVal) => {
-	const parsed = parseNumberFromFormatted(newVal)
+const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.socialSecurity) {
 		formData.value.socialSecurity = parsed
 	}
@@ -350,15 +350,15 @@ watch(displaySocialSecurity, (newVal) => {
 
 // Provident fund display <-> model
 watch(
-	() => formData.value.providentFund,
+    () => formData.value.providentFund,
 	(newVal) => {
-		displayProvidentFund.value = formatNumberWithSeparators(newVal)
+        displayProvidentFund.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displayProvidentFund, (newVal) => {
-	const parsed = parseNumberFromFormatted(newVal)
+const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.providentFund) {
 		formData.value.providentFund = parsed
 	}
@@ -366,15 +366,15 @@ watch(displayProvidentFund, (newVal) => {
 
 // ThaiESGX display <-> model
 watch(
-	() => formData.value.thaiESGX,
+    () => formData.value.thaiESGX,
 	(newVal) => {
-		displayThaiESGX.value = formatNumberWithSeparators(newVal)
+        displayThaiESGX.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displayThaiESGX, (newVal) => {
-	const parsed = parseNumberFromFormatted(newVal)
+const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.thaiESGX) {
 		formData.value.thaiESGX = parsed
 	}
@@ -382,15 +382,15 @@ watch(displayThaiESGX, (newVal) => {
 
 // ThaiESGX transferred display <-> model
 watch(
-	() => formData.value.thaiESGXTransferred,
+    () => formData.value.thaiESGXTransferred,
 	(newVal) => {
-		displayThaiESGXTransferred.value = formatNumberWithSeparators(newVal)
+        displayThaiESGXTransferred.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displayThaiESGXTransferred, (newVal) => {
-	const parsed = parseNumberFromFormatted(newVal)
+const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.thaiESGXTransferred) {
 		formData.value.thaiESGXTransferred = parsed
 	}
@@ -398,15 +398,15 @@ watch(displayThaiESGXTransferred, (newVal) => {
 
 // Other deduction display <-> model
 watch(
-	() => formData.value.otherDeduction,
+    () => formData.value.otherDeduction,
 	(newVal) => {
-		displayOtherDeduction.value = formatNumberWithSeparators(newVal)
+        displayOtherDeduction.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displayOtherDeduction, (newVal) => {
-	const parsed = parseNumberFromFormatted(newVal)
+const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.otherDeduction) {
 		formData.value.otherDeduction = parsed
 	}
@@ -414,7 +414,7 @@ watch(displayOtherDeduction, (newVal) => {
 
 // Sanitize input to allow only digits and commas, then normalize formatting
 const onAmountInput = (which, e) => {
-	const formatted = sanitizeAndFormatNumberInput(e.target.value)
+    const formatted = sanitizeAndFormatNumberInputWithDecimals(e.target.value)
 	switch (which) {
 		case 'personalDeduction':
 			displayPersonalDeduction.value = formatted

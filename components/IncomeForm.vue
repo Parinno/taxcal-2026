@@ -1,6 +1,10 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
-import { formatNumberWithSeparators, parseNumberFromFormatted, sanitizeAndFormatNumberInput } from '~/utils/format'
+import {
+	formatNumberWithSeparatorsPreserveDecimals,
+	parseNumberFromFormattedWithDecimals,
+	sanitizeAndFormatNumberInputWithDecimals
+} from '~/utils/format'
 
 const props = defineProps({
 	modelValue: {
@@ -42,48 +46,64 @@ const displayOtherIncome = ref('')
 const displayWithholdingTax = ref('')
 
 // Salary display <-> model
-watch(() => formData.value.salary, (newVal) => {
-	displaySalary.value = formatNumberWithSeparators(newVal)
-}, { immediate: true })
+watch(
+	() => formData.value.salary,
+	(newVal) => {
+		displaySalary.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
+	},
+	{ immediate: true }
+)
 
 watch(displaySalary, (newVal) => {
-	const parsed = parseNumberFromFormatted(newVal)
+	const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.salary) {
 		formData.value.salary = parsed
 	}
 })
 
 // Bonus display <-> model
-watch(() => formData.value.bonus, (newVal) => {
-	displayBonus.value = formatNumberWithSeparators(newVal)
-}, { immediate: true })
+watch(
+	() => formData.value.bonus,
+	(newVal) => {
+		displayBonus.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
+	},
+	{ immediate: true }
+)
 
 watch(displayBonus, (newVal) => {
-	const parsed = parseNumberFromFormatted(newVal)
+	const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.bonus) {
 		formData.value.bonus = parsed
 	}
 })
 
 // Other income display <-> model
-watch(() => formData.value.otherIncome, (newVal) => {
-	displayOtherIncome.value = formatNumberWithSeparators(newVal)
-}, { immediate: true })
+watch(
+	() => formData.value.otherIncome,
+	(newVal) => {
+		displayOtherIncome.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
+	},
+	{ immediate: true }
+)
 
 watch(displayOtherIncome, (newVal) => {
-	const parsed = parseNumberFromFormatted(newVal)
+	const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.otherIncome) {
 		formData.value.otherIncome = parsed
 	}
 })
 
 // Withholding tax display <-> model
-watch(() => formData.value.withholdingTax, (newVal) => {
-	displayWithholdingTax.value = formatNumberWithSeparators(newVal)
-}, { immediate: true })
+watch(
+	() => formData.value.withholdingTax,
+	(newVal) => {
+		displayWithholdingTax.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
+	},
+	{ immediate: true }
+)
 
 watch(displayWithholdingTax, (newVal) => {
-	const parsed = parseNumberFromFormatted(newVal)
+	const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.withholdingTax) {
 		formData.value.withholdingTax = parsed
 	}
@@ -92,7 +112,7 @@ watch(displayWithholdingTax, (newVal) => {
 // Sanitize input to allow only digits and commas, then normalize formatting
 const onAmountInput = (which, e) => {
 	emit('clear-errors')
-	const formatted = sanitizeAndFormatNumberInput(e.target.value)
+	const formatted = sanitizeAndFormatNumberInputWithDecimals(e.target.value)
 	switch (which) {
 		case 'salary':
 			displaySalary.value = formatted
@@ -108,7 +128,6 @@ const onAmountInput = (which, e) => {
 			break
 	}
 }
-
 </script>
 
 <template>
@@ -140,7 +159,7 @@ const onAmountInput = (which, e) => {
 				<div class="relative">
 					<input
 						type="text"
-                        inputmode="numeric"
+						inputmode="numeric"
 						pattern="[0-9,]*"
 						v-model="displaySalary"
 						placeholder="กรอกจำนวนเงิน"
@@ -190,7 +209,7 @@ const onAmountInput = (which, e) => {
 				<div class="relative">
 					<input
 						type="text"
-                        inputmode="numeric"
+						inputmode="numeric"
 						pattern="[0-9,]*"
 						v-model="displayBonus"
 						placeholder="กรอกจำนวนเงิน"
@@ -240,7 +259,7 @@ const onAmountInput = (which, e) => {
 				<div class="relative">
 					<input
 						type="text"
-                        inputmode="numeric"
+						inputmode="numeric"
 						pattern="[0-9,]*"
 						v-model="displayOtherIncome"
 						placeholder="กรอกรายได้ทั้งปี"
@@ -284,7 +303,7 @@ const onAmountInput = (which, e) => {
 				<div class="relative">
 					<input
 						type="text"
-                        inputmode="numeric"
+						inputmode="numeric"
 						pattern="[0-9,]*"
 						v-model="displayWithholdingTax"
 						placeholder="กรอกภาษีทั้งปี"
