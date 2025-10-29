@@ -22,7 +22,8 @@ ARG GOOGLE_CLIENT_ID=49742298105-57hlkd99vmeljkm8694ldnne502peu59.apps.googleuse
 ARG GOOGLE_API_KEY=AIzaSyAR9eDDji5FBR3RlK4fGkap8MnqQoAvNik
 ARG CONTENT_URL=https://scontent-int.finnomena.com
 ARG HEADER_VERSION=latest
-ARG FINNOMENA_API_URL=https://api-int.finnomena.com
+# force to prod for solid resposne from fund recommended
+ARG FINNOMENA_API_URL=https://api.finnomena.com 
 ARG FINNOMENA_WEBSITE_URL=https://int.finnomena.com
 ARG AUTH_URL=https://auth-int.finnomena.com
 

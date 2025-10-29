@@ -217,15 +217,15 @@
 					</div>
 				</div>
 
-				<!-- Combo Funds Table -->
-				<div class="overflow-x-auto">
+				<!-- Combo Funds Table - Desktop View -->
+				<div class="hidden md:block overflow-x-auto">
 					<table class="w-full text-sm">
 						<thead>
 							<tr class="border-b border-gray-200">
-								<th class="text-left py-2 font-medium text-gray-600">กองทุน</th>
-								<th class="text-left py-2 font-medium text-gray-600">บลจ.</th>
-								<th class="text-left py-2 font-medium text-gray-600">ประเภท</th>
-								<th class="text-right py-2 font-medium text-gray-600">สัดส่วน</th>
+								<th class="text-left py-2 px-3 font-medium text-gray-600">กองทุน</th>
+								<th class="text-left py-2 px-3 font-medium text-gray-600">บลจ.</th>
+								<th class="text-left py-2 px-3 font-medium text-gray-600">ประเภท</th>
+								<th class="text-right py-2 px-3 font-medium text-gray-600">สัดส่วน</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -235,7 +235,7 @@
 								class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer group"
 								@click="handleComboFundClick(fund)"
 							>
-								<td class="py-3">
+								<td class="py-3 px-3">
 									<div class="flex items-center gap-2">
 										<span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">RMF</span>
 										<div>
@@ -255,12 +255,58 @@
 										</div>
 									</div>
 								</td>
-								<td class="py-3 text-gray-600">{{ fund.amcName }}</td>
-								<td class="py-3 text-gray-600">{{ fund.assetClass }}</td>
-								<td class="py-3 text-right font-medium text-gray-800">{{ fund.percentage }}%</td>
+								<td class="py-3 px-3 text-gray-600">{{ fund.amcName }}</td>
+								<td class="py-3 px-3 text-gray-600">{{ fund.assetClass }}</td>
+								<td class="py-3 px-3 text-right font-medium text-gray-800">{{ fund.percentage }}%</td>
 							</tr>
 						</tbody>
 					</table>
+				</div>
+
+				<!-- Combo Funds Cards - Mobile View -->
+				<div class="md:hidden space-y-3">
+					<div
+						v-for="fund in combo.funds"
+						:key="fund.fundName"
+						class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors group"
+						@click="handleComboFundClick(fund)"
+					>
+						<!-- Fund Header -->
+						<div class="flex items-start justify-between mb-3">
+							<div class="flex-1 min-w-0">
+								<div class="flex items-center gap-2 mb-2">
+									<span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">RMF</span>
+									<span
+										v-if="fund.creditCardSupported"
+										class="text-xs bg-gray-200 px-2 py-0.5 rounded border"
+									>
+										รองรับ
+										<i class="fas fa-credit-card"></i>
+									</span>
+									<!-- External link icon -->
+									<i class="fas fa-arrow-up-right-from-square text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity text-xs"></i>
+								</div>
+								<div class="font-medium text-gray-800 mb-1 truncate">{{ fund.fundName }}</div>
+								<div class="text-xs text-gray-500 line-clamp-2">{{ fund.fundFullName }}</div>
+							</div>
+							<div class="text-right ml-4">
+								<div class="text-lg font-bold text-gray-800">{{ fund.percentage }}%</div>
+								<div class="text-xs text-gray-500">สัดส่วน</div>
+							</div>
+						</div>
+
+						<!-- Fund Details -->
+						<div class="grid grid-cols-2 gap-3 text-sm">
+							<div>
+								<div class="text-gray-500 text-xs mb-1">บลจ.</div>
+								<div class="text-gray-800 truncate">{{ fund.amcName }}</div>
+							</div>
+							<div>
+								<div class="text-gray-500 text-xs mb-1">ประเภท</div>
+								<div class="text-gray-800 truncate">{{ fund.assetClass }}</div>
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<!-- Select Combo Button -->
@@ -431,4 +477,11 @@ const handleConfirmAllocation = (payload) => {
 
 <style scoped>
 /* Additional custom styles if needed */
+.line-clamp-2 {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
 </style>
