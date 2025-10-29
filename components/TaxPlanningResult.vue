@@ -22,6 +22,9 @@
             </div>
             <div class="text-md text-gray-500 font-semibold" data-test-id="tax-calculator__tax-planning-result--tax-currency">THB</div>
           </div>
+          <div class="text-sm text-gray-600 mb-2">
+            <span class="font-semibold px-2 py-1 rounded-full" style="background-color: #00E76B;">{{ taxPlanningResult.afterTaxRate }}%</span>
+          </div>
           <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--max-tax-savings">
             วางแผน RMF, ThaiESG เพื่อประหยัดภาษีสูงสุด {{ formatCurrency(maxTaxSavings) }} THB
           </div>
@@ -47,7 +50,7 @@
               <div class="text-sm" :class="beforeTaxAmount - maxTaxSavings >= 0 ? 'text-red-600' : 'text-green-600'">{{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount - maxTaxSavings)) }}</div>
               <div class="text-sm text-gray-500">
                 อัตราภาษีสูงสุด
-                <span class="font-bold text-gray-800">{{ taxPlanningResult.afterTaxRate }}%</span>
+                <span class="font-bold text-gray-800">{{ taxPlanningResult.maxAfterTaxRate }}%</span>
               </div>
             </div>
           </div>
