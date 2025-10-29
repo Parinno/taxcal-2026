@@ -57,7 +57,7 @@ const handleInput = () => {
                             errors.salary ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
-                    <button v-if="formData.salary" @click="formData.salary = ''" type="button"
+                    <button v-if="formData.salary" @click="formData.salary = ''" type="button" tabindex="-1"
                         data-test-id="tax-calculator__income-form--salary-clear"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>
@@ -87,7 +87,7 @@ const handleInput = () => {
                         errors.bonus ? 'form-input--error' : ''
                     ]" />
                     <!-- Clear button -->
-                    <button v-if="formData.bonus" @click="formData.bonus = ''" type="button"
+                    <button v-if="formData.bonus" @click="formData.bonus = ''" type="button" tabindex="-1"
                         data-test-id="tax-calculator__income-form--bonus-clear"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>
@@ -118,7 +118,7 @@ const handleInput = () => {
                             errors.otherIncome ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
-                    <button v-if="formData.otherIncome" @click="formData.otherIncome = ''" type="button"
+                    <button v-if="formData.otherIncome" @click="formData.otherIncome = ''" type="button" tabindex="-1"
                         data-test-id="tax-calculator__income-form--other-income-clear"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>
@@ -147,7 +147,7 @@ const handleInput = () => {
                             errors.withholdingTax ? 'form-input--error' : ''
                         ]" />
                     <!-- Clear button -->
-                    <button v-if="formData.withholdingTax" @click="formData.withholdingTax = ''" type="button"
+                    <button v-if="formData.withholdingTax" @click="formData.withholdingTax = ''" type="button" tabindex="-1"
                         data-test-id="tax-calculator__income-form--withholding-tax-clear"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark text-white"></i>

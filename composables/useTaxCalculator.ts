@@ -142,13 +142,11 @@ export function useTaxCalculator() {
     }
   }
 
-  // Helpers used in result screen
+  // Helpers used in result screen - ONLY RMF and TESG
   const getInvestmentRecommendations = (totalIncome: number) => {
     const rmfMax = Math.min(totalIncome * 0.3, 500000)
     const thaiEsgMax = Math.min(totalIncome * 0.3, 300000)
-    const thaiEsgxMax = Math.min(totalIncome * 0.3, 300000)
-    const ltfMax = 300000
-    return { rmfMax, thaiEsgMax, thaiEsgxMax, ltfMax }
+    return { rmfMax, thaiEsgMax }
   }
 
   // Get ThaiESGX limits for forms
@@ -166,8 +164,8 @@ export function useTaxCalculator() {
 
   const computeTaxSavingsFromInvestments = (totalInvestmentAmount: number, taxableIncome: number, baseTax: number) => {
     // Apply limits to investment amount
-    // Maximum possible investment: RMF(500k) + ThaiESG(300k) + Thai ESGX(300k) + LTF(300k) = 1.4M
-    const maxAllowedInvestment = 1400000
+    // Maximum possible investment: RMF(500k) + ThaiESG(300k) = 800k
+    const maxAllowedInvestment = 800000
     const limitedInvestmentAmount = Math.min(totalInvestmentAmount, maxAllowedInvestment)
     
     // Calculate tax on reduced taxable income
@@ -187,11 +185,12 @@ export function useTaxCalculator() {
     }
     
     // Tax savings = original tax - new tax
+    // If negative, it means no tax savings
     return Math.max(0, baseTax - newTaxAmount)
   }
 
   const computeMaxTaxSavingsFromInvestments = (totalIncome: number, taxableIncome: number, baseTax: number) => {
-    // Calculate maximum possible investment with proper limits
+    // Calculate maximum possible investment with proper limits - ONLY RMF and TESG
     const recommendations = getInvestmentRecommendations(totalIncome)
     
     // RMF: 30% of total income, max 500k, but limited by remaining retirement cap
@@ -200,13 +199,8 @@ export function useTaxCalculator() {
     // ThaiESG: 30% of total income, max 300k, separate from retirement funds
     const thaiEsgMax = Math.min(recommendations.thaiEsgMax, 300000)
     
-    // Thai ESGX: 30% of total income, max 300k, separate from retirement funds  
-    const thaiEsgxMax = Math.min(recommendations.thaiEsgxMax, 300000)
-    
-    // LTF: Fixed limit 300k for 2025
-    const ltfMax = Math.min(recommendations.ltfMax, 300000)
-    
-    const maxInvestment = rmfMax + thaiEsgMax + thaiEsgxMax + ltfMax
+    // Only use RMF and TESG for maximum tax savings calculation
+    const maxInvestment = rmfMax + thaiEsgMax
     
     // Calculate tax savings from maximum investment
     return computeTaxSavingsFromInvestments(maxInvestment, taxableIncome, baseTax)
@@ -236,16 +230,14 @@ export function useTaxCalculator() {
       else finalTaxAmount = 1265000 + (finalTaxableIncome - 5000000) * 0.35
     }
     
-    return Math.max(0, finalTaxAmount)
+    // If negative, it means tax refund
+    return finalTaxAmount
   }
 
   const computeTaxAmountAfterMaxInvestment = (baseTax: number, taxableIncome: number, totalIncome: number) => {
-    // Calculate maximum possible investment with proper limits
+    // Calculate maximum possible investment with proper limits - ONLY RMF and TESG
     const recommendations = getInvestmentRecommendations(totalIncome)
-    const maxInvestment = recommendations.rmfMax + 
-                         recommendations.thaiEsgMax + 
-                         recommendations.thaiEsgxMax + 
-                         recommendations.ltfMax
+    const maxInvestment = recommendations.rmfMax + recommendations.thaiEsgMax
     
     // Calculate tax amount after maximum investment (no donation deductions)
     return computeFinalTaxAmount(baseTax, taxableIncome, maxInvestment, 0)
@@ -307,7 +299,8 @@ export function useTaxCalculator() {
     }
 
     // Calculate net tax payable (tax amount - withholding tax)
-    const netTaxPayable = Math.max(0, taxAmount - withholdingTax)
+    // If negative, it means tax refund
+    const netTaxPayable = taxAmount - withholdingTax
 
     return {
       totalIncome,
@@ -339,7 +332,8 @@ export function useTaxCalculator() {
     
     // Calculate before and after tax amounts
     const beforeTaxAmount = calculationData.netTaxPayable || (calculationData.taxAmount - calculationData.withholdingTax)
-    const afterTaxAmount = Math.max(0, beforeTaxAmount - taxSavings)
+    // If negative, it means tax refund
+    const afterTaxAmount = beforeTaxAmount - taxSavings
     
     // Calculate final tax amount after investments
     const finalTaxAmount = computeFinalTaxAmount(
@@ -348,7 +342,8 @@ export function useTaxCalculator() {
       totalInvestment,
       0 // No donation deduction
     )
-    const finalNetTaxPayable = Math.max(0, finalTaxAmount - calculationData.withholdingTax)
+    // If negative, it means tax refund
+    const finalNetTaxPayable = finalTaxAmount - calculationData.withholdingTax
     
     return {
       totalInvestment,
@@ -361,14 +356,12 @@ export function useTaxCalculator() {
     }
   }
 
-  // Get investment limits for forms
+  // Get investment limits for forms - ONLY RMF and TESG
   const getInvestmentLimits = (totalIncome: number) => {
     const recommendations = getInvestmentRecommendations(totalIncome)
     return {
       rmfMax: recommendations.rmfMax,
-      thaiEsgMax: recommendations.thaiEsgMax,
-      thaiEsgxMax: recommendations.thaiEsgxMax,
-      ltfMax: recommendations.ltfMax
+      thaiEsgMax: recommendations.thaiEsgMax
     }
   }
 

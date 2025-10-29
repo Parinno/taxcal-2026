@@ -26,6 +26,14 @@
           </div>
         </div> -->
 
+      <!-- Tax Planning Header -->
+       <div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-planning-result--planning-title">วางแผนลดหย่อนภาษี</h3>
+        <!-- <p class="text-sm text-gray-600 mb-6">
+          แสดงผลเปรียบเทียบภาษี 'ก่อน-หลัง' การซื้อกองทุนเพื่อประหยัดภาษีได้สูงสุด
+        </p> -->
+      </div>
+
       <!-- Tax Summary Card -->
       <div class="bg-gray-50 rounded-lg p-6 mb-8" data-test-id="tax-calculator__tax-planning-result--tax-summary-card">
         <div class="text-left mb-4">
@@ -57,16 +65,8 @@
           </div> -->
       </div>
 
-      <!-- Tax Planning Header -->
-      <div data-test-id="tax-calculator__tax-planning-result--planning-header">
-        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-planning-result--planning-title">วางแผนลดหย่อนภาษี</h3>
-        <!-- <p class="text-sm text-gray-600 mb-6">
-            แสดงผลเปรียบเทียบภาษี 'ก่อน-หลัง' การซื้อกองทุนเพื่อประหยัดภาษีได้สูงสุด
-          </p> -->
-      </div>
-
-      <!-- Tax Comparison Section -->
-      <!-- <div class="bg-gray-100 rounded-lg p-6">
+        <!-- Tax Comparison Section -->
+        <!-- <div class="bg-gray-100 rounded-lg p-6">
           <div class="text-lg font-bold text-gray-800 mb-4">จำนวนเงินภาษีที่ต้องจ่าย</div> -->
 
       <!-- Before Tax Planning -->
@@ -156,6 +156,14 @@
           </div>
         </div>
       </div>
+
+      <!-- Recommended Tax Funds Section -->
+      <div class="mt-8">
+        <RecommendedTaxFunds 
+          @fund-click="handleFundClick"
+          @view-all="handleViewAll"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -164,6 +172,7 @@
 import { ref, computed, watch } from 'vue'
 import { formatCurrencyTHB } from '~/utils/format'
 import { useTaxCalculator } from '~/composables/useTaxCalculator'
+import RecommendedTaxFunds from '~/components/RecommendedTaxFunds.vue'
 
 const props = defineProps({
   modelValue: {
@@ -291,6 +300,17 @@ const handleBack = () => {
 
 const handleRecalculate = () => {
   emit('recalculate')
+}
+
+// Fund recommendation handlers
+const handleFundClick = (fund) => {
+  console.log('Fund clicked:', fund)
+  // You can add navigation logic here or emit to parent
+}
+
+const handleViewAll = (tabType) => {
+  console.log('View all clicked for tab:', tabType)
+  // You can add navigation logic here or emit to parent
 }
 </script>
 

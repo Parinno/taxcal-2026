@@ -13,3 +13,18 @@ export function formatCurrencyTHBWithDecimals(amount: number): string {
   }).format(amount || 0)
 }
 
+export function formatNumberWithSeparators(num: number): string {
+  return new Intl.NumberFormat('th-TH').format(num || 0)
+}
+
+export function parseNumberFromFormatted(str: string): number {
+  return parseInt(str.replace(/,/g, '')) || 0
+}
+
+// Sanitize arbitrary input and return a nicely formatted numeric string
+export function sanitizeAndFormatNumberInput(value: string): string {
+  const raw = String(value || '')
+  const digitsOnly = raw.replace(/[^0-9]/g, '')
+  return formatNumberWithSeparators(parseNumberFromFormatted(digitsOnly))
+}
+
