@@ -5,8 +5,16 @@ const headerVersion = process.env.HEADER_VERSION
 export default defineNuxtConfig({
 	compatibilityDate: '2025-07-15',
 	devtools: { enabled: true },
-	modules: ['@nuxtjs/tailwindcss'],
+	modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
 	css: ['@/assets/css/tailwind.css'],
+	vue: {
+		compilerOptions: {
+			isCustomElement: (tag) => [
+				'header-finnomena-new-header',
+				'header-finnomena-new-footer'
+			].includes(tag)
+		}
+	},
 	app: {
 		head: {
 			meta: [

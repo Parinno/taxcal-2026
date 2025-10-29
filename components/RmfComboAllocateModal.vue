@@ -54,28 +54,28 @@
 						pattern="[0-9,]*"
 						placeholder="เช่น 10,000"
 						class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800"
-						data-test-id="tax-calculator__RmfComboAllocateModal--amount"
+						data-test-id="tax-calculator__rmf-combo-allocate-modal--amount"
 						@input="onAmountInput"
 					/>
 					<div class="flex gap-2 mt-2">
 						<button
 							class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
-							data-test-id="tax-calculator__RmfComboAllocateModal--quick-500"
+							data-test-id="tax-calculator__rmf-combo-allocate-modal--quick-500"
 							@click="quickFill(500)"
 						>+500</button>
 						<button
 							class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
-							data-test-id="tax-calculator__RmfComboAllocateModal--quick-1000"
+							data-test-id="tax-calculator__rmf-combo-allocate-modal--quick-1000"
 							@click="quickFill(1000)"
 						>+1,000</button>
 						<button
 							class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
-							data-test-id="tax-calculator__RmfComboAllocateModal--quick-10000"
+							data-test-id="tax-calculator__rmf-combo-allocate-modal--quick-10000"
 							@click="quickFill(10000)"
 						>+10,000</button>
 						<button
 							class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
-							data-test-id="tax-calculator__RmfComboAllocateModal--quick-100000"
+							data-test-id="tax-calculator__rmf-combo-allocate-modal--quick-100000"
 							@click="quickFill(100000)"
 						>+100,000</button>
 					</div>
@@ -117,12 +117,12 @@
 
 			<!-- Footer -->
 			<div class="mt-5 flex items-center justify-end gap-2">
-				<button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50" @click="close" data-test-id="tax-calculator__RmfComboAllocateModal--cancel">ยกเลิก</button>
+				<button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50" @click="close" data-test-id="tax-calculator__rmf-combo-allocate-modal--cancel">ยกเลิก</button>
 				<button
 					class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50"
 					:disabled="!canConfirm"
 					@click="confirm"
-					data-test-id="tax-calculator__RmfComboAllocateModal--confirm"
+					data-test-id="tax-calculator__rmf-combo-allocate-modal--confirm"
 				>
 					ยืนยันการจัดสรร
 				</button>
