@@ -280,7 +280,16 @@
 						</tbody>
 					</table>
 				</div>
-			</div>
+
+				<!-- Select Combo Button -->
+				<div class="mt-4 flex items-center justify-end">
+					<button
+						class="px-4 py-2 bg-gray-800 text-sm text-white rounded-lg hover:bg-gray-700 transition-colors"
+						@click="openAllocateModal(combo)"
+					>
+						คำนวณสัดส่วนการลงทุน
+					</button>
+				</div>			</div>
 		</div>
 
 		<!-- Empty State -->
@@ -298,11 +307,19 @@
 			<div class="text-sm text-gray-600">ไม่พบข้อมูลกองทุน</div>
 		</div>
 	</div>
+
+	<RmfComboAllocateModal
+		:open="isAllocateModalOpen"
+		:combo="selectedCombo"
+		@update:open="isAllocateModalOpen = $event"
+		@confirm="handleConfirmAllocation"
+	/>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useFundRecommendations } from '~/composables/useFundRecommendations'
+import RmfComboAllocateModal from '~/components/RmfComboAllocateModal.vue'
 
 const props = defineProps({
 	onFundClick: {
@@ -315,7 +332,7 @@ const props = defineProps({
 	}
 })
 
-const emit = defineEmits(['fundClick', 'viewAll'])
+const emit = defineEmits(['fundClick', 'viewAll', 'comboSelected'])
 
 const activeTab = ref('rmf')
 const rmfSubTab = ref('individual')
@@ -404,7 +421,6 @@ const handleViewAll = () => {
 }
 
 const riskLevelStyle = (index) => {
-	console.log(index)
 	switch (index) {
 		case 1:
 			return 'w-4 h-2 rounded-l-full'
@@ -413,6 +429,19 @@ const riskLevelStyle = (index) => {
 		default:
 			return 'w-4 h-2'
 	}
+}
+
+// Allocation modal state and handlers
+const isAllocateModalOpen = ref(false)
+const selectedCombo = ref(null)
+
+const openAllocateModal = (combo) => {
+	selectedCombo.value = combo
+	isAllocateModalOpen.value = true
+}
+
+const handleConfirmAllocation = (payload) => {
+	emit('comboSelected', payload)
 }
 </script>
 
