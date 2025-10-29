@@ -14,45 +14,45 @@ Notes
 
 Page: `tax-calculator`
 
-Component: `RecommendedTaxFunds`
+Component: `recommended-tax-funds`
 - Tabs
-  - `tax-calculator__RecommendedTaxFunds--tab-rmf`
-  - `tax-calculator__RecommendedTaxFunds--tab-thaiesg`
+  - `tax-calculator__recommended-tax-funds--tab-rmf`
+  - `tax-calculator__recommended-tax-funds--tab-thaiesg`
 - Subtabs
-  - `tax-calculator__RecommendedTaxFunds--subtab-individual`
-  - `tax-calculator__RecommendedTaxFunds--subtab-combo`
+  - `tax-calculator__recommended-tax-funds--subtab-individual`
+  - `tax-calculator__recommended-tax-funds--subtab-combo`
 - Actions
-  - Select combo button (per combo): `tax-calculator__RecommendedTaxFunds--select-combo-{comboId}`
+  - Select combo button (per combo): `tax-calculator__recommended-tax-funds--select-combo-{comboId}`
 
-Component: `RmfComboAllocateModal`
+Component: `rmf-combo-allocate-modal`
 - Fields
-  - Amount input: `tax-calculator__RmfComboAllocateModal--amount`
+  - Amount input: `tax-calculator__rmf-combo-allocate-modal--amount`
 - Quick-fill actions
-  - `tax-calculator__RmfComboAllocateModal--quick-500`
-  - `tax-calculator__RmfComboAllocateModal--quick-1000`
-  - `tax-calculator__RmfComboAllocateModal--quick-10000`
-  - `tax-calculator__RmfComboAllocateModal--quick-100000`
+  - `tax-calculator__rmf-combo-allocate-modal--quick-500`
+  - `tax-calculator__rmf-combo-allocate-modal--quick-1000`
+  - `tax-calculator__rmf-combo-allocate-modal--quick-10000`
+  - `tax-calculator__rmf-combo-allocate-modal--quick-100000`
 - Footer actions
-  - Cancel: `tax-calculator__RmfComboAllocateModal--cancel`
-  - Confirm: `tax-calculator__RmfComboAllocateModal--confirm`
+  - Cancel: `tax-calculator__rmf-combo-allocate-modal--cancel`
+  - Confirm: `tax-calculator__rmf-combo-allocate-modal--confirm`
 
 ### Usage examples (Cypress)
 
 ```javascript
 // switch to RMF tab
-cy.get('[data-test-id="tax-calculator__RecommendedTaxFunds--tab-rmf"]').click()
+cy.get('[data-test-id="tax-calculator__recommended-tax-funds--tab-rmf"]').click()
 
 // open allocation modal for a specific combo
-cy.get('[data-test-id="tax-calculator__RecommendedTaxFunds--select-combo-42"]').click()
+cy.get('[data-test-id="tax-calculator__recommended-tax-funds--select-combo-42"]').click()
 
 // enter amount and confirm
-cy.get('[data-test-id="tax-calculator__RmfComboAllocateModal--amount"]').type('10000')
-cy.get('[data-test-id="tax-calculator__RmfComboAllocateModal--confirm"]').click()
+cy.get('[data-test-id="tax-calculator__rmf-combo-allocate-modal--amount"]').type('10000')
+cy.get('[data-test-id="tax-calculator__rmf-combo-allocate-modal--confirm"]').click()
 ```
 
 ### Adding new IDs
 1. Identify the page and component where the element lives
 2. Choose `action` or `field` describing the element purpose
-3. Add the attribute: `data-test-id="{page}__{component}--{action/field}"`
+3. Add the attribute: `data-test-id="{page}__{component–name-with-dash}--{action/field}"`
 
 
