@@ -14,7 +14,8 @@ export function formatCurrencyTHBWithDecimals(amount: number): string {
 }
 
 export function formatNumberWithSeparators(num: number): string {
-  return new Intl.NumberFormat('th-TH').format(num || 0)
+  if(!num) return ''
+  return new Intl.NumberFormat('th-TH').format(num)
 }
 
 export function parseNumberFromFormatted(str: string): number {
