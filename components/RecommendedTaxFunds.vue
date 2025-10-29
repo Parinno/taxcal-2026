@@ -109,19 +109,7 @@
 						<i class="fas fa-credit-card"></i>
 					</span>
 					<!-- External link icon -->
-					<svg
-						class="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-						/>
-					</svg>
+					<i class="fas fa-arrow-up-right-from-square text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity text-xs"></i>
 				</div>
 
 				<!-- Details Line -->
@@ -172,19 +160,7 @@
 						<i class="fas fa-credit-card"></i>
 					</span>
 					<!-- External link icon -->
-					<svg
-						class="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-						/>
-					</svg>
+					<i class="fas fa-arrow-up-right-from-square text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity text-xs"></i>
 				</div>
 
 				<!-- Details Line -->
@@ -256,7 +232,7 @@
 							<tr
 								v-for="fund in combo.funds"
 								:key="fund.fundName"
-								class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
+								class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer group"
 								@click="handleComboFundClick(fund)"
 							>
 								<td class="py-3">
@@ -272,6 +248,8 @@
 													รองรับ
 													<i class="fas fa-credit-card"></i>
 												</span>
+												<!-- External link icon -->
+												<i class="ml-1 fas fa-arrow-up-right-from-square text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity text-xs"></i>
 											</div>
 											<div class="text-xs text-gray-500 mt-2">{{ fund.fundFullName }}</div>
 										</div>
