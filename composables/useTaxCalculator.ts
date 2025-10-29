@@ -233,8 +233,10 @@ export function useTaxCalculator() {
     
     // Calculate tax rates for before/after scenarios
     const beforeTaxRate = getMaxTaxRate(calculationData.taxableIncome)
-    const afterTaxableIncome = Math.max(0, calculationData.taxableIncome - investmentLimits.rmfMax - investmentLimits.thaiEsgMax)
+    const afterTaxableIncome = Math.max(0, calculationData.taxableIncome - totalInvestment)
+    const maxAfterTaxableIncome = Math.max(0, calculationData.taxableIncome - investmentLimits.rmfMax - investmentLimits.thaiEsgMax)
     const afterTaxRate = getMaxTaxRate(afterTaxableIncome)
+    const maxAfterTaxRate = getMaxTaxRate(maxAfterTaxableIncome)
     
     return {
       totalInvestment,
@@ -245,6 +247,7 @@ export function useTaxCalculator() {
       investmentLimits,
       beforeTaxRate,
       afterTaxRate,
+      maxAfterTaxRate,
       rmfMaxValue: investmentLimits.rmfMax,
       thaiEsgMaxValue: investmentLimits.thaiEsgMax
     }
