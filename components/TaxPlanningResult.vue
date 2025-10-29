@@ -43,7 +43,7 @@
             </div>
             <div class="text-sm text-gray-600 flex flex-col items-center w-1/2">
               <div class="text-sm text-green-600 font-bold">หลัง</div>
-              <div class="text-sm text-gray-500">{{ (beforeTaxAmount - maxTaxSavings >= 0 ? 'จ่ายภาษีเพิ่ม' : 'ได้รับคืนภาษี') }}</div>
+              <div class="text-sm text-gray-500">{{ (beforeTaxAmount - maxTaxSavings >= 0 ? 'จ่ายภาษีเพิ่ม' : 'เงินคืนภาษี') }}</div>
               <div class="text-sm" :class="beforeTaxAmount - maxTaxSavings >= 0 ? 'text-red-600' : 'text-green-600'">{{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount - maxTaxSavings)) }}</div>
               <div class="text-sm text-gray-500">
                 อัตราภาษีสูงสุด
