@@ -126,7 +126,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onBeforeUnmount } from 'vue'
 import { formatCurrencyTHBWithDecimals, formatNumberWithSeparators, parseNumberFromFormatted, sanitizeAndFormatNumberInput } from '~/utils/format'
 
 const props = defineProps({
@@ -161,6 +161,12 @@ watch(
 	(newVal) => {
 		if (newVal) {
 			investmentAmount.value = props.defaultAmount
+			// Lock body scroll when modal opens
+			document.body.classList.add('overflow-hidden')
+		}
+		// Unlock when closed
+		else {
+			document.body.classList.remove('overflow-hidden')
 		}
 	}
 )
@@ -217,6 +223,10 @@ const confirm = () => {
 const onAmountInput = (e) => {
     displayAmount.value = sanitizeAndFormatNumberInput(e.target.value)
 }
+
+onBeforeUnmount(() => {
+	document.body.classList.remove('overflow-hidden')
+})
 </script>
 
 <style scoped>
