@@ -35,7 +35,7 @@
       </div>
 
       <!-- Tax Summary Card -->
-      <div class="bg-gray-50 rounded-lg p-6 mb-8" data-test-id="tax-calculator__tax-planning-result--tax-summary-card">
+      <div class="bg-gray-100 rounded-lg p-6 mb-8" data-test-id="tax-calculator__tax-planning-result--tax-summary-card">
         <div class="text-left mb-4">
           <div class="text-lg font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-planning-result--tax-summary-title">
             {{ (beforeTaxAmount - taxSavings) >= 0 ? 'ภาษีที่ต้องจ่ายเพิ่ม' : 'ภาษีที่ได้รับคืน' }}
@@ -48,8 +48,30 @@
             </div>
             <div class="text-sm text-gray-600" data-test-id="tax-calculator__tax-planning-result--tax-currency">THB</div>
           </div>
+          <div class="text-sm text-gray-600">
+            อัตราภาษีสูงสุด 
+            <span class="font-medium">{{ getMaxTaxRate(calculationData.taxableIncome) }}%</span>
+            <span class="text-gray-500">
+              → {{ getMaxTaxRate(Math.max(0, calculationData.taxableIncome - taxPlanning.totalInvestment)) }}%
+            </span>
+          </div>
           <div class="text-sm text-gray-600" data-test-id="tax-calculator__tax-planning-result--max-tax-savings">
-            วางแผนภาษีเพื่อเงินคืนสูงสุด {{ formatCurrency(maxTaxSavings) }} THB
+            วางแผน RMF, ThaiESG เพื่อประหยัดภาษีสูงสุด {{ formatCurrency(maxTaxSavings) }} THB
+          </div>
+          <div class="text-sm text-gray-600 border-t border-gray-300 pt-4 mt-4">
+            วางแผนเปรียบเทียบภาษี (ก่อน-หลัง) การซื้อกองทุนประหยัดภาษีสูงสุด
+          </div>
+          <div class="flex justify-between items-center bg-gray-50 rounded-lg p-4 mt-4">
+            <div class="text-sm text-gray-600 flex flex-col items-center w-1/2">
+              <div class="text-sm text-gray-600">ก่อน</div>
+              <div class="text-sm text-gray-600">ลดหย่อนภาษี</div>
+              <div class="text-sm text-gray-600">{{ formatCurrencyWithDecimals(beforeTaxAmount) }}</div>
+            </div>
+            <div class="text-sm text-gray-600 flex flex-col items-center w-1/2">
+              <div class="text-sm text-gray-600">หลัง</div>
+              <div class="text-sm text-gray-600">ลดหย่อนภาษี</div>
+              <div class="text-sm text-gray-600">{{ formatCurrencyWithDecimals(beforeTaxAmount - maxTaxSavings) }}</div>
+            </div>
           </div>
         </div>
 
@@ -102,10 +124,13 @@
               <div class="font-medium text-gray-800" data-test-id="tax-calculator__tax-planning-result--rmf-title">RMF</div>
               <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--rmf-description">Description</div>
             </div>
-            <div class="ml-auto">
-              <input type="text" v-model="rmfInvestmentFormatted" @input="updateRmfInvestment"
-                data-test-id="tax-calculator__tax-planning-result--rmf-input"
-                class="w-32 px-3 py-2 bg-gray-100 rounded-lg text-right font-medium" />
+            <div class="ml-auto flex items-center gap-2">
+              <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-32 focus-within:ring-2 focus-within:ring-gray-500">
+                <input type="text" v-model="rmfInvestmentFormatted" @input="updateRmfInvestment"
+                  data-test-id="tax-calculator__tax-planning-result--rmf-input"
+                  class="w-full text-right font-medium bg-gray-100 focus:outline-none" />
+                <span class="text-gray-700">฿</span>
+              </div>
             </div>
           </div>
 
@@ -121,7 +146,7 @@
             <div class="w-4 h-4 rounded-full flex items-center justify-center">
               <i class="fa fa-info-circle" style="color: #01172BA6;"></i> 
             </div>
-            <span>ไม่เกิน 30% รายได้ทั้งปีสูงสุด 500,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ</span>
+            <span>ไม่เกิน 30% รายได้ทั้งปี สูงสุด 500,000 บาท เมื่อรวมกับกองทุนกลุ่มเกษียณอื่น</span>
           </div>
         </div>
 
@@ -133,10 +158,13 @@
               <div class="font-medium text-gray-800" data-test-id="tax-calculator__tax-planning-result--thai-esg-title">ThaiESG</div>
               <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--thai-esg-description">Description</div>
             </div>
-            <div class="ml-auto">
-              <input type="text" v-model="thaiEsgInvestmentFormatted" @input="updateThaiEsgInvestment"
-                data-test-id="tax-calculator__tax-planning-result--thai-esg-input"
-                class="w-32 px-3 py-2 bg-gray-100 rounded-lg text-right font-medium" />
+            <div class="ml-auto flex items-center gap-2">
+              <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-32 focus-within:ring-2 focus-within:ring-gray-500">
+                <input type="text" v-model="thaiEsgInvestmentFormatted" @input="updateThaiEsgInvestment"
+                  data-test-id="tax-calculator__tax-planning-result--thai-esg-input"
+                  class="w-full text-right font-medium bg-gray-100 focus:outline-none" />
+                <span class="text-gray-700">฿</span>
+              </div>
             </div>
           </div>
 
@@ -152,7 +180,7 @@
             <div class="w-4 h-4 rounded-full flex items-center justify-center">
               <i class="fa fa-info-circle" style="color: #01172BA6;"></i>
             </div>
-            <span>ไม่เกิน 30% รายได้ทั้งปีสูงสุด 300,000 บาท และไม่รวมกับกองทุนกลุ่มเกษียณ</span>
+            <span>ไม่เกิน 30% รายได้ทั้งปี สูงสุด 300,000 บาท</span>
           </div>
         </div>
       </div>
@@ -162,7 +190,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { formatCurrencyTHB } from '~/utils/format'
+import { formatCurrencyTHB, formatCurrencyTHBWithDecimals } from '~/utils/format'
 import { useTaxCalculator } from '~/composables/useTaxCalculator'
 
 const props = defineProps({
@@ -191,7 +219,8 @@ const calculationData = computed(() => props.modelValue)
 const { 
   calculateTaxPlanning,
   getInvestmentLimits,
-  computeMaxTaxSavingsFromInvestments
+  computeMaxTaxSavingsFromInvestments,
+  getMaxTaxRate
 } = useTaxCalculator()
 
 // Investment amounts (these would typically come from form inputs)
@@ -203,8 +232,8 @@ const rmfSliderValue = ref(0)
 const thaiEsgSliderValue = ref(0)
 
 // Formatted input values
-const rmfInvestmentFormatted = ref('0 ฿')
-const thaiEsgInvestmentFormatted = ref('0 ฿')
+const rmfInvestmentFormatted = ref('0')
+const thaiEsgInvestmentFormatted = ref('0')
 
 // Max values for sliders using investment limits
 const investmentLimits = computed(() => 
@@ -261,12 +290,12 @@ const formatCurrencyWithDecimals = (amount) => formatCurrencyTHBWithDecimals(amo
 // Slider and input methods - ensure proper number conversion
 const updateRmfFromSlider = () => {
   rmfInvestment.value = Number(rmfSliderValue.value) || 0
-  rmfInvestmentFormatted.value = formatCurrencyTHB(rmfInvestment.value) + ' ฿'
+  rmfInvestmentFormatted.value = formatCurrencyTHB(rmfInvestment.value)
 }
 
 const updateThaiEsgFromSlider = () => {
   thaiEsgInvestment.value = Number(thaiEsgSliderValue.value) || 0
-  thaiEsgInvestmentFormatted.value = formatCurrencyTHB(thaiEsgInvestment.value) + ' ฿'
+  thaiEsgInvestmentFormatted.value = formatCurrencyTHB(thaiEsgInvestment.value)
 }
 
 const updateRmfInvestment = (event) => {
@@ -274,7 +303,7 @@ const updateRmfInvestment = (event) => {
   const numValue = Number(value) || 0
   rmfInvestment.value = Math.min(numValue, rmfMaxValue.value)
   rmfSliderValue.value = rmfInvestment.value
-  rmfInvestmentFormatted.value = formatCurrencyTHB(rmfInvestment.value) + ' ฿'
+  rmfInvestmentFormatted.value = formatCurrencyTHB(rmfInvestment.value)
 }
 
 const updateThaiEsgInvestment = (event) => {
@@ -282,7 +311,7 @@ const updateThaiEsgInvestment = (event) => {
   const numValue = Number(value) || 0
   thaiEsgInvestment.value = Math.min(numValue, thaiEsgMaxValue.value)
   thaiEsgSliderValue.value = thaiEsgInvestment.value
-  thaiEsgInvestmentFormatted.value = formatCurrencyTHB(thaiEsgInvestment.value) + ' ฿'
+  thaiEsgInvestmentFormatted.value = formatCurrencyTHB(thaiEsgInvestment.value)
 }
 
 const handleBack = () => {

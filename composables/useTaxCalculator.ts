@@ -365,6 +365,18 @@ export function useTaxCalculator() {
     }
   }
 
+  // Get maximum tax rate based on taxable income
+  const getMaxTaxRate = (taxableIncome: number): number => {
+    if (taxableIncome <= 150000) return 0
+    else if (taxableIncome <= 300000) return 5
+    else if (taxableIncome <= 500000) return 10
+    else if (taxableIncome <= 750000) return 15
+    else if (taxableIncome <= 1000000) return 20
+    else if (taxableIncome <= 2000000) return 25
+    else if (taxableIncome <= 5000000) return 30
+    else return 35
+  }
+
   return {
     calculateTax,
     calculateTaxFromForms,
@@ -378,6 +390,7 @@ export function useTaxCalculator() {
     computeDonationDeductions,
     computeFinalTaxAmount,
     computeTaxAmountAfterMaxInvestment,
+    getMaxTaxRate,
   }
 }
 
