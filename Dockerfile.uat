@@ -22,6 +22,7 @@ ARG GOOGLE_CLIENT_ID=49742298105-57hlkd99vmeljkm8694ldnne502peu59.apps.googleuse
 ARG GOOLE_API_KEY=AIzaSyAR9eDDji5FBR3RlK4fGkap8MnqQoAvNik
 ARG CONTENT_URL=https://scontent-uat.finnomena.com
 ARG HEADER_VERSION=latest
+ARG AUTH_URL=https://auth-uat.finnomena.com
 
 # Run in production mode
 ENV NODE_ENV=production
