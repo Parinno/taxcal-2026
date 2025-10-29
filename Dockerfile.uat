@@ -24,6 +24,7 @@ ARG CONTENT_URL=https://scontent-uat.finnomena.com
 ARG HEADER_VERSION=latest
 ARG FINNOMENA_API_URL=https://api-uat.finnomena.com
 ARG FINNOMENA_WEBSITE_URL=https://uat.finnomena.com
+ARG AUTH_URL=https://auth-uat.finnomena.com
 
 # Run in production mode
 ENV NODE_ENV=production
