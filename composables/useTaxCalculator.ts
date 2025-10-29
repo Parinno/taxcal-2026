@@ -377,10 +377,85 @@ export function useTaxCalculator() {
     else return 35
   }
 
+  // Tax planning result calculations
+  const calculateTaxPlanningResult = (
+    calculationData: CalculationResult,
+    rmfInvestment: number,
+    thaiEsgInvestment: number
+  ) => {
+    const totalInvestment = rmfInvestment + thaiEsgInvestment
+    
+    // Calculate tax savings from investments
+    const taxSavings = computeTaxSavingsFromInvestments(
+      totalInvestment,
+      calculationData.taxableIncome,
+      calculationData.taxAmount
+    )
+    
+    // Calculate before and after tax amounts
+    const beforeTaxAmount = calculationData.netTaxPayable || (calculationData.taxAmount - calculationData.withholdingTax)
+    const afterTaxAmount = beforeTaxAmount - taxSavings
+    
+    // Calculate maximum possible tax savings
+    const maxTaxSavings = computeMaxTaxSavingsFromInvestments(
+      calculationData.totalIncome,
+      calculationData.taxableIncome,
+      calculationData.taxAmount
+    )
+    
+    // Get investment limits
+    const investmentLimits = getInvestmentLimits(calculationData.totalIncome)
+    
+    // Calculate tax rates for before/after scenarios
+    const beforeTaxRate = getMaxTaxRate(calculationData.taxableIncome)
+    const afterTaxableIncome = Math.max(0, calculationData.taxableIncome - investmentLimits.rmfMax - investmentLimits.thaiEsgMax)
+    const afterTaxRate = getMaxTaxRate(afterTaxableIncome)
+    
+    return {
+      totalInvestment,
+      taxSavings,
+      beforeTaxAmount,
+      afterTaxAmount,
+      maxTaxSavings,
+      investmentLimits,
+      beforeTaxRate,
+      afterTaxRate,
+      rmfMaxValue: investmentLimits.rmfMax,
+      thaiEsgMaxValue: investmentLimits.thaiEsgMax
+    }
+  }
+
+  // Tax summary calculations
+  const calculateTaxSummary = (
+    calculationData: CalculationResult,
+    taxPlanning: any,
+    rmfInvestment: number,
+    thaiEsgInvestment: number
+  ) => {
+    const maxTaxRate = getMaxTaxRate(calculationData.taxableIncome)
+    
+    return {
+      maxTaxRate,
+      netTaxPayable: calculationData.netTaxPayable,
+      totalIncome: calculationData.totalIncome,
+      totalExpenses: calculationData.totalExpenses,
+      totalDeductions: calculationData.totalDeductions,
+      taxableIncome: calculationData.taxableIncome,
+      taxAmount: calculationData.taxAmount,
+      withholdingTax: calculationData.withholdingTax,
+      totalInvestment: taxPlanning.totalInvestment,
+      taxSavings: taxPlanning.taxSavings,
+      rmfInvestment,
+      thaiEsgInvestment
+    }
+  }
+
   return {
     calculateTax,
     calculateTaxFromForms,
     calculateTaxPlanning,
+    calculateTaxPlanningResult,
+    calculateTaxSummary,
     getInvestmentRecommendations,
     getInvestmentLimits,
     getThaiESGXLimits,

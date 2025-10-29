@@ -2,40 +2,14 @@
   <div class="max-w-4xl mx-auto" data-test-id="tax-calculator__tax-planning-result--container">
     <!-- Main Content -->
     <div class="space-y-8">
-      <!-- Tax Summary Section -->
-      <!-- <div class="text-center mb-8">
-          <div class="text-lg text-gray-700 mb-2">ภาษีที่ต้องจ่ายเพิ่ม</div>
-          <div class="text-4xl font-bold text-gray-800">
-            {{ formatCurrency(beforeTaxAmount - taxSavings) }}({{ formatCurrency(-taxSavings) }})
-          </div>
-        </div> -->
-
-      <!-- Income Summary -->
-      <!-- <div class="grid grid-cols-2 gap-8 mb-8">
-          <div class="text-center">
-            <div class="text-sm text-gray-600 mb-2">รายได้ทั้งปี</div>
-            <div class="text-2xl font-bold text-gray-800">
-              {{ formatCurrency(calculationData.totalIncome) }}
-            </div>
-          </div>
-          <div class="text-center">
-            <div class="text-sm text-gray-600 mb-2">รายได้สุทธิ</div>
-            <div class="text-2xl font-bold text-gray-800">
-              {{ formatCurrency(calculationData.taxableIncome) }}
-            </div>
-          </div>
-        </div> -->
 
       <!-- Tax Planning Header -->
        <div>
         <h3 class="text-2xl font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-planning-result--planning-title">วางแผนลดหย่อนภาษี</h3>
-        <!-- <p class="text-sm text-gray-600 mb-6">
-          แสดงผลเปรียบเทียบภาษี 'ก่อน-หลัง' การซื้อกองทุนเพื่อประหยัดภาษีได้สูงสุด
-        </p> -->
       </div>
 
       <!-- Tax Summary Card -->
-      <div class="bg-gray-100 rounded-lg p-6 mb-8" data-test-id="tax-calculator__tax-planning-result--tax-summary-card">
+      <div class="bg-gray-100 rounded-2xl p-6 mb-8" data-test-id="tax-calculator__tax-planning-result--tax-summary-card">
         <div class="text-left mb-4">
           <div class="text-lg font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-planning-result--tax-summary-title">
             {{ (beforeTaxAmount - taxSavings) >= 0 ? 'ภาษีที่ต้องจ่ายเพิ่ม' : 'ภาษีที่ได้รับคืน' }}
@@ -46,86 +20,54 @@
               data-test-id="tax-calculator__tax-planning-result--tax-amount">
               {{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount - taxSavings)) }}
             </div>
-            <div class="text-sm text-gray-600" data-test-id="tax-calculator__tax-planning-result--tax-currency">THB</div>
+            <div class="text-md text-gray-500 font-semibold" data-test-id="tax-calculator__tax-planning-result--tax-currency">THB</div>
           </div>
-          <div class="text-sm text-gray-600">
-            อัตราภาษีสูงสุด 
-            <span class="font-medium">{{ getMaxTaxRate(calculationData.taxableIncome) }}%</span>
-            <span class="text-gray-500">
-              → {{ getMaxTaxRate(Math.max(0, calculationData.taxableIncome - taxPlanning.totalInvestment)) }}%
-            </span>
-          </div>
-          <div class="text-sm text-gray-600" data-test-id="tax-calculator__tax-planning-result--max-tax-savings">
+          <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--max-tax-savings">
             วางแผน RMF, ThaiESG เพื่อประหยัดภาษีสูงสุด {{ formatCurrency(maxTaxSavings) }} THB
           </div>
-          <div class="text-sm text-gray-600 border-t border-gray-300 pt-4 mt-4">
+          <div class="text-sm border-t border-gray-300 pt-4 mt-4">
             วางแผนเปรียบเทียบภาษี (ก่อน-หลัง) การซื้อกองทุนประหยัดภาษีสูงสุด
           </div>
-          <div class="flex justify-between items-center bg-gray-50 rounded-lg p-4 mt-4">
+          <div class="flex justify-between items-center bg-gray-50 rounded-2xl p-4 mt-4">
             <div class="text-sm text-gray-600 flex flex-col items-center w-1/2">
-              <div class="text-sm text-gray-600">ก่อน</div>
-              <div class="text-sm text-gray-600">ลดหย่อนภาษี</div>
-              <div class="text-sm text-gray-600">{{ formatCurrencyWithDecimals(beforeTaxAmount) }}</div>
+              <div class="text-sm text-gray-500 font-bold">ก่อน</div>
+              <div class="text-sm text-gray-500">{{ (beforeTaxAmount >= 0 ? 'จ่ายภาษีเพิ่ม' : 'ได้รับคืนภาษี') }}</div>
+              <div class="text-sm" :class="beforeTaxAmount >= 0 ? 'text-red-600' : 'text-green-600'">{{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount)) }}</div>
+              <div class="text-sm text-gray-500">
+                อัตราภาษีสูงสุด
+                <span class="font-bold text-gray-800">{{ taxPlanningResult.beforeTaxRate }}%</span>
+              </div>
+            </div>
+            <div class="text-sm text-gray-600 flex flex-col items-center">
+              <i class="fa-solid fa-arrow-right"></i>
             </div>
             <div class="text-sm text-gray-600 flex flex-col items-center w-1/2">
-              <div class="text-sm text-gray-600">หลัง</div>
-              <div class="text-sm text-gray-600">ลดหย่อนภาษี</div>
-              <div class="text-sm text-gray-600">{{ formatCurrencyWithDecimals(beforeTaxAmount - maxTaxSavings) }}</div>
+              <div class="text-sm text-green-600 font-bold">หลัง</div>
+              <div class="text-sm text-gray-500">{{ (beforeTaxAmount - maxTaxSavings >= 0 ? 'จ่ายภาษีเพิ่ม' : 'ได้รับคืนภาษี') }}</div>
+              <div class="text-sm" :class="beforeTaxAmount - maxTaxSavings >= 0 ? 'text-red-600' : 'text-green-600'">{{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount - maxTaxSavings)) }}</div>
+              <div class="text-sm text-gray-500">
+                อัตราภาษีสูงสุด
+                <span class="font-bold text-gray-800">{{ taxPlanningResult.afterTaxRate }}%</span>
+              </div>
             </div>
           </div>
         </div>
-
-        <!-- <div class="border-t border-gray-300 pt-4">
-            <div class="flex justify-between items-center mb-2">
-              <div class="text-sm text-gray-600">รายได้ทั้งปี</div>
-              <div class="text-sm font-medium text-gray-800">{{ formatCurrency(calculationData.totalIncome) }}</div>
-            </div>
-            <div class="flex justify-between items-center">
-              <div class="text-sm text-gray-600">รายได้สุทธิ</div>
-              <div class="text-sm font-medium text-gray-800">{{ formatCurrency(calculationData.taxableIncome) }}</div>
-            </div>
-          </div> -->
       </div>
-
-        <!-- Tax Comparison Section -->
-        <!-- <div class="bg-gray-100 rounded-lg p-6">
-          <div class="text-lg font-bold text-gray-800 mb-4">จำนวนเงินภาษีที่ต้องจ่าย</div> -->
-
-      <!-- Before Tax Planning -->
-      <!-- <div class="flex justify-between items-center mb-3">
-            <div>
-              <div class="font-medium text-gray-800">ก่อนวางแผนภาษี</div>
-              <div class="text-sm text-gray-600">(จ่ายภาษีเพิ่ม)</div>
-            </div>
-            <div class="text-xl font-bold text-gray-800">
-              {{ formatCurrency(beforeTaxAmount) }}
-            </div>
-          </div> -->
-
-      <!-- After Tax Planning -->
-      <!-- <div class="flex justify-between items-center">
-            <div>
-              <div class="font-medium text-gray-800">หลังวางแผนภาษี</div>
-              <div class="text-sm text-gray-600">(จ่ายภาษีเพิ่ม/คืนเงินภาษี)</div>
-            </div>
-            <div class="text-xl font-bold text-gray-800">
-              {{ formatCurrency(afterTaxAmount) }}
-            </div>
-          </div>
-        </div> -->
 
       <!-- Investment Planning Section -->
       <div class="space-y-6" data-test-id="tax-calculator__tax-planning-result--investment-planning">
         <!-- RMF Investment -->
         <div class="space-y-3" data-test-id="tax-calculator__tax-planning-result--rmf-investment">
           <div class="flex items-center gap-3">
-            <div class="w-4 h-4 bg-purple-500 rounded-full" data-test-id="tax-calculator__tax-planning-result--rmf-indicator"></div>
             <div>
-              <div class="font-medium text-gray-800" data-test-id="tax-calculator__tax-planning-result--rmf-title">RMF</div>
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 bg-purple-500 rounded-full" data-test-id="tax-calculator__tax-planning-result--rmf-indicator"></div>
+                <div class="font-medium text-gray-800" data-test-id="tax-calculator__tax-planning-result--rmf-title">RMF</div>
+              </div>
               <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--rmf-description">Description</div>
             </div>
             <div class="ml-auto flex items-center gap-2">
-              <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-32 focus-within:ring-2 focus-within:ring-gray-500">
+              <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-64 focus-within:ring-2 focus-within:ring-gray-500">
                 <input type="text" v-model="rmfInvestmentFormatted" @input="updateRmfInvestment"
                   data-test-id="tax-calculator__tax-planning-result--rmf-input"
                   class="w-full text-right font-medium bg-gray-100 focus:outline-none" />
@@ -146,20 +88,22 @@
             <div class="w-4 h-4 rounded-full flex items-center justify-center">
               <i class="fa fa-info-circle" style="color: #01172BA6;"></i> 
             </div>
-            <span>ไม่เกิน 30% รายได้ทั้งปี สูงสุด 500,000 บาท เมื่อรวมกับกองทุนกลุ่มเกษียณอื่น</span>
+            <span class="text-sm text-gray-500">ไม่เกิน 30% รายได้ทั้งปี สูงสุด 500,000 บาท เมื่อรวมกับกองทุนกลุ่มเกษียณอื่น</span>
           </div>
         </div>
 
         <!-- ThaiESG Investment -->
         <div class="space-y-3" data-test-id="tax-calculator__tax-planning-result--thai-esg-investment">
           <div class="flex items-center gap-3">
-            <div class="w-4 h-4 bg-green-500 rounded-full" data-test-id="tax-calculator__tax-planning-result--thai-esg-indicator"></div>
             <div>
-              <div class="font-medium text-gray-800" data-test-id="tax-calculator__tax-planning-result--thai-esg-title">ThaiESG</div>
-              <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--thai-esg-description">Description</div>
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 bg-green-500 rounded-full" data-test-id="tax-calculator__tax-planning-result--thai-esg-indicator"></div>
+                <div class="font-medium text-gray-800" data-test-id="tax-calculator__tax-planning-result--thai-esg-title">ThaiESG</div>
+              </div>
+              <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--thai-esg-description">Description</div>     
             </div>
             <div class="ml-auto flex items-center gap-2">
-              <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-32 focus-within:ring-2 focus-within:ring-gray-500">
+              <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-64 focus-within:ring-2 focus-within:ring-gray-500">
                 <input type="text" v-model="thaiEsgInvestmentFormatted" @input="updateThaiEsgInvestment"
                   data-test-id="tax-calculator__tax-planning-result--thai-esg-input"
                   class="w-full text-right font-medium bg-gray-100 focus:outline-none" />
@@ -180,7 +124,7 @@
             <div class="w-4 h-4 rounded-full flex items-center justify-center">
               <i class="fa fa-info-circle" style="color: #01172BA6;"></i>
             </div>
-            <span>ไม่เกิน 30% รายได้ทั้งปี สูงสุด 300,000 บาท</span>
+            <span class="text-sm text-gray-500">ไม่เกิน 30% รายได้ทั้งปี สูงสุด 300,000 บาท</span>
           </div>
         </div>
       </div>
@@ -226,10 +170,7 @@ const calculationData = computed(() => props.modelValue)
 
 // Use tax calculator composable
 const { 
-  calculateTaxPlanning,
-  getInvestmentLimits,
-  computeMaxTaxSavingsFromInvestments,
-  getMaxTaxRate
+  calculateTaxPlanningResult
 } = useTaxCalculator()
 
 // Investment amounts (these would typically come from form inputs)
@@ -244,22 +185,9 @@ const thaiEsgSliderValue = ref(0)
 const rmfInvestmentFormatted = ref('0')
 const thaiEsgInvestmentFormatted = ref('0')
 
-// Max values for sliders using investment limits
-const investmentLimits = computed(() => 
-  getInvestmentLimits(calculationData.value.totalIncome)
-)
-
-const rmfMaxValue = computed(() => investmentLimits.value.rmfMax)
-const thaiEsgMaxValue = computed(() => investmentLimits.value.thaiEsgMax)
-
-// Additional calculations - use actual data from calculation
-const expenses = computed(() => calculationData.value.totalExpenses || 0)
-const withholdingTax = computed(() => calculationData.value.withholdingTax || 0)
-const totalDeductions = computed(() => calculationData.value.totalDeductions || 0)
-
-// Tax planning calculations using useTaxCalculator
-const taxPlanning = computed(() => 
-  calculateTaxPlanning(
+// Calculate all tax planning results using the composable
+const taxPlanningResult = computed(() => 
+  calculateTaxPlanningResult(
     calculationData.value,
     Number(rmfInvestment.value) || 0,
     Number(thaiEsgInvestment.value) || 0
@@ -267,19 +195,12 @@ const taxPlanning = computed(() =>
 )
 
 // Extract values from tax planning calculation
-const beforeTaxAmount = computed(() => taxPlanning.value.beforeTaxAmount)
-const afterTaxAmount = computed(() => taxPlanning.value.afterTaxAmount)
-const taxSavings = computed(() => taxPlanning.value.taxSavings)
-const taxReduction = computed(() => taxPlanning.value.taxReduction)
-
-// Calculate maximum possible tax savings
-const maxTaxSavings = computed(() => 
-  computeMaxTaxSavingsFromInvestments(
-    calculationData.value.totalIncome,
-    calculationData.value.taxableIncome,
-    calculationData.value.taxAmount
-  )
-)
+const beforeTaxAmount = computed(() => taxPlanningResult.value.beforeTaxAmount)
+const afterTaxAmount = computed(() => taxPlanningResult.value.afterTaxAmount)
+const taxSavings = computed(() => taxPlanningResult.value.taxSavings)
+const maxTaxSavings = computed(() => taxPlanningResult.value.maxTaxSavings)
+const rmfMaxValue = computed(() => taxPlanningResult.value.rmfMaxValue)
+const thaiEsgMaxValue = computed(() => taxPlanningResult.value.thaiEsgMaxValue)
 
 // Emit investment data changes to parent
 
