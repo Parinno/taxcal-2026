@@ -93,10 +93,20 @@ watch(displayWithholdingTax, (newVal) => {
 const onAmountInput = (which, e) => {
 	emit('clear-errors')
 	const formatted = sanitizeAndFormatNumberInput(e.target.value)
-	if (which === 'salary') displaySalary.value = formatted
-	if (which === 'bonus') displayBonus.value = formatted
-	if (which === 'otherIncome') displayOtherIncome.value = formatted
-	if (which === 'withholdingTax') displayWithholdingTax.value = formatted
+	switch (which) {
+		case 'salary':
+			displaySalary.value = formatted
+			break
+		case 'bonus':
+			displayBonus.value = formatted
+			break
+		case 'otherIncome':
+			displayOtherIncome.value = formatted
+			break
+		case 'withholdingTax':
+			displayWithholdingTax.value = formatted
+			break
+	}
 }
 
 </script>
