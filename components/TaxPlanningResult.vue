@@ -135,6 +135,7 @@
       <!-- Recommended Tax Funds Section -->
       <div class="mt-8">
         <RecommendedTaxFunds 
+          :rmf-investment="rmfInvestment"
           @fund-click="handleFundClick"
           @view-all="handleViewAll"
         />

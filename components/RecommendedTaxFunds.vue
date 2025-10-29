@@ -113,7 +113,7 @@
 				</div>
 
 				<!-- Details Line -->
-				<div class="flex items-center gap-3">
+				<div class="flex items-center gap-2">
 					<!-- Stock Type -->
 					<span class="text-sm text-gray-500 pr-2 border-r-2 border-gray-200">
 						{{ fund.stockType }}
@@ -164,7 +164,7 @@
 				</div>
 
 				<!-- Details Line -->
-				<div class="flex items-center gap-3">
+				<div class="flex items-center gap-2">
 					<!-- Stock Type -->
 					<span class="text-sm text-gray-500 pr-2 border-r-2 border-gray-200">
 						{{ fund.stockType }}
@@ -294,6 +294,7 @@
 	<RmfComboAllocateModal
 		:open="isAllocateModalOpen"
 		:combo="selectedCombo"
+		:default-amount="props.rmfInvestment"
 		@update:open="isAllocateModalOpen = $event"
 		@confirm="handleConfirmAllocation"
 	/>
@@ -312,6 +313,10 @@ const props = defineProps({
 	onViewAll: {
 		type: Function,
 		default: () => {}
+	},
+	rmfInvestmen3t: {
+		type: Number,
+		default: 0
 	}
 })
 
