@@ -22,6 +22,7 @@ export interface CalculationResult {
   taxableIncome: number
   taxAmount: number
   retirementUsed: number
+  providentFund?: number
   withholdingTax: number
   netTaxPayable: number
 }

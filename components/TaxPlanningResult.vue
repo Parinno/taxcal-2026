@@ -9,56 +9,64 @@
       </div>
 
       <!-- Tax Summary Card -->
-      <div class="bg-gray-100 rounded-2xl p-6 mb-8" data-test-id="tax-calculator__tax-planning-result--tax-summary-card">
+      <div class="bg-gray-100 rounded-2xl px-6 pt-6 pb-2 mb-8" data-test-id="tax-calculator__tax-planning-result--tax-summary-card">
         <div class="text-left mb-4">
           <div class="text-lg font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-planning-result--tax-summary-title">
             {{ (beforeTaxAmount - taxSavings) >= 0 ? 'ภาษีที่ต้องจ่ายเพิ่ม' : 'ภาษีที่ได้รับคืน' }}
           </div>
           <div class="flex items-center gap-2">
             <div class="text-4xl font-bold mb-2"
-              :class="(beforeTaxAmount - taxSavings) >= 0 ? 'text-red-600' : 'text-green-600'"
+              :class="(beforeTaxAmount - taxSavings) >= 0 ? '' : 'text-green-600'"
               data-test-id="tax-calculator__tax-planning-result--tax-amount">
               {{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount - taxSavings)) }}
             </div>
             <div class="text-md text-gray-500 font-semibold" data-test-id="tax-calculator__tax-planning-result--tax-currency">THB</div>
           </div>
-          <div class="text-sm text-gray-600 mb-2">
-            <span class="font-semibold px-2 py-1 rounded-full" style="background-color: #00E76B;">{{ taxPlanningResult.afterTaxRate }}%</span>
+          <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+            <span class="text-sm text-gray-500">อัตราภาษีสูงสุด</span>
+            <span class="font-semibold px-2 py-1 rounded-full" :style="taxPlanningResult.afterTaxRate > 0 ? 'background-color: #00E76B;' : 'background-color: #D3DFE5;'">{{ taxPlanningResult.afterTaxRate }}%</span>
           </div>
-          <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--max-tax-savings">
-            วางแผน RMF, ThaiESG เพื่อประหยัดภาษีสูงสุด {{ formatCurrency(maxTaxSavings) }} THB
-          </div>
-          <div class="text-sm border-t border-gray-300 pt-4 mt-4">
-            วางแผนเปรียบเทียบภาษี (ก่อน-หลัง) การซื้อกองทุนประหยัดภาษีสูงสุด
-          </div>
-          <div class="flex justify-between items-center bg-gray-50 rounded-2xl p-4 mt-4">
-            <div class="text-sm text-gray-600 flex flex-col items-center w-1/2">
-              <div class="text-sm text-gray-500 font-bold">ก่อน</div>
-              <div class="text-sm text-gray-500">{{ (beforeTaxAmount >= 0 ? 'จ่ายภาษีเพิ่ม' : 'ได้รับคืนภาษี') }}</div>
-              <div class="text-sm" :class="beforeTaxAmount >= 0 ? 'text-red-600' : 'text-green-600'">{{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount)) }}</div>
-              <div class="text-sm text-gray-500">
-                อัตราภาษีสูงสุด
-                <span class="font-bold text-gray-800">{{ taxPlanningResult.beforeTaxRate }}%</span>
+          <div v-if="taxPlanningResult.beforeTaxRate > 0">
+            <div class="text-sm border-t border-gray-300 pt-4 mt-4">
+              วางแผนกองทุน RMF, ThaiESG เพื่อประหยัดภาษีเพิ่มขึ้นสูงสุด {{ formatCurrency(maxTaxSavings) }} บาท พร้อมเปรียบเทียบผลต่างทางภาษีก่อนและหลังการลงทุน
+            </div>
+            <div class="flex justify-between items-center bg-gray-50 rounded-2xl p-4 mt-4">
+              <div class="text-sm text-gray-600 flex flex-col items-center w-1/2">
+                <div class="text-sm text-gray-500 font-bold">ก่อน</div>
+                <div class="text-sm text-gray-500">{{ (beforeTaxAmount >= 0 ? 'จ่ายภาษีเพิ่ม' : 'ได้รับคืนภาษี') }}</div>
+                <div class="text-sm" :class="beforeTaxAmount >= 0 ? '' : 'text-green-600'">{{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount)) }}</div>
+                <div class="text-sm text-gray-500">
+                  อัตราภาษีสูงสุด
+                  <span class="font-bold text-gray-800">{{ taxPlanningResult.beforeTaxRate }}%</span>
+                </div>
+              </div>
+              <div class="text-sm text-gray-600 flex flex-col items-center">
+                <i class="fa-solid fa-arrow-right"></i>
+              </div>
+              <div class="text-sm text-gray-600 flex flex-col items-center w-1/2">
+                <div class="text-sm text-green-600 font-bold">หลัง</div>
+                <div class="text-sm text-gray-500">{{ (beforeTaxAmount - taxSavings >= 0 ? 'จ่ายภาษีเพิ่ม' : 'เงินคืนภาษี') }}</div>
+                <div class="text-sm" :class="beforeTaxAmount - taxSavings >= 0 ? '' : 'text-green-600'">{{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount - taxSavings)) }}</div>
+                <div class="text-sm text-gray-500">
+                  อัตราภาษีสูงสุด
+                  <span class="font-bold text-gray-800">{{ taxPlanningResult.afterTaxRate }}%</span>
+                </div>
               </div>
             </div>
-            <div class="text-sm text-gray-600 flex flex-col items-center">
-              <i class="fa-solid fa-arrow-right"></i>
-            </div>
-            <div class="text-sm text-gray-600 flex flex-col items-center w-1/2">
-              <div class="text-sm text-green-600 font-bold">หลัง</div>
-              <div class="text-sm text-gray-500">{{ (beforeTaxAmount - maxTaxSavings >= 0 ? 'จ่ายภาษีเพิ่ม' : 'เงินคืนภาษี') }}</div>
-              <div class="text-sm" :class="beforeTaxAmount - maxTaxSavings >= 0 ? 'text-red-600' : 'text-green-600'">{{ formatCurrencyWithDecimals(Math.abs(beforeTaxAmount - maxTaxSavings)) }}</div>
-              <div class="text-sm text-gray-500">
-                อัตราภาษีสูงสุด
-                <span class="font-bold text-gray-800">{{ taxPlanningResult.maxAfterTaxRate }}%</span>
+          </div>
+          <div v-else>
+            <div class="flex items-center gap-2 text-sm text-gray-600 border-t border-gray-300 pt-4 mt-4">
+              <div class="w-4 h-4 rounded-full flex items-center justify-center">
+                <i class="fa fa-info-circle" style="color: #01172BA6;"></i>
               </div>
+              <span class="text-sm text-gray-500">ยังไม่อยู่ในเกณฑ์ที่ต้องเสียภาษี</span>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Investment Planning Section -->
-      <div class="space-y-6" data-test-id="tax-calculator__tax-planning-result--investment-planning">
+      <div v-if="taxPlanningResult.beforeTaxRate > 0" class="space-y-6" data-test-id="tax-calculator__tax-planning-result--investment-planning">
         <!-- RMF Investment -->
         <div class="space-y-3" data-test-id="tax-calculator__tax-planning-result--rmf-investment">
           <div class="flex items-center gap-3">

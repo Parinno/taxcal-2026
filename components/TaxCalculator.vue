@@ -176,6 +176,7 @@ const calculateTax = () => {
 		totalDeductionsAndExpenses: result.totalDeductionsAndExpenses,
 		taxableIncome: result.taxableIncome,
 		taxAmount: result.taxAmount,
+		providentFund: result.providentFund,
 		withholdingTax: result.withholdingTax,
 		netTaxPayable: result.netTaxPayable
 	}

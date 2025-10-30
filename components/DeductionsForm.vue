@@ -83,17 +83,17 @@
 							:class="['form-input']"
 							@input="onAmountInput('socialSecurity', $event)"
 						/>
+						<!-- Clear button -->
+						<button
+							v-if="displaySocialSecurity"
+							@click="displaySocialSecurity = ''"
+							type="button"
+							tabindex="-1"
+							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
+						>
+							<i class="fa-solid fa-xmark text-white"></i>
+						</button>
 					</div>
-					<!-- Clear button -->
-					<button
-						v-if="displaySocialSecurity"
-						@click="displaySocialSecurity = ''"
-						type="button"
-						tabindex="-1"
-						class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
-					>
-						<i class="fa-solid fa-xmark text-white"></i>
-					</button>
 					<div
 						class="flex items-center mt-2"
 						data-test-id="tax-calculator__deductions-form--social-security-info"

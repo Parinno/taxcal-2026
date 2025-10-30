@@ -11,15 +11,18 @@
           {{ taxSummaryData.netTaxPayable >= 0 ? 'ภาษีที่ต้องจ่ายเพิ่ม' : 'ภาษีที่ได้รับคืน' }}
         </div>
         <div class="flex items-end gap-2">
-          <div class="text-2xl font-bold" :class="taxSummaryData.netTaxPayable >= 0 ? 'text-red-600' : 'text-green-600'"
+          <div class="text-2xl font-bold" :class="taxSummaryData.netTaxPayable >= 0 ? '' : 'text-green-600'"
             data-test-id="tax-calculator__tax-summary--tax-payable-amount">
             {{ formatCurrencyWithDecimals(Math.abs(taxSummaryData.netTaxPayable)) }}
           </div>
           <div class="text-md font-semibold text-gray-500" data-test-id="tax-calculator__tax-summary--tax-payable-currency">THB</div>
         </div>
-        <div class="text-sm text-gray-600 mt-2">
-            อัตราภาษีสูงสุด 
-            <span class="font-semibold px-2 py-1 rounded-full" style="background-color: #00E76B;">{{ taxSummaryData.maxTaxRate }}%</span>
+        <div v-if="taxSummaryData.maxTaxRate > 0" class="text-sm text-gray-600 mt-2">
+          อัตราภาษีสูงสุด 
+          <span class="font-semibold px-2 py-1 rounded-full" style="background-color: #00E76B;">{{ taxSummaryData.maxTaxRate }}%</span>
+        </div>
+        <div v-else class="text-sm text-gray-500 mt-2">
+          ยังไม่อยู่ในเกณฑ์ที่ต้องเสียภาษี
         </div>
       </div>
 
@@ -58,7 +61,7 @@
     </div>
 
     <!-- Tax Planning Card -->
-    <div class="bg-white border border-gray-200 rounded-xl p-6" data-test-id="tax-calculator__tax-summary--tax-planning-card">
+    <div v-if="taxSummaryData.maxTaxRate > 0" class="bg-white border border-gray-200 rounded-xl p-6" data-test-id="tax-calculator__tax-summary--tax-planning-card">
       <h3 class="text-xl font-bold text-gray-800 mb-1" data-test-id="tax-calculator__tax-summary--tax-planning-title">วางแผนลดหย่อนภาษี</h3>
       <div class="text-sm text-gray-500 mb-4">ประมาณการภาษีประจำปี</div>
       

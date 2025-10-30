@@ -156,6 +156,7 @@ export function useTaxCalculator() {
       taxableIncome,
       taxAmount,
       retirementUsed: providentFund + thaiESGX + thaiESGXTransferred,
+      providentFund,
       withholdingTax,
       netTaxPayable,
     }
@@ -230,11 +231,13 @@ export function useTaxCalculator() {
     
     // Get investment limits
     const investmentLimits = getInvestmentLimits(calculationData.totalIncome)
+    // Adjust RMF Max by subtracting existing provident fund contributions
+    const adjustedRmfMax = Math.max(0, investmentLimits.rmfMax - (calculationData.providentFund || 0))
     
     // Calculate tax rates for before/after scenarios
     const beforeTaxRate = getMaxTaxRate(calculationData.taxableIncome)
     const afterTaxableIncome = Math.max(0, calculationData.taxableIncome - totalInvestment)
-    const maxAfterTaxableIncome = Math.max(0, calculationData.taxableIncome - investmentLimits.rmfMax - investmentLimits.thaiEsgMax)
+    const maxAfterTaxableIncome = Math.max(0, calculationData.taxableIncome - adjustedRmfMax - investmentLimits.thaiEsgMax)
     const afterTaxRate = getMaxTaxRate(afterTaxableIncome)
     const maxAfterTaxRate = getMaxTaxRate(maxAfterTaxableIncome)
     
@@ -244,11 +247,11 @@ export function useTaxCalculator() {
       beforeTaxAmount,
       afterTaxAmount,
       maxTaxSavings,
-      investmentLimits,
+      investmentLimits: { rmfMax: adjustedRmfMax, thaiEsgMax: investmentLimits.thaiEsgMax },
       beforeTaxRate,
       afterTaxRate,
       maxAfterTaxRate,
-      rmfMaxValue: investmentLimits.rmfMax,
+      rmfMaxValue: adjustedRmfMax,
       thaiEsgMaxValue: investmentLimits.thaiEsgMax
     }
   }
