@@ -53,7 +53,7 @@ cy.get('[data-test-id="tax-calculator__recommended-tax-funds--rmf-fund-0"]').cli
 cy.get('[data-test-id="tax-calculator__recommended-tax-funds--thaiesg-fund-0"]').click()
 
 // click on a combo fund (first combo's first fund)
-cy.get('[data-test-id="tax-calculator__recommended-tax-funds--combo-fund-0-0"]').click()
+cy.get('[data-test-id="tax-calculator__recommended-tax-funds--combo-fund-0"]').click()
 
 // open allocation modal for a specific combo (first combo at index 0)
 cy.get('[data-test-id="tax-calculator__recommended-tax-funds--select-combo-0"]').click()
