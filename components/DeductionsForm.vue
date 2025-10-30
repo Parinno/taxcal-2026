@@ -111,7 +111,7 @@
 						class="block text-gray-800 font-medium text-[15px]"
 						data-test-id="tax-calculator__deductions-form--provident-fund-label"
 					>
-						ค่าลดหย่อนกองทุนสำรองเลี้ยงชีพ (PVD)
+					กองทุนกลุ่มเกษียณ ยังไม่รวม RMF (กองทุนสำรองเลี้ยงชีพ, กบข, กอช, ประกันบำนาญ)
 					</label>
 					<div class="relative">
 						<input
@@ -143,7 +143,7 @@
 							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
 						</div>
 						<p class="text-[15px] text-color-secondary">
-							ไม่เกิน 15% ของเงินเดือน (ไม่รวมเงินสมทบจากนายจ้าง)
+							ไม่เกิน 500,000 บาท (ไม่รวมเงินสมทบจากนายจ้าง)
 						</p>
 					</div>
 				</div>
@@ -189,13 +189,13 @@
 						class="block text-gray-800 font-medium mb-2"
 						data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-label"
 					>
-						กองทุน ThaiESGX (Thai ESGX โอนจาก LTF)
+						กองทุน ThaiESGX (ThaiESGX โอนจาก LTF)
 					</label>
 					<p
 						class="text-sm text-gray-500 mb-2 text-[15px]"
 						data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-description"
 					>
-						(Thai ESGX โอนจาก LTF)
+						(ThaiESGX โอนจาก LTF)
 					</p>
 					<div class="relative">
 						<input
