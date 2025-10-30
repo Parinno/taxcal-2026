@@ -16,8 +16,9 @@ export default defineEventHandler(async (event) => {
 		})
 		return successResponse(profile)
 	} catch (error: unknown) {
-		if (error && typeof error === 'object' && 'statusCode' in error) {
-			sendError(event, error as any)
+		const err = error as AppError
+		if (err.statusCode) {
+			sendError(event, err)
 		} else {
 			sendError(event, errorResponse(500, 'api:profile unexpected error'))
 		}

@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
 import type { HttpResponse } from '@/server/types/http'
-import { apiPrefixPath } from '@/utils/url'
-
 const apiPrefix = apiPrefixPath()
 
 export const useUser = defineStore('user', () => {
@@ -19,7 +17,7 @@ export const useUser = defineStore('user', () => {
 
 	async function getProfile() {
 		const config = useRuntimeConfig()
-		const accessToken = useCookie((config.public as any).auth.cookie.accessToken)
+		const accessToken = useCookie(config.public.auth.cookie.accessToken)
 		if (!accessToken.value) {
 			user.isLoggedIn = false
 			return

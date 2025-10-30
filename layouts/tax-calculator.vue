@@ -7,31 +7,13 @@
     <Disclaimer />
     <Footer />
   </div>
-  <!-- <div class="min-h-screen bg-white">
-    <div class="max-w-4xl mx-auto px-4 md:px-6 py-6 md:py-8">
-      <div class="text-center mb-8 md:mb-12">
-        <h1 class="header-title">
-          คำนวณภาษีและวางแผนลดหย่อนภาษี
-        </h1>
-        <p class="header-subtitle">
-          คำนวณภาษีเงินได้สำหรับบุคคลธรรมดาได้เงินคืนภาษีสูงสุด
-        </p>
-      </div>
-
-      <StepIndicator :current-step="currentStep" />
-
-      <slot />
-    </div>
-  </div>
-  <Footer /> -->
 </template>
 
 <script setup>
 import { ref, provide } from 'vue'
-import StepIndicator from '~/components/StepIndicator.vue'
 import Header from '~/components/header/Header.vue'
 import Footer from '~/components/footer/Footer.vue'
-import Disclaimer from '~/components/footer/Disclaimer.vue'
+import Disclaimer from '~/components/Disclaimer.vue'
 
 // Current step state - provide to child components
 const currentStep = ref(1)
