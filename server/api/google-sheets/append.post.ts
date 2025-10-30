@@ -2,13 +2,16 @@ import { google } from 'googleapis'
 
 export default defineEventHandler(async (event) => {
   try {
+
+    const { googleClientEmail, googlePrivateKey } = useRuntimeConfig();
+
     const body = await readBody(event)
 
    // Get spreadsheetId and range from environment variables
    const spreadsheetId = process.env.GOOGLE_SHEETS_ID
    const range = process.env.GOOGLE_SHEETS_RANGE
 
-   const { values } = body
+   const { values, headers } = body
 
    if (!spreadsheetId || !range) {
      throw createError({
@@ -25,11 +28,60 @@ export default defineEventHandler(async (event) => {
    }
 
     // Initialize Google Sheets API
-    const auth = new google.auth.GoogleAuth({
+    const auth = new google.auth.GoogleAuth({ 
+      credentials: {
+        client_email: googleClientEmail,
+        private_key: googlePrivateKey.replace(/\\n/g, '\n'),
+      },
       scopes: ['https://www.googleapis.com/auth/spreadsheets']
     })
 
     const sheets = google.sheets({ version: 'v4', auth })
+
+    // Extract sheet name from range (e.g., "Sheet1!A1:Z" -> "Sheet1", "A1:Z" -> null)
+    const rangeParts = range.includes('!') ? range.split('!') : [null, range]
+    const sheetName = rangeParts[0]
+    const rangeWithoutSheet = rangeParts[1]
+    
+    // Build header range (first row of the sheet)
+    const headerRange = sheetName ? `${sheetName}!1:1` : '1:1'
+
+    // Check if sheet is empty (no headers exist)
+    let needsHeaders = false
+    if (headers && Array.isArray(headers) && headers.length > 0) {
+      try {
+        const currentData = await sheets.spreadsheets.values.get({
+          spreadsheetId,
+          range: headerRange
+        })
+        
+        // If first row is empty or doesn't exist, we need to add headers
+        needsHeaders = !currentData.data.values || currentData.data.values.length === 0
+      } catch (error: any) {
+        // If range doesn't exist or is empty, we need to add headers
+        if (error.code === 400 || error.message?.includes('Unable to parse range')) {
+          needsHeaders = true
+        } else {
+          throw error
+        }
+      }
+    }
+
+    // Get cookie from request
+    const finnakies = getCookie(event, 'finnakies') || ''
+
+    // Add headers if needed
+    if (needsHeaders && headers) {
+      const headerRow = [...headers, 'Finnakies', 'Timestamp']
+      await sheets.spreadsheets.values.update({
+        spreadsheetId,
+        range: headerRange,
+        valueInputOption: 'RAW',
+        requestBody: {
+          values: [headerRow]
+        }
+      })
+    }
 
     // Append to the spreadsheet
     const response = await sheets.spreadsheets.values.append({
@@ -38,12 +90,17 @@ export default defineEventHandler(async (event) => {
       valueInputOption: 'RAW',
       insertDataOption: 'INSERT_ROWS',
       requestBody: {
-        values
+        values: values.map((row: any[]) => [
+          ...(Array.isArray(row) ? row : []),
+          finnakies,
+          new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })
+        ])
       }
     })
 
     return {
       success: true,
+      headersAdded: needsHeaders,
       updatedRows: response.data.updates?.updatedRows,
       updatedColumns: response.data.updates?.updatedColumns,
       updatedCells: response.data.updates?.updatedCells
