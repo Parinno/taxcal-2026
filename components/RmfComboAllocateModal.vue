@@ -51,7 +51,7 @@
 						v-model="displayAmount"
 						type="text"
 						inputmode="numeric"
-						pattern="[0-9,]*"
+						pattern="[0-9,.]*"
 						placeholder="เช่น 10,000"
 						class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800"
 						data-test-id="tax-calculator__rmf-combo-allocate-modal--amount"
@@ -133,7 +133,7 @@
 
 <script setup>
 import { ref, computed, watch, onBeforeUnmount } from 'vue'
-import { formatCurrencyTHBWithDecimals, formatNumberWithSeparators, parseNumberFromFormatted, sanitizeAndFormatNumberInput } from '~/utils/format'
+import { formatCurrencyTHBWithDecimals, formatNumberWithSeparatorsPreserveDecimals, parseNumberFromFormattedWithDecimals, sanitizeAndFormatNumberInputWithDecimals } from '~/utils/format'
 
 const props = defineProps({
 	open: { type: Boolean, default: false },
@@ -151,12 +151,12 @@ const displayAmount = ref('')
 
 // Update display when investment amount changes
 watch(investmentAmount, (newVal) => {
-	displayAmount.value = formatNumberWithSeparators(newVal)
+	displayAmount.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 }, { immediate: true })
 
 // Update investment amount when display changes
 watch(displayAmount, (newVal) => {
-	const parsed = parseNumberFromFormatted(newVal)
+	const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== investmentAmount.value) {
 		investmentAmount.value = parsed
 	}
@@ -173,6 +173,16 @@ watch(
 		// Unlock when closed
 		else {
 			document.body.classList.remove('overflow-hidden')
+		}
+	}
+)
+
+// Watch for changes in defaultAmount prop
+watch(
+	() => props.defaultAmount,
+	(newVal) => {
+		if (props.open && newVal !== investmentAmount.value) {
+			investmentAmount.value = newVal
 		}
 	}
 )
@@ -227,7 +237,7 @@ const confirm = () => {
 
 // Sanitize input to allow only digits and commas, then normalize formatting
 const onAmountInput = (e) => {
-    displayAmount.value = sanitizeAndFormatNumberInput(e.target.value)
+    displayAmount.value = sanitizeAndFormatNumberInputWithDecimals(e.target.value)
 }
 
 onBeforeUnmount(() => {
