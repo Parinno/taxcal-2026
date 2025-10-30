@@ -92,8 +92,9 @@
 				ไม่พบข้อมูลกองทุน
 			</div>
 			<div
-				v-for="fund in thaiEsgFunds"
+				v-for="(fund, index) in thaiEsgFunds"
 				:key="fund.id"
+				:data-test-id="`tax-calculator__recommended-tax-funds--thaiesg-fund-${index}`"
 				class="py-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 cursor-pointer transition-colors group"
 				:title="`ดูข้อมูลกองทุน ${fund.name} ใน Finnomena`"
 				@click="handleFundClick(fund)"
@@ -143,8 +144,9 @@
 				ไม่พบข้อมูลกองทุน
 			</div>
 			<div
-				v-for="fund in rmfFunds"
+				v-for="(fund, index) in rmfFunds"
 				:key="fund.id"
+				:data-test-id="`tax-calculator__recommended-tax-funds--rmf-fund-${index}`"
 				class="py-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 cursor-pointer transition-colors group"
 				:title="`ดูข้อมูลกองทุน ${fund.name} ใน Finnomena`"
 				@click="handleFundClick(fund)"
@@ -194,7 +196,7 @@
 				ไม่พบชุดกองทุน
 			</div>
 			<div
-				v-for="combo in rmfCombos"
+				v-for="(combo, comboIndex) in rmfCombos"
 				:key="combo.comboId"
 				class="border border-gray-200 rounded-lg p-4"
 			>
@@ -230,8 +232,9 @@
 						</thead>
 						<tbody>
 							<tr
-								v-for="fund in combo.funds"
+								v-for="(fund, fundIndex) in combo.funds"
 								:key="fund.fundName"
+								:data-test-id="`tax-calculator__recommended-tax-funds--combo-fund-${comboIndex}-${fundIndex}`"
 								class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer group"
 								@click="handleComboFundClick(fund)"
 							>
@@ -266,8 +269,9 @@
 				<!-- Combo Funds Cards - Mobile View -->
 				<div class="md:hidden space-y-3">
 					<div
-						v-for="fund in combo.funds"
+						v-for="(fund, fundIndex) in combo.funds"
 						:key="fund.fundName"
+						:data-test-id="`tax-calculator__recommended-tax-funds--combo-fund-${comboIndex}-${fundIndex}`"
 						class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors group"
 						@click="handleComboFundClick(fund)"
 					>
@@ -314,7 +318,7 @@
 					<button
 						class="px-4 py-2 bg-gray-800 text-sm text-white rounded-lg hover:bg-gray-700 transition-colors"
 						@click="openAllocateModal(combo)"
-						:data-test-id="`tax-calculator__recommended-tax-funds--select-combo-${combo.comboId}`"
+						:data-test-id="`tax-calculator__recommended-tax-funds--select-combo-${comboIndex}`"
 					>
 						คำนวณสัดส่วนการลงทุน
 					</button>
