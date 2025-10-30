@@ -64,7 +64,7 @@ export const useFundRecommendations = () => {
   const config = useRuntimeConfig()
   
   // API base URL from environment config
-  const API_BASE_URL = `${config.public.finnomenaApiUrl}/port-service/public/api/v1/segregate/fund-recommendation`
+  const API_BASE_URL = `${config.public.url.finnomenaApiUrl}/port-service/public/api/v1/segregate/fund-recommendation`
 
   // Fetch RMF funds
   const fetchRmfFunds = async () => {

@@ -422,7 +422,7 @@ const handleFundClick = (fund) => {
 	const config = useRuntimeConfig()
 
 	// Open Finnomena fund page in new tab
-	const fundUrl = `${config.public.finnomenaWebsiteUrl}/fund/${encodeURIComponent(fund.name)}`
+	const fundUrl = `${config.public.url.finnomenaWebsiteUrl}/fund/${encodeURIComponent(fund.name)}`
 	window.open(fundUrl, '_blank', 'noopener,noreferrer')
 
 	// Emit event for parent component
@@ -437,7 +437,7 @@ const handleComboFundClick = (fund) => {
 	const config = useRuntimeConfig()
 
 	// Open Finnomena fund page in new tab
-	const fundUrl = `${config.public.finnomenaWebsiteUrl}/fund/${encodeURIComponent(fund.fundName)}`
+	const fundUrl = `${config.public.url.finnomenaWebsiteUrl}/fund/${encodeURIComponent(fund.fundName)}`
 	window.open(fundUrl, '_blank', 'noopener,noreferrer')
 
 	// Emit event for parent component

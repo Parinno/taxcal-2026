@@ -4,13 +4,13 @@ function escapeStringRegExp(str: string): string {
 
 const urlWhiteList = () => {
 	const config = useRuntimeConfig()
-	return [escapeStringRegExp(new URL(config.public.url.base).hostname), '\\w.finnomena.com']
+	const base = config.public.url.finnomenaWebsiteUrl || 'https://www.finnomena.com'
+	return [escapeStringRegExp(new URL(base).hostname), '\\w.finnomena.com']
 }
-
-const re = new RegExp(`${urlWhiteList().join('|')}$`)
 
 export const getWhiteListUrl = (urlStr: string): string => {
 	const config = useRuntimeConfig()
+	const re = new RegExp(`${urlWhiteList().join('|')}$`)
 	try {
 		const url = new URL(decodeURIComponent(urlStr)) // throw an error when URL is invalid
 		if (!url.protocol.startsWith('http')) {
@@ -21,7 +21,7 @@ export const getWhiteListUrl = (urlStr: string): string => {
 		}
 		return url.href
 	} catch (err) {
-		return config.public.url.base
+		return config.public.url.finnomenaWebsiteUrl || 'https://www.finnomena.com'
 	}
 }
 

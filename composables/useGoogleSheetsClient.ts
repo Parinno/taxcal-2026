@@ -29,8 +29,8 @@ export const useGoogleSheetsClient = () => {
       
       await gapiInstance.load('client:auth2', async () => {
         await gapiInstance.client.init({
-          apiKey: config.public.googleApiKey,
-          clientId: config.public.googleClientId,
+          apiKey: config.public.url.googleApiKey,
+          clientId: config.public.url.googleClientId,
           discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
           scope: 'https://www.googleapis.com/auth/spreadsheets'
         })
@@ -81,10 +81,10 @@ export const useGoogleSheetsClient = () => {
     customConfig?: Partial<GoogleSheetsConfig>
   ): Promise<GoogleSheetsResponse> => {
     const sheetsConfig: GoogleSheetsConfig = {
-      spreadsheetId: customConfig?.spreadsheetId || config.public.googleSheetsId,
-      range: customConfig?.range || config.public.googleSheetsRange,
-      clientId: config.public.googleClientId,
-      apiKey: config.public.googleApiKey
+      spreadsheetId: customConfig?.spreadsheetId || config.public.url.googleSheetsId,
+      range: customConfig?.range || config.public.url.googleSheetsRange,
+      clientId: config.public.url.googleClientId,
+      apiKey: config.public.url.googleApiKey
     }
     isLoading.value = true
     error.value = null
@@ -132,10 +132,10 @@ export const useGoogleSheetsClient = () => {
     customConfig?: Partial<GoogleSheetsConfig>
   ): Promise<GoogleSheetsResponse> => {
     const sheetsConfig: GoogleSheetsConfig = {
-      spreadsheetId: customConfig?.spreadsheetId || config.public.googleSheetsId,
-      range: customConfig?.range || config.public.googleSheetsRange,
-      clientId: config.public.googleClientId,
-      apiKey: config.public.googleApiKey
+      spreadsheetId: customConfig?.spreadsheetId || config.public.url.googleSheetsId,
+      range: customConfig?.range || config.public.url.googleSheetsRange,
+      clientId: config.public.url.googleClientId,
+      apiKey: config.public.url.googleApiKey
     }
     isLoading.value = true
     error.value = null
@@ -195,10 +195,10 @@ export const useGoogleSheetsClient = () => {
   // Read data from Google Sheets
   const readData = async (customConfig?: Partial<GoogleSheetsConfig>): Promise<GoogleSheetsResponse> => {
     const sheetsConfig: GoogleSheetsConfig = {
-      spreadsheetId: customConfig?.spreadsheetId || config.public.googleSheetsId,
-      range: customConfig?.range || config.public.googleSheetsRange,
-      clientId: config.public.googleClientId,
-      apiKey: config.public.googleApiKey
+      spreadsheetId: customConfig?.spreadsheetId || config.public.url.googleSheetsId,
+      range: customConfig?.range || config.public.url.googleSheetsRange,
+      clientId: config.public.url.googleClientId,
+      apiKey: config.public.url.googleApiKey
     }
     isLoading.value = true
     error.value = null

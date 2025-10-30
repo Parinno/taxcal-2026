@@ -1,6 +1,6 @@
 const contentURL = process.env.CONTENT_URL
 const headerVersion = process.env.HEADER_VERSION
-
+const authURL = process.env.AUTH_URL
 
 export default defineNuxtConfig({
 	compatibilityDate: '2025-07-15',
@@ -9,10 +9,8 @@ export default defineNuxtConfig({
 	css: ['@/assets/css/tailwind.css'],
 	vue: {
 		compilerOptions: {
-			isCustomElement: (tag) => [
-				'header-finnomena-new-header',
-				'header-finnomena-new-footer'
-			].includes(tag)
+			isCustomElement: (tag) =>
+				['header-finnomena-new-header', 'header-finnomena-new-footer'].includes(tag)
 		}
 	},
 	app: {
@@ -124,12 +122,35 @@ export default defineNuxtConfig({
 		googlePrivateKey: process.env.GOOGLE_PRIVATE_KEY,
 		googleClientEmail: process.env.GOOGLE_CLIENT_EMAIL,
 		public: {
-			googleApiKey: process.env.GOOGLE_API_KEY,
-			googleClientId: process.env.GOOGLE_CLIENT_ID,
-			googleSheetsId: process.env.GOOGLE_SHEETS_ID,
-			googleSheetsRange: process.env.GOOGLE_SHEETS_RANGE,
-			finnomenaApiUrl: process.env.FINNOMENA_API_URL || 'https://api-int.finnomena.com',
-			finnomenaWebsiteUrl: process.env.FINNOMENA_WEBSITE_URL || 'https://www.finnomena.com'
+			url: {
+				googleApiKey: process.env.GOOGLE_API_KEY,
+				googleClientId: process.env.GOOGLE_CLIENT_ID,
+				googleSheetsId: process.env.GOOGLE_SHEETS_ID,
+				googleSheetsRange: process.env.GOOGLE_SHEETS_RANGE,
+				finnomenaApiUrl: process.env.FINNOMENA_API_URL || 'https://api-int.finnomena.com',
+				finnomenaWebsiteUrl: process.env.FINNOMENA_WEBSITE_URL || 'https://www.finnomena.com'
+			},
+			auth: {
+				token: `${authURL}/oauth2/token`,
+				userinfo: `${authURL}/userinfo`,
+				logout: `${authURL}/logout`,
+				login: `${authURL}/oauth2/auth`,
+				// callback: `${process.env.BASE_URL}/tax-cal/api/auth/callback`,
+				callback: `${process.env.BASE_URL}/tax-cal/auth/callback`,
+				ttl: {
+					refreshToken: 2592000,
+					accessToken: 3600
+				},
+				cookie: {
+					accessToken: 'access_token',
+					refreshToken: 'refresh_token',
+					challenge: 'auth.challenge',
+					issuedAt: 'auth.issued_at',
+					domain: process.env.AUTH_COOKIE_DOMAIN ?? '',
+					secure: process.env.AUTH_COOKIE_SECURE ?? 'false'
+				},
+				challengeMethod: 'S256'
+			}
 		}
 	}
 })

@@ -1,4 +1,4 @@
 const constant = {
-	serverAPIPrefix: '/tax-web/api'
+	serverAPIPrefix: '/tax-cal/api'
 }
 export const apiPrefixPath = (): string => constant.serverAPIPrefix
