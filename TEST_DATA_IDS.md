@@ -8,7 +8,7 @@ This project standardizes testing hooks using the attribute `data-test-id` with 
 
 Notes
 - Use all lowercase with hyphens for multi-word segments.
-- Prefer stable, semantic names. Dynamic parts may use identifiers like `-{comboId}` when necessary.
+- Prefer stable, semantic names. Dynamic parts may use identifiers like `-{index}` when necessary.
 
 ### Current IDs
 
@@ -21,8 +21,12 @@ Component: `recommended-tax-funds`
 - Subtabs
   - `tax-calculator__recommended-tax-funds--subtab-individual`
   - `tax-calculator__recommended-tax-funds--subtab-combo`
+- Fund Recommend Items
+  - ThaiESG fund (per fund): `tax-calculator__recommended-tax-funds--thaiesg-fund-{index}`
+  - RMF individual fund (per fund): `tax-calculator__recommended-tax-funds--rmf-fund-{index}`
+  - RMF combo fund (per combo fund): `tax-calculator__recommended-tax-funds--combo-fund-{fundIndex}`
 - Actions
-  - Select combo button (per combo): `tax-calculator__recommended-tax-funds--select-combo-{comboId}`
+  - Select combo button (per combo): `tax-calculator__recommended-tax-funds--select-combo-{comboIndex}`
 
 Component: `rmf-combo-allocate-modal`
 - Fields
@@ -42,8 +46,17 @@ Component: `rmf-combo-allocate-modal`
 // switch to RMF tab
 cy.get('[data-test-id="tax-calculator__recommended-tax-funds--tab-rmf"]').click()
 
-// open allocation modal for a specific combo
-cy.get('[data-test-id="tax-calculator__recommended-tax-funds--select-combo-42"]').click()
+// click on an individual RMF fund (first fund at index 0)
+cy.get('[data-test-id="tax-calculator__recommended-tax-funds--rmf-fund-0"]').click()
+
+// click on a ThaiESG fund (first fund at index 0)
+cy.get('[data-test-id="tax-calculator__recommended-tax-funds--thaiesg-fund-0"]').click()
+
+// click on a combo fund (first combo's first fund)
+cy.get('[data-test-id="tax-calculator__recommended-tax-funds--combo-fund-0"]').click()
+
+// open allocation modal for a specific combo (first combo at index 0)
+cy.get('[data-test-id="tax-calculator__recommended-tax-funds--select-combo-0"]').click()
 
 // enter amount and confirm
 cy.get('[data-test-id="tax-calculator__rmf-combo-allocate-modal--amount"]').type('10000')

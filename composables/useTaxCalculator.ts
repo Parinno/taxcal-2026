@@ -121,7 +121,7 @@ export function useTaxCalculator() {
     // Basic deductions from form
     const personalDeduction = toNumber(deductionsData.personalDeduction) || 60000
     const socialSecurity = Math.min(toNumber(deductionsData.socialSecurity), 9000)
-    const providentFund = Math.min(toNumber(deductionsData.providentFund), Math.min(annualSalary * 0.15, 500000))
+    const providentFund = Math.min(toNumber(deductionsData.providentFund), 500000)
     
     // ThaiESGX limits: 30% of total income, max 300,000 baht
     const thaiESGXLimit = Math.min(totalIncome * 0.3, 300000)
