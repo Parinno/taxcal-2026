@@ -94,7 +94,7 @@
         <div class="flex justify-between items-center" data-test-id="tax-calculator__tax-summary--thai-esg-investment-row">
           <div class="flex items-center gap-3">
             <div class="w-3 h-3 bg-green-500 rounded-full" data-test-id="tax-calculator__tax-summary--thai-esg-indicator"></div>
-            <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--thai-esg-investment-label">Thai ESG</span>
+            <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--thai-esg-investment-label">ThaiESG</span>
           </div>
           <span class="font-medium" data-test-id="tax-calculator__tax-summary--thai-esg-investment-value">{{ formatCurrencyWithDecimals(taxSummaryData.thaiEsgInvestment) }}</span>
         </div>
