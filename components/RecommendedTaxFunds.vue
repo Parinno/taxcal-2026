@@ -360,7 +360,7 @@ const props = defineProps({
 		type: Function,
 		default: () => {}
 	},
-	rmfInvestmen3t: {
+	rmfInvestment: {
 		type: Number,
 		default: 0
 	}
