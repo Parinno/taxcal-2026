@@ -24,7 +24,7 @@ Component: `recommended-tax-funds`
 - Fund Recommend Items
   - ThaiESG fund (per fund): `tax-calculator__recommended-tax-funds--thaiesg-fund-{index}`
   - RMF individual fund (per fund): `tax-calculator__recommended-tax-funds--rmf-fund-{index}`
-  - RMF combo fund (per combo fund): `tax-calculator__recommended-tax-funds--combo-fund-{comboIndex}-{fundIndex}`
+  - RMF combo fund (per combo fund): `tax-calculator__recommended-tax-funds--combo-fund-{fundIndex}`
 - Actions
   - Select combo button (per combo): `tax-calculator__recommended-tax-funds--select-combo-{comboIndex}`
 

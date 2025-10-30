@@ -234,7 +234,7 @@
 							<tr
 								v-for="(fund, fundIndex) in combo.funds"
 								:key="fund.fundName"
-								:data-test-id="`tax-calculator__recommended-tax-funds--combo-fund-${comboIndex}-${fundIndex}`"
+								:data-test-id="`tax-calculator__recommended-tax-funds--combo-fund-${fundIndex}`"
 								class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer group"
 								@click="handleComboFundClick(fund)"
 							>
@@ -271,7 +271,7 @@
 					<div
 						v-for="(fund, fundIndex) in combo.funds"
 						:key="fund.fundName"
-						:data-test-id="`tax-calculator__recommended-tax-funds--combo-fund-${comboIndex}-${fundIndex}`"
+						:data-test-id="`tax-calculator__recommended-tax-funds--combo-fund-${fundIndex}`"
 						class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors group"
 						@click="handleComboFundClick(fund)"
 					>
