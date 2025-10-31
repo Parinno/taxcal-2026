@@ -33,7 +33,7 @@
 							v-model="displayPersonalDeduction"
 							placeholder="กรอกจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--personal-deduction-input"
-							:class="['form-input']"
+							:class="['form-input w-full md:w-[648px]']"
 							@input="onAmountInput('personalDeduction', $event)"
 						/>
 						<!-- Clear button -->
@@ -80,7 +80,7 @@
 							v-model="displaySocialSecurity"
 							placeholder="กรอกจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--social-security-input"
-							:class="['form-input']"
+							:class="['form-input w-full md:w-[648px]']"
 							@input="onAmountInput('socialSecurity', $event)"
 						/>
 						<!-- Clear button -->
@@ -121,7 +121,7 @@
 							v-model="displayProvidentFund"
 							placeholder="กรอกจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--provident-fund-input"
-							:class="['form-input']"
+							:class="['form-input w-full md:w-[648px]']"
 							@input="onAmountInput('providentFund', $event)"
 						/>
 						<!-- Clear button -->
@@ -164,7 +164,7 @@
 							v-model="displayThaiESGX"
 							placeholder="กรอกจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--thai-esgx-input"
-							:class="['form-input']"
+							:class="['form-input w-full md:w-[648px]']"
 							@input="onAmountInput('thaiESGX', $event)"
 						/>
 						<!-- Clear button -->
@@ -205,7 +205,7 @@
 							v-model="displayThaiESGXTransferred"
 							placeholder="กรอกจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-input"
-							:class="['form-input']"
+							:class="['form-input w-full md:w-[648px]']"
 							@input="onAmountInput('thaiESGXTransferred', $event)"
 						/>
 						<!-- Clear button -->
@@ -237,7 +237,7 @@
 							v-model="displayOtherDeduction"
 							placeholder="ระบุจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--other-deduction-input"
-							:class="['form-input']"
+							:class="['form-input w-full md:w-[648px]']"
 							@input="onAmountInput('otherDeduction', $event)"
 						/>
 						<!-- Clear button -->
