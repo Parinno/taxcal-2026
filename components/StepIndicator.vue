@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-container" data-test-id="tax-calculator__step-indicator--container">
+  <div class="progress-container max-w-[288px] md:max-w-[648px]" data-test-id="tax-calculator__step-indicator--container">
     <div 
       v-for="(step, index) in steps" 
       :key="step.id"
@@ -131,7 +131,6 @@ const handleStepClick = (stepId) => {
   gap: 8px;
   /* margin: 0 auto 32px; */
   padding: 32px 0px;
-  max-width: 616px;
 }
 
 .step-frame {
@@ -409,37 +408,98 @@ const handleStepClick = (stepId) => {
 } */
 
 /* Responsive adjustments */
-@media (max-width: 640px) {
+/* Mobile - below 400px (sm) */
+@media (max-width: 399px) {
   .progress-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
+    gap: 4px;
+    padding: 24px 0px;
   }
 
   .step-frame {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    margin: 0;
+    margin: 0px -1px;
+  }
+
+  .step-frame-last {
+    width: 70px;
   }
 
   .step-row {
-    width: 100%;
-    justify-content: center;
+    width: 110px;
+    gap: 8px;
   }
 
   .step-line {
-    display: none;
+    width: 70px;
+  }
+
+  .step-content {
+    width: 120px;
+  }
+
+  .step-status {
+    width: 32px;
+    height: 32px;
+  }
+
+  .step-number {
+    font-size: 11px;
+  }
+
+  .step-detail {
+    font-size: 14px;
+  }
+
+  .step-caption {
+    font-size: 10px;
   }
 }
 
-@media (min-width: 641px) and (max-width: 768px) {
+/* Small screens - 400px to 599px (sm) */
+@media (min-width: 400px) and (max-width: 599px) {
+  .progress-container {
+    gap: 6px;
+    padding: 28px 0px;
+  }
+
   .step-frame {
-    width: 150px;
+    margin: 0px -1px;
   }
 
   .step-frame-last {
     width: 80px;
   }
+
+  .step-row {
+    width: 140px;
+    gap: 10px;
+  }
+
+  .step-line {
+    width: 90px;
+  }
+
+  .step-content {
+    width: 140px;
+  }
+
+  .step-status {
+    width: 38px;
+    height: 38px;
+  }
+
+  .step-number {
+    font-size: 12px;
+  }
+
+  .step-detail {
+    font-size: 16px;
+  }
+
+  .step-caption {
+    font-size: 11px;
+  }
 }
+
+/* Medium screens - 600px and above (md) */
+/* Base styles already handle this size, no overrides needed */
 </style>

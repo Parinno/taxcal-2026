@@ -165,7 +165,7 @@ const onAmountInput = (which, e) => {
 						placeholder="กรอกจำนวนเงิน"
 						@input="onAmountInput('salary', $event)"
 						data-test-id="tax-calculator__income-form--salary-input"
-						:class="['form-input', errors.salary ? 'form-input--error' : '']"
+						:class="['form-input w-full md:w-[648px]', errors.salary ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
 					<button
@@ -215,7 +215,7 @@ const onAmountInput = (which, e) => {
 						placeholder="กรอกจำนวนเงิน"
 						@input="onAmountInput('bonus', $event)"
 						data-test-id="tax-calculator__income-form--bonus-input"
-						:class="['form-input', errors.bonus ? 'form-input--error' : '']"
+						:class="['form-input w-full md:w-[648px]', errors.bonus ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
 					<button
@@ -265,7 +265,7 @@ const onAmountInput = (which, e) => {
 						placeholder="กรอกรายได้ทั้งปี"
 						@input="onAmountInput('otherIncome', $event)"
 						data-test-id="tax-calculator__income-form--other-income-input"
-						:class="['form-input', errors.otherIncome ? 'form-input--error' : '']"
+						:class="['form-input w-full md:w-[648px]', errors.otherIncome ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
 					<button
@@ -309,7 +309,7 @@ const onAmountInput = (which, e) => {
 						placeholder="กรอกภาษีทั้งปี"
 						@input="onAmountInput('withholdingTax', $event)"
 						data-test-id="tax-calculator__income-form--withholding-tax-input"
-						:class="['form-input', errors.withholdingTax ? 'form-input--error' : '']"
+						:class="['form-input w-full md:w-[648px]', errors.withholdingTax ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
 					<button
