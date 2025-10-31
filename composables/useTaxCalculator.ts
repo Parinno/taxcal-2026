@@ -256,6 +256,48 @@ export function useTaxCalculator() {
     }
   }
 
+  // Helper function to calculate tax breakdown by brackets
+  const calculateTaxBreakdownByBrackets = (taxableIncome: number) => {
+    const brackets = [
+      { rate: 0, min: 0, max: 150000, label: 'ยกเว้นภาษี' },
+      { rate: 5, min: 150001, max: 300000, label: 'อัตราภาษี 5%' },
+      { rate: 10, min: 300001, max: 500000, label: 'อัตราภาษี 10%' },
+      { rate: 15, min: 500001, max: 750000, label: 'อัตราภาษี 15%' },
+      { rate: 20, min: 750001, max: 1000000, label: 'อัตราภาษี 20%' },
+      { rate: 25, min: 1000001, max: 2000000, label: 'อัตราภาษี 25%' },
+      { rate: 30, min: 2000001, max: 5000000, label: 'อัตราภาษี 30%' },
+      { rate: 35, min: 5000001, max: Infinity, label: 'อัตราภาษี 35%' }
+    ]
+
+    const breakdown = []
+    
+    for (const bracket of brackets) {
+      // Skip if taxable income is below this bracket
+      if (taxableIncome < bracket.min) break
+      
+      // Calculate the lower bound of this bracket (0 for first bracket, otherwise previous bracket max + 1)
+      const bracketStart = bracket.min === 0 ? 0 : bracket.min - 1
+      
+      // Calculate how much of the income falls into this bracket
+      const incomeInBracket = Math.min(taxableIncome, bracket.max) - bracketStart
+      
+      // Calculate tax for this bracket
+      const taxInThisBracket = incomeInBracket * (bracket.rate / 100)
+      
+      breakdown.push({
+        rate: bracket.rate,
+        label: bracket.label,
+        range: bracket.max === Infinity 
+          ? `${bracket.min.toLocaleString()} ขึ้นไป` 
+          : `${bracket.min.toLocaleString()} - ${bracket.max.toLocaleString()}`,
+        taxableAmount: incomeInBracket,
+        taxAmount: taxInThisBracket
+      })
+    }
+    
+    return breakdown
+  }
+
   // Tax summary calculations
   const calculateTaxSummary = (
     calculationData: CalculationResult,
@@ -264,6 +306,7 @@ export function useTaxCalculator() {
     thaiEsgInvestment: number
   ) => {
     const maxTaxRate = getMaxTaxRate(calculationData.taxableIncome)
+    const taxBreakdown = calculateTaxBreakdownByBrackets(calculationData.taxableIncome)
     
     return {
       maxTaxRate,
@@ -277,7 +320,8 @@ export function useTaxCalculator() {
       totalInvestment: taxPlanning.totalInvestment,
       taxSavings: taxPlanning.taxSavings,
       rmfInvestment,
-      thaiEsgInvestment
+      thaiEsgInvestment,
+      taxBreakdown
     }
   }
 

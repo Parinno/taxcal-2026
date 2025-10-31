@@ -45,9 +45,28 @@
           <span class="text-gray-600 font-bold" data-test-id="tax-calculator__tax-summary--taxable-income-label">เงินได้สุทธิ</span>
           <span class="font-semibold" data-test-id="tax-calculator__tax-summary--taxable-income-value">{{ formatCurrencyWithDecimals(taxSummaryData.taxableIncome) }}</span>
         </div>
-        <div class="flex justify-between" data-test-id="tax-calculator__tax-summary--tax-amount-row">
-          <span class="text-gray-500" data-test-id="tax-calculator__tax-summary--tax-amount-label">ภาษีจากเงินได้สุทธิ</span>
+        <div class="flex justify-between cursor-pointer" data-test-id="tax-calculator__tax-summary--tax-amount-row" @click="showTaxRateBreakdown = !showTaxRateBreakdown">
+          <div class="flex items-center gap-2">
+            <span class="text-gray-500" data-test-id="tax-calculator__tax-summary--tax-amount-label">ภาษีจากเงินได้สุทธิ</span>
+            <i :class="showTaxRateBreakdown ? 'fas fa-chevron-down' : 'fas fa-chevron-up'" class="text-gray-500 text-sm transition-all" data-test-id="tax-calculator__tax-summary--chevron"></i>
+          </div>
           <span data-test-id="tax-calculator__tax-summary--tax-amount-value">{{ formatCurrencyWithDecimals(taxSummaryData.taxAmount) }}</span>
+        </div>
+        <div v-show="showTaxRateBreakdown" class="bg-gray-100 rounded-lg p-4">
+          <div class="flex justify-between border-b border-gray-300 pb-4" data-test-id="tax-calculator__tax-summary--tax-amount-row">
+            <span class="text-gray-500" data-test-id="tax-calculator__tax-summary--tax-amount-label">อัตราภาษีเงินได้บุคคลธรรมดา</span>
+          </div>
+          <div 
+            v-for="(bracket, index) in taxSummaryData.taxBreakdown" 
+            :key="index"
+            class="flex justify-between pt-4" 
+            data-test-id="tax-calculator__tax-summary--tax-bracket-row">
+            <div class="flex flex-col">
+              <span class="text-gray-600 font-medium" data-test-id="tax-calculator__tax-summary--tax-bracket-label">{{ bracket.label }}</span>
+              <span class="text-gray-400" data-test-id="tax-calculator__tax-summary--tax-bracket-range">{{ bracket.range }}</span>
+            </div>
+            <span data-test-id="tax-calculator__tax-summary--tax-bracket-amount">{{ formatCurrency(bracket.taxAmount) }}</span>
+          </div>
         </div>
         <div class="flex justify-between" data-test-id="tax-calculator__tax-summary--withholding-tax-row">
           <span class="text-gray-500" data-test-id="tax-calculator__tax-summary--withholding-tax-label">หัก ภาษีหัก ณ ที่จ่าย</span>
@@ -83,7 +102,7 @@
       </div>
 
       <!-- Investment Breakdown -->
-      <div class="space-y-3 mb-6 border-t border-gray-300 pt-4 text-sm" data-test-id="tax-calculator__tax-summary--investment-breakdown">
+      <div class="space-y-3 border-t border-gray-300 pt-4 text-sm" data-test-id="tax-calculator__tax-summary--investment-breakdown">
         <div class="flex justify-between items-center" data-test-id="tax-calculator__tax-summary--rmf-investment-row">
           <div class="flex items-center gap-3">
             <div class="w-3 h-3 bg-purple-500 rounded-full" data-test-id="tax-calculator__tax-summary--rmf-indicator"></div>
@@ -101,19 +120,17 @@
       </div>
 
       <!-- Action Button -->
-      <button class="w-full bg-gray-500 text-white py-3 px-4 rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center"
+      <!-- <button class="w-full bg-gray-200 text-gray-800 font-bold mt-6 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center"
         data-test-id="tax-calculator__tax-summary--view-funds-button">
         <span data-test-id="tax-calculator__tax-summary--view-funds-text">ดูกองทุนประหยัดภาษี</span>
-        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-test-id="tax-calculator__tax-summary--view-funds-icon">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
-      </button>
+        <i class="fas fa-arrow-right ml-2" data-test-id="tax-calculator__tax-summary--view-funds-icon"></i>
+      </button> -->
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { formatCurrencyTHB, formatCurrencyTHBWithDecimals } from '~/utils/format'
 import { useTaxCalculator } from '~/composables/useTaxCalculator'
 
@@ -157,6 +174,9 @@ const props = defineProps({
 
 // Use tax calculator composable
 const { calculateTaxSummary } = useTaxCalculator()
+
+// State for showing/hiding tax rate breakdown
+const showTaxRateBreakdown = ref(false)
 
 // Calculate tax summary data
 const taxSummaryData = computed(() => 
