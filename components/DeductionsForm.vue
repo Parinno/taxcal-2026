@@ -22,9 +22,7 @@
 					<p
 						class="text-sm text-gray-500 mb-2 text-[15px]"
 						data-test-id="tax-calculator__deductions-form--personal-deduction-description"
-					>
-						Description
-					</p>
+					></p>
 					<div class="relative">
 						<input
 							type="text"
@@ -35,17 +33,8 @@
 							data-test-id="tax-calculator__deductions-form--personal-deduction-input"
 							:class="['form-input']"
 							@input="onAmountInput('personalDeduction', $event)"
+							:disabled="true"
 						/>
-						<!-- Clear button -->
-						<button
-							v-if="displayPersonalDeduction"
-							@click="displayPersonalDeduction = ''"
-							type="button"
-							tabindex="-1"
-							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
-						>
-							<i class="fa-solid fa-xmark text-white"></i>
-						</button>
 					</div>
 				</div>
 			</div>
@@ -111,7 +100,7 @@
 						class="block text-gray-800 font-medium text-[15px]"
 						data-test-id="tax-calculator__deductions-form--provident-fund-label"
 					>
-					กองทุนกลุ่มเกษียณ ยังไม่รวม RMF (กองทุนสำรองเลี้ยงชีพ, กบข, กอช, ประกันบำนาญ)
+						กองทุนกลุ่มเกษียณ ยังไม่รวม RMF (กองทุนสำรองเลี้ยงชีพ, กบข, กอช, ประกันบำนาญ)
 					</label>
 					<div class="relative">
 						<input
@@ -178,6 +167,17 @@
 							<i class="fa-solid fa-xmark text-white"></i>
 						</button>
 					</div>
+					<div
+						class="flex items-center mt-2"
+						data-test-id="tax-calculator__deductions-form--provident-fund-info"
+					>
+						<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
+							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
+						</div>
+						<p class="text-[15px] text-color-secondary">
+							ไม่เกิน 30% รายได้ทั้งปี สูงสุด 300,000 บาท
+						</p>
+					</div>
 				</div>
 
 				<!-- ThaiESGX Fund (Transferred from LTF) -->
@@ -189,14 +189,8 @@
 						class="block text-gray-800 font-medium mb-2"
 						data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-label"
 					>
-						กองทุน ThaiESGX (ThaiESGX โอนจาก LTF)
+						กองทุน ThaiESGX (โอนจาก LTF)
 					</label>
-					<p
-						class="text-sm text-gray-500 mb-2 text-[15px]"
-						data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-description"
-					>
-						(ThaiESGX โอนจาก LTF)
-					</p>
 					<div class="relative">
 						<input
 							type="text"
@@ -219,23 +213,34 @@
 							<i class="fa-solid fa-xmark text-white"></i>
 						</button>
 					</div>
+					<div
+						class="flex items-center mt-2"
+						data-test-id="tax-calculator__deductions-form--provident-fund-info"
+					>
+						<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
+							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
+						</div>
+						<p class="text-[15px] text-color-secondary">
+							ไม่เกิน 30% รายได้ทั้งปี สูงสุด 300,000 บาท
+						</p>
+					</div>
 				</div>
 
 				<!-- Other Deductions -->
 				<div data-test-id="tax-calculator__deductions-form--other-deduction-container">
-					<label
-						class="block text-gray-800 font-medium mb-2"
-						data-test-id="tax-calculator__deductions-form--other-deduction-label"
+					<h2
+						class="font-bold text-color-primary mb-[16px] text-[20px]"
+						data-test-id="tax-calculator__deductions-form--savings-investment-title"
 					>
 						ค่าลดหย่อนอื่นๆ
-					</label>
+					</h2>
 					<div class="relative">
 						<input
 							type="text"
 							inputmode="numeric"
 							pattern="[0-9,]*"
 							v-model="displayOtherDeduction"
-							placeholder="ระบุจำนวนเงิน"
+							placeholder="กรอกจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--other-deduction-input"
 							:class="['form-input']"
 							@input="onAmountInput('otherDeduction', $event)"
@@ -318,15 +323,15 @@ const displayOtherDeduction = ref('')
 
 // Personal deduction display <-> model
 watch(
-    () => formData.value.personalDeduction,
+	() => formData.value.personalDeduction,
 	(newVal) => {
-        displayPersonalDeduction.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
+		displayPersonalDeduction.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displayPersonalDeduction, (newVal) => {
-const parsed = parseNumberFromFormattedWithDecimals(newVal)
+	const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.personalDeduction) {
 		formData.value.personalDeduction = parsed
 	}
@@ -334,15 +339,15 @@ const parsed = parseNumberFromFormattedWithDecimals(newVal)
 
 // Social security display <-> model
 watch(
-    () => formData.value.socialSecurity,
+	() => formData.value.socialSecurity,
 	(newVal) => {
-        displaySocialSecurity.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
+		displaySocialSecurity.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displaySocialSecurity, (newVal) => {
-const parsed = parseNumberFromFormattedWithDecimals(newVal)
+	const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.socialSecurity) {
 		formData.value.socialSecurity = parsed
 	}
@@ -350,15 +355,15 @@ const parsed = parseNumberFromFormattedWithDecimals(newVal)
 
 // Provident fund display <-> model
 watch(
-    () => formData.value.providentFund,
+	() => formData.value.providentFund,
 	(newVal) => {
-        displayProvidentFund.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
+		displayProvidentFund.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displayProvidentFund, (newVal) => {
-const parsed = parseNumberFromFormattedWithDecimals(newVal)
+	const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.providentFund) {
 		formData.value.providentFund = parsed
 	}
@@ -366,15 +371,15 @@ const parsed = parseNumberFromFormattedWithDecimals(newVal)
 
 // ThaiESGX display <-> model
 watch(
-    () => formData.value.thaiESGX,
+	() => formData.value.thaiESGX,
 	(newVal) => {
-        displayThaiESGX.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
+		displayThaiESGX.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displayThaiESGX, (newVal) => {
-const parsed = parseNumberFromFormattedWithDecimals(newVal)
+	const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.thaiESGX) {
 		formData.value.thaiESGX = parsed
 	}
@@ -382,15 +387,15 @@ const parsed = parseNumberFromFormattedWithDecimals(newVal)
 
 // ThaiESGX transferred display <-> model
 watch(
-    () => formData.value.thaiESGXTransferred,
+	() => formData.value.thaiESGXTransferred,
 	(newVal) => {
-        displayThaiESGXTransferred.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
+		displayThaiESGXTransferred.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displayThaiESGXTransferred, (newVal) => {
-const parsed = parseNumberFromFormattedWithDecimals(newVal)
+	const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.thaiESGXTransferred) {
 		formData.value.thaiESGXTransferred = parsed
 	}
@@ -398,15 +403,15 @@ const parsed = parseNumberFromFormattedWithDecimals(newVal)
 
 // Other deduction display <-> model
 watch(
-    () => formData.value.otherDeduction,
+	() => formData.value.otherDeduction,
 	(newVal) => {
-        displayOtherDeduction.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
+		displayOtherDeduction.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
 	},
 	{ immediate: true }
 )
 
 watch(displayOtherDeduction, (newVal) => {
-const parsed = parseNumberFromFormattedWithDecimals(newVal)
+	const parsed = parseNumberFromFormattedWithDecimals(newVal)
 	if (parsed !== formData.value.otherDeduction) {
 		formData.value.otherDeduction = parsed
 	}
@@ -414,7 +419,7 @@ const parsed = parseNumberFromFormattedWithDecimals(newVal)
 
 // Sanitize input to allow only digits and commas, then normalize formatting
 const onAmountInput = (which, e) => {
-    const formatted = sanitizeAndFormatNumberInputWithDecimals(e.target.value)
+	const formatted = sanitizeAndFormatNumberInputWithDecimals(e.target.value)
 	switch (which) {
 		case 'personalDeduction':
 			displayPersonalDeduction.value = formatted

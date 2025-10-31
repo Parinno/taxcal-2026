@@ -75,7 +75,7 @@
                 <div class="w-3 h-3 bg-purple-500 rounded-full" data-test-id="tax-calculator__tax-planning-result--rmf-indicator"></div>
                 <div class="font-medium text-gray-800" data-test-id="tax-calculator__tax-planning-result--rmf-title">RMF</div>
               </div>
-              <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--rmf-description">Description</div>
+              <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--rmf-description"></div>
             </div>
             <div class="ml-auto flex items-center gap-2">
               <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-64 focus-within:ring-2 focus-within:ring-gray-500">
@@ -111,7 +111,7 @@
                 <div class="w-3 h-3 bg-green-500 rounded-full" data-test-id="tax-calculator__tax-planning-result--thai-esg-indicator"></div>
                 <div class="font-medium text-gray-800" data-test-id="tax-calculator__tax-planning-result--thai-esg-title">ThaiESG</div>
               </div>
-              <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--thai-esg-description">Description</div>     
+              <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--thai-esg-description"></div>     
             </div>
             <div class="ml-auto flex items-center gap-2">
               <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-64 focus-within:ring-2 focus-within:ring-gray-500">
