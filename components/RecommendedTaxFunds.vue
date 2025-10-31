@@ -1,7 +1,7 @@
 <template>
 	<div class="bg-white">
 		<!-- Header -->
-		<div class="text-2xl font-bold text-gray-800 mb-4">กองทุนภาษีแนะนำ</div>
+		<div class="text-2xl font-bold text-gray-800 mb-4">กองทุนประหยัดภาษีแนะนำ</div>
 
 		<!-- Tabs -->
 		<div class="flex border-b border-gray-200 mb-4">

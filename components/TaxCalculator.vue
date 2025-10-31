@@ -244,9 +244,9 @@ const taxPlanning = computed(() => {
 		class="sm:container xs:mx-auto xs:w-full xs:px-3 md:mx-auto md:max-w-7xl lg:max-w-[1272px] pb-[32px]"
 		data-test-id="tax-calculator__tax-calculator--container"
 	>
-		<div class="flex justify-between w-full">
-			<div class="w-[288px]"></div>
-			<div class="w-[648px] px-[16px]" data-test-id="tax-calculator__tax-calculator--main-content">
+		<div class="flex flex-col md:flex-row justify-between w-full">
+			<div class="hidden md:block w-[288px]"></div>
+			<div class="w-full md:w-[648px] px-[16px]" data-test-id="tax-calculator__tax-calculator--main-content">
 				<StepIndicator :current-step="currentStep" @step-click="handleStepClick" />
 				<component
 					:is="currentComponent"
@@ -282,7 +282,7 @@ const taxPlanning = computed(() => {
 					</div>
 				</div>
 			</div>
-			<div class="w-[336px]" data-test-id="tax-calculator__tax-calculator--sidebar">
+			<div class="w-full md:w-[336px] pt-8 md:pt-0" data-test-id="tax-calculator__tax-calculator--sidebar">
 				<TaxSummary
 					v-if="currentStep === 3"
 					:calculation-data="calculationData"
