@@ -8,7 +8,9 @@ export default defineEventHandler(async (event) => {
 
    // Get spreadsheetId and range from environment variables
    const spreadsheetId = config.public.url.googleSheetsId
+   console.log('spreadsheetId:', spreadsheetId)
    const range = config.public.url.googleSheetsRange
+   console.log('range:', range)
 
    const { values, headers } = body
 
@@ -25,6 +27,8 @@ export default defineEventHandler(async (event) => {
        statusMessage: 'Missing required parameter: values'
      })
    }
+   console.log('Google client email:', config.googleClientEmail)
+   console.log('Google secret:', config.googlePrivateKey)
 
     // Initialize Google Sheets API
     const auth = new google.auth.GoogleAuth({ 
