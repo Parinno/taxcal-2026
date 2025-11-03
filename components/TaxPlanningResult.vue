@@ -5,7 +5,7 @@
 
       <!-- Tax Planning Header -->
        <div>
-        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-planning-result--planning-title">วางแผนลดหย่อนภาษี</h3>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-planning-result--planning-title">คำนวณและวางแผนภาษี</h3>
       </div>
 
       <!-- Tax Summary Card -->
@@ -78,7 +78,7 @@
               <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--rmf-description"></div>
             </div>
             <div class="ml-auto flex items-center gap-2">
-              <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-64 focus-within:ring-2 focus-within:ring-gray-500">
+              <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-32 md:w-64 focus-within:ring-2 focus-within:ring-gray-500">
                 <input type="text" v-model="rmfInvestmentFormatted" @input="updateRmfInvestment"
                   data-test-id="tax-calculator__tax-planning-result--rmf-input"
                   class="w-full text-right font-medium bg-gray-100 focus:outline-none" />
@@ -114,7 +114,7 @@
               <div class="text-sm text-gray-500" data-test-id="tax-calculator__tax-planning-result--thai-esg-description"></div>     
             </div>
             <div class="ml-auto flex items-center gap-2">
-              <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-64 focus-within:ring-2 focus-within:ring-gray-500">
+              <div class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-32 md:w-64 focus-within:ring-2 focus-within:ring-gray-500">
                 <input type="text" v-model="thaiEsgInvestmentFormatted" @input="updateThaiEsgInvestment"
                   data-test-id="tax-calculator__tax-planning-result--thai-esg-input"
                   class="w-full text-right font-medium bg-gray-100 focus:outline-none" />
