@@ -39,7 +39,6 @@ export default defineEventHandler(async (event) => {
     // Extract sheet name from range (e.g., "Sheet1!A1:Z" -> "Sheet1", "A1:Z" -> null)
     const rangeParts = range.includes('!') ? range.split('!') : [null, range]
     const sheetName = rangeParts[0]
-    const rangeWithoutSheet = rangeParts[1]
     
     // Build header range (first row of the sheet)
     const headerRange = sheetName ? `${sheetName}!1:1` : '1:1'
@@ -70,7 +69,7 @@ export default defineEventHandler(async (event) => {
 
     // Add headers if needed
     if (needsHeaders && headers) {
-      const headerRow = [...headers, 'Finnakies', 'Timestamp']
+      const headerRow = [...headers, 'finnakies', 'createdAt']
       await sheets.spreadsheets.values.update({
         spreadsheetId,
         range: headerRange,
