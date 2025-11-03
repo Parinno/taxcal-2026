@@ -4,20 +4,21 @@
 		class="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
 		aria-modal="true"
 		role="dialog"
+		data-test-id="tax-calculator__rmf-combo-allocate-modal--container"
 	>
 		<!-- Backdrop -->
-		<div class="absolute inset-0 bg-black bg-opacity-40" @click="close"></div>
+		<div class="absolute inset-0 bg-black bg-opacity-40" @click="close" data-test-id="tax-calculator__rmf-combo-allocate-modal--backdrop"></div>
 
 		<!-- Modal Content -->
-		<div class="relative w-full sm:max-w-lg bg-white rounded-t-2xl sm:rounded-2xl shadow-lg p-4 sm:p-6 m-0 sm:m-4">
+		<div class="relative w-full sm:max-w-lg bg-white rounded-t-2xl sm:rounded-2xl shadow-lg p-4 sm:p-6 m-0 sm:m-4" data-test-id="tax-calculator__rmf-combo-allocate-modal--content">
 			<!-- Header -->
-			<div class="flex items-start justify-between">
+			<div class="flex items-start justify-between" data-test-id="tax-calculator__rmf-combo-allocate-modal--header">
 				<div>
-					<div class="text-base font-bold text-gray-800">คำนวณสัดส่วนการลงทุน</div>
+					<div class="text-base font-bold text-gray-800" data-test-id="tax-calculator__rmf-combo-allocate-modal--title">คำนวณสัดส่วนการลงทุน</div>
                     <div class="my-3 border-b border-gray-200"></div>
-					<div class="font-medium text-gray-800 my-2" v-if="combo">{{ combo.comboName }}</div>
+					<div class="font-medium text-gray-800 my-2" v-if="combo" :data-test-id="`tax-calculator__rmf-combo-allocate-modal--combo-name`">{{ combo.comboName }}</div>
 					<!-- Risk Indicator Blocks -->
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2" data-test-id="tax-calculator__rmf-combo-allocate-modal--risk-indicator">
                         <div class="flex gap-0.5">
                             <div
                                 v-for="i in 3"
@@ -29,14 +30,14 @@
                             ></div>
                         </div>                    
                         <!-- Risk Level Text -->
-                        <span class="text-sm text-gray-500">
+                        <span class="text-sm text-gray-500" data-test-id="tax-calculator__rmf-combo-allocate-modal--risk-label">
                             {{ riskLabels[combo.risk - 1] }}
                         </span>
                     </div>
 				
-                    <div class="text-gray-400 text-xs mt-2">∗ กรุณาศึกษาค่าธรรมเนียมกองทุนเพิ่มเติมในหนังสือชี้ชวนก่อนทำรายการ เนื่องจากค่าธรรมเนียมอาจมีการเปลี่ยนแปลงและอาจมีค่าธรรมเนียมอื่น ๆ เพิ่มเติม</div>
+                    <div class="text-gray-400 text-xs mt-2" data-test-id="tax-calculator__rmf-combo-allocate-modal--disclaimer">∗ กรุณาศึกษาค่าธรรมเนียมกองทุนเพิ่มเติมในหนังสือชี้ชวนก่อนทำรายการ เนื่องจากค่าธรรมเนียมอาจมีการเปลี่ยนแปลงและอาจมีค่าธรรมเนียมอื่น ๆ เพิ่มเติม</div>
 				</div>
-				<button class="text-gray-400 hover:text-gray-600" @click="close">
+				<button class="text-gray-400 hover:text-gray-600" @click="close" data-test-id="tax-calculator__rmf-combo-allocate-modal--close">
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 					</svg>
@@ -44,8 +45,8 @@
 			</div>
 
 			<!-- Body -->
-			<div class="mt-4">
-				<label class="block text-sm text-gray-600 mb-1">จำนวนเงินที่ต้องการลงทุน (฿)</label>
+			<div class="mt-4" data-test-id="tax-calculator__rmf-combo-allocate-modal--body">
+				<label class="block text-sm text-gray-600 mb-1" data-test-id="tax-calculator__rmf-combo-allocate-modal--amount-label">จำนวนเงินที่ต้องการลงทุน (฿)</label>
 				<div class="w-full">
 					<input
 						v-model="displayAmount"
@@ -57,7 +58,7 @@
 						data-test-id="tax-calculator__rmf-combo-allocate-modal--amount"
 						@input="onAmountInput"
 					/>
-					<div class="flex gap-2 mt-2">
+					<div class="flex gap-2 mt-2" data-test-id="tax-calculator__rmf-combo-allocate-modal--quick-fill-buttons">
 						<button
 							class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
 							data-test-id="tax-calculator__rmf-combo-allocate-modal--quick-500"
@@ -82,17 +83,17 @@
 				</div>
 
 				<!-- Allocation Table -->
-				<div class="mt-4 border border-gray-200 rounded-lg overflow-hidden" v-if="combo">
-					<table class="w-full text-sm">
+				<div class="mt-4 border border-gray-200 rounded-lg overflow-hidden" v-if="combo" data-test-id="tax-calculator__rmf-combo-allocate-modal--allocation-table">
+					<table class="w-full text-sm" data-test-id="tax-calculator__rmf-combo-allocate-modal--allocation-table-content">
 						<thead>
 							<tr class="bg-gray-50">
-								<th class="text-left px-3 py-2 text-gray-600">กองทุน</th>
-								<th class="text-right px-3 py-2 text-gray-600">สัดส่วน</th>
-								<th class="text-right px-3 py-2 text-gray-600">จำนวนเงิน (฿)</th>
+								<th class="text-left px-3 py-2 text-gray-600" data-test-id="tax-calculator__rmf-combo-allocate-modal--table-header-fund">กองทุน</th>
+								<th class="text-right px-3 py-2 text-gray-600" data-test-id="tax-calculator__rmf-combo-allocate-modal--table-header-percentage">สัดส่วน</th>
+								<th class="text-right px-3 py-2 text-gray-600" data-test-id="tax-calculator__rmf-combo-allocate-modal--table-header-amount">จำนวนเงิน (฿)</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="fund in combo.funds" :key="fund.fundName" class="border-t border-gray-100">
+							<tr v-for="(fund, fundIndex) in combo.funds" :key="fund.fundName" class="border-t border-gray-100" :data-test-id="`tax-calculator__rmf-combo-allocate-modal--table-row-${fundIndex}`">
 								<td class="px-3 py-2">
 									<div class="flex items-center gap-2">
 										<span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">RMF</span>
@@ -105,10 +106,10 @@
 								<td class="px-3 py-2 text-right text-gray-700">{{ fund.percentage }}%</td>
 								<td class="px-3 py-2 text-right font-medium text-gray-800">{{ formatCurrency(calcAllocation(fund.percentage)) }}</td>
 							</tr>
-							<tr class="bg-gray-50 border-t border-gray-200">
-								<td class="px-3 py-2 font-medium text-gray-800">รวม</td>
-								<td class="px-3 py-2 text-right text-gray-700">100%</td>
-								<td class="px-3 py-2 text-right font-semibold text-gray-900">{{ formatCurrency(totalAllocated) }}</td>
+							<tr class="bg-gray-50 border-t border-gray-200" data-test-id="tax-calculator__rmf-combo-allocate-modal--table-row-total">
+								<td class="px-3 py-2 font-medium text-gray-800" data-test-id="tax-calculator__rmf-combo-allocate-modal--table-total-label">รวม</td>
+								<td class="px-3 py-2 text-right text-gray-700" data-test-id="tax-calculator__rmf-combo-allocate-modal--table-total-percentage">100%</td>
+								<td class="px-3 py-2 text-right font-semibold text-gray-900" data-test-id="tax-calculator__rmf-combo-allocate-modal--table-total-amount">{{ formatCurrency(totalAllocated) }}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -116,7 +117,7 @@
 			</div>
 
 			<!-- Footer -->
-			<div class="mt-5 flex items-center justify-end gap-2">
+			<div class="mt-5 flex items-center justify-end gap-2" data-test-id="tax-calculator__rmf-combo-allocate-modal--footer">
 				<button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50" @click="close" data-test-id="tax-calculator__rmf-combo-allocate-modal--cancel">ยกเลิก</button>
 				<button
 					class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50"

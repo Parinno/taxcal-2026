@@ -3,32 +3,32 @@
     <!-- Tax Year Summary Card -->
     <div class="bg-white border border-gray-200 rounded-xl p-6" data-test-id="tax-calculator__tax-summary--tax-year-card">
       <h3 class="text-xl font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-summary--tax-year-title">สรุปปีภาษี 2568</h3>
-      <span class="text-sm text-gray-500">ประมาณการภาษีประจำปีก่อนวางแผนภาษี RMF, ThaiESG</span>
+      <span class="text-sm text-gray-500" data-test-id="tax-calculator__tax-summary--tax-year-description">ประมาณการภาษีประจำปีก่อนวางแผนภาษี RMF, ThaiESG</span>
       
       <!-- Tax Payable -->
       <div class="text-left mb-4 mt-4 bg-gray-100 rounded-2xl p-4" data-test-id="tax-calculator__tax-summary--tax-payable-section">
         <div class="text-md font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-summary--tax-payable-label">
           {{ taxSummaryData.netTaxPayable >= 0 ? 'ภาษีที่ต้องจ่ายเพิ่ม' : 'ภาษีที่ได้รับคืน' }}
         </div>
-        <div class="flex items-end gap-2">
+        <div class="flex items-end gap-2" data-test-id="tax-calculator__tax-summary--tax-payable-amount-container">
           <div class="text-2xl font-bold" :class="taxSummaryData.netTaxPayable >= 0 ? '' : 'text-green-600'"
             data-test-id="tax-calculator__tax-summary--tax-payable-amount">
             {{ formatCurrencyWithDecimals(Math.abs(taxSummaryData.netTaxPayable)) }}
           </div>
           <div class="text-md font-semibold text-gray-500" data-test-id="tax-calculator__tax-summary--tax-payable-currency">THB</div>
         </div>
-        <div v-if="taxSummaryData.maxTaxRate > 0" class="text-sm text-gray-600 mt-2">
-          อัตราภาษีสูงสุด 
-          <span class="font-semibold px-2 py-1 rounded-full" style="background-color: #00E76B;">{{ taxSummaryData.maxTaxRate }}%</span>
+        <div v-if="taxSummaryData.maxTaxRate > 0" class="text-sm text-gray-600 mt-2" data-test-id="tax-calculator__tax-summary--tax-rate-section">
+          <span data-test-id="tax-calculator__tax-summary--tax-rate-label">อัตราภาษีสูงสุด</span>
+          <span class="font-semibold px-2 py-1 rounded-full" style="background-color: #00E76B;" data-test-id="tax-calculator__tax-summary--tax-rate-value">{{ taxSummaryData.maxTaxRate }}%</span>
         </div>
-        <div v-else class="text-sm text-gray-500 mt-2">
+        <div v-else class="text-sm text-gray-500 mt-2" data-test-id="tax-calculator__tax-summary--no-tax-message">
           ยังไม่อยู่ในเกณฑ์ที่ต้องเสียภาษี
         </div>
       </div>
 
       <!-- Detailed Breakdown -->
       <div class="space-y-3 border-gray-300 text-sm" data-test-id="tax-calculator__tax-summary--breakdown-section">
-        <span class="text-gray-600 font-bold">การคำนวณภาษี</span>
+        <span class="text-gray-600 font-bold" data-test-id="tax-calculator__tax-summary--breakdown-title">การคำนวณภาษี</span>
         <div class="flex justify-between" data-test-id="tax-calculator__tax-summary--total-income-row">
           <span class="text-gray-500" data-test-id="tax-calculator__tax-summary--total-income-label">รายได้ทั้งปี</span>
           <span data-test-id="tax-calculator__tax-summary--total-income-value">{{ formatCurrencyWithDecimals(taxSummaryData.totalIncome) }}</span>
@@ -52,15 +52,15 @@
           </div>
           <span data-test-id="tax-calculator__tax-summary--tax-amount-value">{{ formatCurrencyWithDecimals(taxSummaryData.taxAmount) }}</span>
         </div>
-        <div v-show="showTaxRateBreakdown" class="bg-gray-100 rounded-lg p-4">
-          <div class="flex justify-between border-b border-gray-300 pb-4" data-test-id="tax-calculator__tax-summary--tax-amount-row">
-            <span class="text-gray-500" data-test-id="tax-calculator__tax-summary--tax-amount-label">อัตราภาษีเงินได้บุคคลธรรมดา</span>
+        <div v-show="showTaxRateBreakdown" class="bg-gray-100 rounded-lg p-4" data-test-id="tax-calculator__tax-summary--tax-breakdown-container">
+          <div class="flex justify-between border-b border-gray-300 pb-4" data-test-id="tax-calculator__tax-summary--tax-breakdown-header">
+            <span class="text-gray-500" data-test-id="tax-calculator__tax-summary--tax-breakdown-title">อัตราภาษีเงินได้บุคคลธรรมดา</span>
           </div>
           <div 
             v-for="(bracket, index) in taxSummaryData.taxBreakdown" 
             :key="index"
             class="flex justify-between pt-4" 
-            data-test-id="tax-calculator__tax-summary--tax-bracket-row">
+            :data-test-id="`tax-calculator__tax-summary--tax-bracket-row-${index}`">
             <div class="flex flex-col">
               <span class="text-gray-600 font-medium" data-test-id="tax-calculator__tax-summary--tax-bracket-label">{{ bracket.label }}</span>
               <span class="text-gray-400" data-test-id="tax-calculator__tax-summary--tax-bracket-range">{{ bracket.range }}</span>
@@ -72,9 +72,9 @@
           <span class="text-gray-500" data-test-id="tax-calculator__tax-summary--withholding-tax-label">หัก ภาษีหัก ณ ที่จ่าย</span>
           <span data-test-id="tax-calculator__tax-summary--withholding-tax-value">{{ formatCurrencyWithDecimals(taxSummaryData.withholdingTax) }}</span>
         </div>
-        <div class="flex justify-between">
-          <span class="text-gray-600 font-bold">{{ (taxSummaryData.netTaxPayable >= 0 ? 'จ่ายภาษีเพิ่ม' : 'ได้รับคืนภาษี') }}</span>
-          <span class="font-semibold">{{ formatCurrencyWithDecimals(Math.abs(taxSummaryData.netTaxPayable)) }}</span>
+        <div class="flex justify-between" data-test-id="tax-calculator__tax-summary--final-tax-row">
+          <span class="text-gray-600 font-bold" data-test-id="tax-calculator__tax-summary--final-tax-label">{{ (taxSummaryData.netTaxPayable >= 0 ? 'จ่ายภาษีเพิ่ม' : 'ได้รับคืนภาษี') }}</span>
+          <span class="font-semibold" data-test-id="tax-calculator__tax-summary--final-tax-value">{{ formatCurrencyWithDecimals(Math.abs(taxSummaryData.netTaxPayable)) }}</span>
         </div>
       </div>
     </div>
@@ -82,13 +82,13 @@
     <!-- Tax Planning Card -->
     <div v-if="taxSummaryData.maxTaxRate > 0" class="bg-white border border-gray-200 rounded-xl p-6" data-test-id="tax-calculator__tax-summary--tax-planning-card">
       <h3 class="text-xl font-bold text-gray-800 mb-1" data-test-id="tax-calculator__tax-summary--tax-planning-title">วางแผนลดหย่อนภาษี</h3>
-      <div class="text-sm text-gray-500 mb-4">ประมาณการภาษีประจำปี</div>
+      <div class="text-sm text-gray-500 mb-4" data-test-id="tax-calculator__tax-summary--tax-planning-description">ประมาณการภาษีประจำปี</div>
       
       <!-- Additional Investment -->
       <div class="text-left mb-1" data-test-id="tax-calculator__tax-summary--additional-investment-section">
         <div class="text-sm text-gray-700 mb-1 font-bold" data-test-id="tax-calculator__tax-summary--additional-investment-label">เงินลงทุนเพิ่ม</div>
         <div class="font-bold flex items-end gap-2" data-test-id="tax-calculator__tax-summary--additional-investment-amount">
-          <span class="text-gray-800 text-2xl">{{ formatCurrencyWithDecimals(taxSummaryData.totalInvestment) }}</span>
+          <span class="text-gray-800 text-2xl" data-test-id="tax-calculator__tax-summary--additional-investment-amount-value">{{ formatCurrencyWithDecimals(taxSummaryData.totalInvestment) }}</span>
           <span class="text-md text-gray-500" data-test-id="tax-calculator__tax-summary--additional-investment-currency">THB</span>
         </div>
       </div>
