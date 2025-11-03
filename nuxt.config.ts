@@ -16,6 +16,9 @@ export default defineNuxtConfig({
 	},
 	app: {
 		head: {
+			htmlAttrs: {
+				lang: 'th'
+			},
 			meta: [
 				{ charset: 'utf-8' },
 				{
@@ -129,7 +132,9 @@ export default defineNuxtConfig({
 				googleSheetsId: process.env.GOOGLE_SHEETS_ID,
 				googleSheetsRange: process.env.GOOGLE_SHEETS_RANGE,
 				finnomenaApiUrl: process.env.FINNOMENA_API_URL || 'https://api-int.finnomena.com',
-				finnomenaWebsiteUrl: process.env.FINNOMENA_WEBSITE_URL || 'https://www.finnomena.com'
+				finnomenaWebsiteUrl: process.env.FINNOMENA_WEBSITE_URL || 'https://www.finnomena.com',
+				scontent: contentURL || 'https://scontent.finnomena.com',
+				base: process.env.BASE_URL || 'https://www.finnomena.com',
 			},
 			auth: {
 				token: `${authURL}/oauth2/token`,

@@ -1,0 +1,378 @@
+==========================================
+รายชื่อ data-test-id ทั้งหมด
+==========================================
+
+Page: tax-calculator
+
+==========================================
+Component: step-indicator
+==========================================
+
+Container:
+- tax-calculator__step-indicator--container
+- tax-calculator__step-indicator--step-{stepId}
+- tax-calculator__step-indicator--step-{stepId}-circle
+- tax-calculator__step-indicator--step-{stepId}-number
+- tax-calculator__step-indicator--step-{stepId}-line
+- tax-calculator__step-indicator--step-{stepId}-caption
+- tax-calculator__step-indicator--step-{stepId}-title
+
+หมายเหตุ: {stepId} คือ 1, 2, หรือ 3
+
+==========================================
+Component: income-form
+==========================================
+
+Container & Title:
+- tax-calculator__income-form--title
+
+Salary:
+- tax-calculator__income-form--salary-container
+- tax-calculator__income-form--salary-label
+- tax-calculator__income-form--salary-description
+- tax-calculator__income-form--salary-input
+- tax-calculator__income-form--salary-clear
+- tax-calculator__income-form--salary-error
+
+Bonus:
+- tax-calculator__income-form--bonus-container
+- tax-calculator__income-form--bonus-label
+- tax-calculator__income-form--bonus-description
+- tax-calculator__income-form--bonus-input
+- tax-calculator__income-form--bonus-clear
+- tax-calculator__income-form--bonus-error
+
+Other Income:
+- tax-calculator__income-form--other-income-container
+- tax-calculator__income-form--other-income-label
+- tax-calculator__income-form--other-income-description
+- tax-calculator__income-form--other-income-input
+- tax-calculator__income-form--other-income-clear
+- tax-calculator__income-form--other-income-error
+
+Withholding Tax:
+- tax-calculator__income-form--withholding-tax-container
+- tax-calculator__income-form--withholding-tax-label
+- tax-calculator__income-form--withholding-tax-input
+- tax-calculator__income-form--withholding-tax-clear
+- tax-calculator__income-form--withholding-tax-error
+
+==========================================
+Component: deductions-form
+==========================================
+
+Basic Deductions Section:
+- tax-calculator__deductions-form--basic-deductions-section
+- tax-calculator__deductions-form--basic-deductions-title
+- tax-calculator__deductions-form--personal-deduction-container
+- tax-calculator__deductions-form--personal-deduction-label
+- tax-calculator__deductions-form--personal-deduction-description
+- tax-calculator__deductions-form--personal-deduction-input
+
+Savings/Investment Section:
+- tax-calculator__deductions-form--savings-investment-section
+- tax-calculator__deductions-form--savings-investment-title
+
+Social Security:
+- tax-calculator__deductions-form--social-security-container
+- tax-calculator__deductions-form--social-security-label
+- tax-calculator__deductions-form--social-security-input
+- tax-calculator__deductions-form--social-security-info
+
+Provident Fund:
+- tax-calculator__deductions-form--provident-fund-container
+- tax-calculator__deductions-form--provident-fund-label
+- tax-calculator__deductions-form--provident-fund-input
+- tax-calculator__deductions-form--provident-fund-info
+
+ThaiESGX:
+- tax-calculator__deductions-form--thai-esgx-container
+- tax-calculator__deductions-form--thai-esgx-label
+- tax-calculator__deductions-form--thai-esgx-input
+
+ThaiESGX Transferred:
+- tax-calculator__deductions-form--thai-esgx-transferred-container
+- tax-calculator__deductions-form--thai-esgx-transferred-label
+- tax-calculator__deductions-form--thai-esgx-transferred-input
+
+Other Deduction:
+- tax-calculator__deductions-form--other-deduction-container
+- tax-calculator__deductions-form--other-deduction-input
+- tax-calculator__deductions-form--other-deduction-info
+
+==========================================
+Component: recommended-tax-funds
+==========================================
+
+Container & Header:
+- tax-calculator__recommended-tax-funds--container
+- tax-calculator__recommended-tax-funds--header
+
+Tabs:
+- tax-calculator__recommended-tax-funds--tabs
+- tax-calculator__recommended-tax-funds--tab-rmf
+- tax-calculator__recommended-tax-funds--tab-thaiesg
+
+RMF Subtabs:
+- tax-calculator__recommended-tax-funds--rmf-subtabs
+- tax-calculator__recommended-tax-funds--subtab-individual
+- tax-calculator__recommended-tax-funds--subtab-combo
+
+Loading State:
+- tax-calculator__recommended-tax-funds--loading
+- tax-calculator__recommended-tax-funds--loading-spinner
+- tax-calculator__recommended-tax-funds--loading-text
+
+Error State:
+- tax-calculator__recommended-tax-funds--error
+- tax-calculator__recommended-tax-funds--error-icon
+- tax-calculator__recommended-tax-funds--error-message
+- tax-calculator__recommended-tax-funds--error-retry
+
+ThaiESG Funds:
+- tax-calculator__recommended-tax-funds--thaiesg-list
+- tax-calculator__recommended-tax-funds--thaiesg-empty
+- tax-calculator__recommended-tax-funds--thaiesg-fund-{index}
+
+RMF Individual Funds:
+- tax-calculator__recommended-tax-funds--rmf-individual-list
+- tax-calculator__recommended-tax-funds--rmf-individual-empty
+- tax-calculator__recommended-tax-funds--rmf-fund-{index}
+
+RMF Combo:
+- tax-calculator__recommended-tax-funds--rmf-combo-list
+- tax-calculator__recommended-tax-funds--rmf-combo-empty
+- tax-calculator__recommended-tax-funds--combo-{comboIndex}
+- tax-calculator__recommended-tax-funds--combo-header
+- tax-calculator__recommended-tax-funds--combo-name-{comboIndex}
+- tax-calculator__recommended-tax-funds--combo-table-desktop
+- tax-calculator__recommended-tax-funds--combo-table-{comboIndex}
+- tax-calculator__recommended-tax-funds--combo-fund-{fundIndex}
+- tax-calculator__recommended-tax-funds--combo-cards-mobile
+- tax-calculator__recommended-tax-funds--select-combo-{comboIndex}
+
+Empty State:
+- tax-calculator__recommended-tax-funds--empty-state
+- tax-calculator__recommended-tax-funds--empty-icon
+- tax-calculator__recommended-tax-funds--empty-message
+
+==========================================
+Component: rmf-combo-allocate-modal
+==========================================
+
+Container:
+- tax-calculator__rmf-combo-allocate-modal--container
+- tax-calculator__rmf-combo-allocate-modal--backdrop
+- tax-calculator__rmf-combo-allocate-modal--content
+
+Header:
+- tax-calculator__rmf-combo-allocate-modal--header
+- tax-calculator__rmf-combo-allocate-modal--title
+- tax-calculator__rmf-combo-allocate-modal--combo-name
+- tax-calculator__rmf-combo-allocate-modal--risk-indicator
+- tax-calculator__rmf-combo-allocate-modal--risk-label
+- tax-calculator__rmf-combo-allocate-modal--disclaimer
+- tax-calculator__rmf-combo-allocate-modal--close
+
+Body:
+- tax-calculator__rmf-combo-allocate-modal--body
+- tax-calculator__rmf-combo-allocate-modal--amount-label
+- tax-calculator__rmf-combo-allocate-modal--amount
+- tax-calculator__rmf-combo-allocate-modal--quick-fill-buttons
+- tax-calculator__rmf-combo-allocate-modal--quick-500
+- tax-calculator__rmf-combo-allocate-modal--quick-1000
+- tax-calculator__rmf-combo-allocate-modal--quick-10000
+- tax-calculator__rmf-combo-allocate-modal--quick-100000
+
+Allocation Table:
+- tax-calculator__rmf-combo-allocate-modal--allocation-table
+- tax-calculator__rmf-combo-allocate-modal--allocation-table-content
+- tax-calculator__rmf-combo-allocate-modal--table-header-fund
+- tax-calculator__rmf-combo-allocate-modal--table-header-percentage
+- tax-calculator__rmf-combo-allocate-modal--table-header-amount
+- tax-calculator__rmf-combo-allocate-modal--table-row-{fundIndex}
+- tax-calculator__rmf-combo-allocate-modal--table-row-total
+- tax-calculator__rmf-combo-allocate-modal--table-total-label
+- tax-calculator__rmf-combo-allocate-modal--table-total-percentage
+- tax-calculator__rmf-combo-allocate-modal--table-total-amount
+
+Footer:
+- tax-calculator__rmf-combo-allocate-modal--footer
+- tax-calculator__rmf-combo-allocate-modal--cancel
+- tax-calculator__rmf-combo-allocate-modal--confirm
+
+==========================================
+Component: tax-planning-result
+==========================================
+
+Container:
+- tax-calculator__tax-planning-result--container
+- tax-calculator__tax-planning-result--planning-header
+- tax-calculator__tax-planning-result--planning-title
+
+Tax Summary Card:
+- tax-calculator__tax-planning-result--tax-summary-card
+- tax-calculator__tax-planning-result--tax-summary-title
+- tax-calculator__tax-planning-result--tax-amount
+- tax-calculator__tax-planning-result--tax-currency
+- tax-calculator__tax-planning-result--tax-rate
+- tax-calculator__tax-planning-result--tax-rate-label
+- tax-calculator__tax-planning-result--tax-rate-value
+
+Tax Comparison:
+- tax-calculator__tax-planning-result--tax-comparison
+- tax-calculator__tax-planning-result--tax-planning-description
+- tax-calculator__tax-planning-result--tax-comparison-container
+- tax-calculator__tax-planning-result--tax-before
+- tax-calculator__tax-planning-result--tax-before-label
+- tax-calculator__tax-planning-result--tax-before-status
+- tax-calculator__tax-planning-result--tax-before-amount
+- tax-calculator__tax-planning-result--tax-before-rate-container
+- tax-calculator__tax-planning-result--tax-before-rate
+- tax-calculator__tax-planning-result--tax-comparison-arrow
+- tax-calculator__tax-planning-result--tax-after
+- tax-calculator__tax-planning-result--tax-after-label
+- tax-calculator__tax-planning-result--tax-after-status
+- tax-calculator__tax-planning-result--tax-after-amount
+- tax-calculator__tax-planning-result--tax-after-rate-container
+- tax-calculator__tax-planning-result--tax-after-rate
+
+No Tax Info:
+- tax-calculator__tax-planning-result--no-tax-info
+- tax-calculator__tax-planning-result--no-tax-message
+- tax-calculator__tax-planning-result--no-tax-icon
+- tax-calculator__tax-planning-result--no-tax-text
+
+Investment Planning:
+- tax-calculator__tax-planning-result--investment-planning
+
+RMF Investment:
+- tax-calculator__tax-planning-result--rmf-investment
+- tax-calculator__tax-planning-result--rmf-indicator
+- tax-calculator__tax-planning-result--rmf-title
+- tax-calculator__tax-planning-result--rmf-description
+- tax-calculator__tax-planning-result--rmf-input
+- tax-calculator__tax-planning-result--rmf-slider
+- tax-calculator__tax-planning-result--rmf-info
+
+ThaiESG Investment:
+- tax-calculator__tax-planning-result--thai-esg-investment
+- tax-calculator__tax-planning-result--thai-esg-indicator
+- tax-calculator__tax-planning-result--thai-esg-title
+- tax-calculator__tax-planning-result--thai-esg-description
+- tax-calculator__tax-planning-result--thai-esg-input
+- tax-calculator__tax-planning-result--thai-esg-slider
+- tax-calculator__tax-planning-result--thai-esg-info
+
+Recommended Funds:
+- tax-calculator__tax-planning-result--recommended-funds-section
+
+==========================================
+Component: tax-summary
+==========================================
+
+Container:
+- tax-calculator__tax-summary--container
+
+Tax Year Card:
+- tax-calculator__tax-summary--tax-year-card
+- tax-calculator__tax-summary--tax-year-title
+- tax-calculator__tax-summary--tax-year-description
+
+Tax Payable Section:
+- tax-calculator__tax-summary--tax-payable-section
+- tax-calculator__tax-summary--tax-payable-label
+- tax-calculator__tax-summary--tax-payable-amount-container
+- tax-calculator__tax-summary--tax-payable-amount
+- tax-calculator__tax-summary--tax-payable-currency
+- tax-calculator__tax-summary--tax-rate-section
+- tax-calculator__tax-summary--tax-rate-label
+- tax-calculator__tax-summary--tax-rate-value
+- tax-calculator__tax-summary--no-tax-message
+
+Breakdown Section:
+- tax-calculator__tax-summary--breakdown-section
+- tax-calculator__tax-summary--breakdown-title
+- tax-calculator__tax-summary--total-income-row
+- tax-calculator__tax-summary--total-income-label
+- tax-calculator__tax-summary--total-income-value
+- tax-calculator__tax-summary--total-expenses-row
+- tax-calculator__tax-summary--total-expenses-label
+- tax-calculator__tax-summary--total-expenses-value
+- tax-calculator__tax-summary--total-deductions-row
+- tax-calculator__tax-summary--total-deductions-label
+- tax-calculator__tax-summary--total-deductions-value
+- tax-calculator__tax-summary--taxable-income-row
+- tax-calculator__tax-summary--taxable-income-label
+- tax-calculator__tax-summary--taxable-income-value
+- tax-calculator__tax-summary--tax-amount-row
+- tax-calculator__tax-summary--tax-amount-label
+- tax-calculator__tax-summary--chevron
+- tax-calculator__tax-summary--tax-amount-value
+
+Tax Breakdown:
+- tax-calculator__tax-summary--tax-breakdown-container
+- tax-calculator__tax-summary--tax-breakdown-header
+- tax-calculator__tax-summary--tax-breakdown-title
+- tax-calculator__tax-summary--tax-bracket-row-{index}
+- tax-calculator__tax-summary--tax-bracket-label
+- tax-calculator__tax-summary--tax-bracket-range
+- tax-calculator__tax-summary--tax-bracket-amount
+
+Withholding Tax:
+- tax-calculator__tax-summary--withholding-tax-row
+- tax-calculator__tax-summary--withholding-tax-label
+- tax-calculator__tax-summary--withholding-tax-value
+
+Final Tax:
+- tax-calculator__tax-summary--final-tax-row
+- tax-calculator__tax-summary--final-tax-label
+- tax-calculator__tax-summary--final-tax-value
+
+Tax Planning Card:
+- tax-calculator__tax-summary--tax-planning-card
+- tax-calculator__tax-summary--tax-planning-title
+- tax-calculator__tax-summary--tax-planning-description
+
+Additional Investment:
+- tax-calculator__tax-summary--additional-investment-section
+- tax-calculator__tax-summary--additional-investment-label
+- tax-calculator__tax-summary--additional-investment-amount
+- tax-calculator__tax-summary--additional-investment-amount-value
+- tax-calculator__tax-summary--additional-investment-currency
+
+Tax Savings:
+- tax-calculator__tax-summary--tax-savings-section
+- tax-calculator__tax-summary--tax-savings-label
+- tax-calculator__tax-summary--tax-savings-amount
+
+Investment Breakdown:
+- tax-calculator__tax-summary--investment-breakdown
+- tax-calculator__tax-summary--rmf-investment-row
+- tax-calculator__tax-summary--rmf-indicator
+- tax-calculator__tax-summary--rmf-investment-label
+- tax-calculator__tax-summary--rmf-investment-value
+- tax-calculator__tax-summary--thai-esg-investment-row
+- tax-calculator__tax-summary--thai-esg-indicator
+- tax-calculator__tax-summary--thai-esg-investment-label
+- tax-calculator__tax-summary--thai-esg-investment-value
+
+==========================================
+หมายเหตุ
+==========================================
+
+- {index} หมายถึง dynamic index ที่ใช้ใน v-for loop
+- {comboIndex} หมายถึง index ของ combo ที่ใช้ใน v-for loop
+- {fundIndex} หมายถึง index ของ fund ใน combo ที่ใช้ใน v-for loop
+- {stepId} หมายถึง step ID (1, 2, หรือ 3) ที่ใช้ใน step indicator
+
+ตัวอย่างการใช้:
+- tax-calculator__step-indicator--step-1-circle
+- tax-calculator__income-form--salary-input
+- tax-calculator__deductions-form--social-security-input
+- tax-calculator__recommended-tax-funds--thaiesg-fund-0
+- tax-calculator__recommended-tax-funds--combo-1
+- tax-calculator__tax-summary--tax-bracket-row-2
+- tax-calculator__rmf-combo-allocate-modal--table-row-0
+
+==========================================

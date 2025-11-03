@@ -134,33 +134,33 @@ const currentFormData = computed(() => {
 
 // Handle next button click
 const handleNext = () => {
-  if (currentStep.value === 1) {
-    // Validate income form
-    const errors = validateIncomeForm()
-    incomeErrors.value = errors
-    
-    // If there are errors, don't proceed
-    if (Object.keys(errors).length > 0) {
-      return
-    }
-    
-    currentStep.value = 2
-  } else if (currentStep.value === 2) {
-    calculateTax()
-    currentStep.value = 3
-  }
-  
-  // Scroll to top after step change
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+	if (currentStep.value === 1) {
+		// Validate income form
+		const errors = validateIncomeForm()
+		incomeErrors.value = errors
+
+		// If there are errors, don't proceed
+		if (Object.keys(errors).length > 0) {
+			return
+		}
+
+		currentStep.value = 2
+	} else if (currentStep.value === 2) {
+		calculateTax()
+		currentStep.value = 3
+	}
+
+	// Scroll to top after step change
+	window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 // Handle back button click
 const handleBack = () => {
-  if (currentStep.value > 1) {
-    currentStep.value--
-    // Scroll to top after step change
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+	if (currentStep.value > 1) {
+		currentStep.value--
+		// Scroll to top after step change
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+	}
 }
 
 // Calculate tax function using the simplified composable
@@ -184,35 +184,35 @@ const calculateTax = () => {
 
 // Handle recalculate button click
 const handleRecalculate = () => {
-  currentStep.value = 1
-  // Scroll to top after step change
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+	currentStep.value = 1
+	// Scroll to top after step change
+	window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 // Handle step click from StepIndicator
 const handleStepClick = (stepId) => {
-  // Only allow navigation to completed steps or the next step
-  if (stepId <= currentStep.value || stepId === currentStep.value + 1) {
-    // If trying to go to step 2 from step 1, validate income form first
-    if (currentStep.value === 1 && stepId === 2) {
-      const errors = validateIncomeForm()
-      incomeErrors.value = errors
-      
-      // If there are errors, don't proceed
-      if (Object.keys(errors).length > 0) {
-        return
-      }
-    }
-    
-    // If trying to go to step 3 from step 2, calculate tax first
-    if (currentStep.value === 2 && stepId === 3) {
-      calculateTax()
-    }
-    
-    currentStep.value = stepId
-    // Scroll to top after step change
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+	// Only allow navigation to completed steps or the next step
+	if (stepId <= currentStep.value || stepId === currentStep.value + 1) {
+		// If trying to go to step 2 from step 1, validate income form first
+		if (currentStep.value === 1 && stepId === 2) {
+			const errors = validateIncomeForm()
+			incomeErrors.value = errors
+
+			// If there are errors, don't proceed
+			if (Object.keys(errors).length > 0) {
+				return
+			}
+		}
+
+		// If trying to go to step 3 from step 2, calculate tax first
+		if (currentStep.value === 2 && stepId === 3) {
+			calculateTax()
+		}
+
+		currentStep.value = stepId
+		// Scroll to top after step change
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+	}
 }
 
 // Clear errors when user starts typing
@@ -244,45 +244,36 @@ const taxPlanning = computed(() => {
 		class="sm:container xs:mx-auto xs:w-full xs:px-3 md:mx-auto md:max-w-7xl lg:max-w-[1272px] pb-[32px]"
 		data-test-id="tax-calculator__tax-calculator--container"
 	>
-		<div class="flex justify-between w-full">
-			<div class="w-[288px]"></div>
-			<div class="w-[648px] px-[16px]" data-test-id="tax-calculator__tax-calculator--main-content">
+		<div class="flex flex-col md:flex-row justify-between w-full overflow-x-hidden">
+			<div class="hidden md:block w-[288px]"></div>
+			<div class="w-full md:w-[648px] px-[16px]" data-test-id="tax-calculator__tax-calculator--main-content">
 				<StepIndicator :current-step="currentStep" @step-click="handleStepClick" />
-				<component
-					:is="currentComponent"
-					v-model="currentFormData"
-					:errors="currentStep === 1 ? incomeErrors : {}"
-					@submit="handleNext"
-					@back="handleBack"
-					@recalculate="handleRecalculate"
-					@update:rmf-investment="handleRmfInvestmentUpdate"
-					@update:thai-esg-investment="handleThaiEsgInvestmentUpdate"
-					@clear-errors="clearIncomeErrors"
-					:data-test-id="`tax-calculator__tax-calculator--step-${currentStep}-form`"
-				/>
+				<component :is="currentComponent" v-model="currentFormData"
+					:errors="currentStep === 1 ? incomeErrors : {}" @submit="handleNext" @back="handleBack"
+					@recalculate="handleRecalculate" @update:rmf-investment="handleRmfInvestmentUpdate"
+					@update:thai-esg-investment="handleThaiEsgInvestmentUpdate" @clear-errors="clearIncomeErrors"
+					:data-test-id="`tax-calculator__tax-calculator--step-${currentStep}-form`" />
 				<!-- Navigation Buttons -->
 				<div class="line-separator" data-test-id="tax-calculator__tax-calculator--separator"></div>
-				<div class="navigation-buttons pb-[16px] relative" data-test-id="tax-calculator__tax-calculator--navigation">
+				<div class="navigation-buttons pb-[16px] relative"
+					data-test-id="tax-calculator__tax-calculator--navigation">
 					<div>
-						<button
-							class="btn-back"
-							@click="handleBack"
-							v-if="currentStep != 1"
-							:disabled="currentStep <= 1"
-							data-test-id="tax-calculator__tax-calculator--back-button"
-						>
+						<button class="btn-back" @click="handleBack" v-if="currentStep != 1"
+							:disabled="currentStep <= 1" data-test-id="tax-calculator__tax-calculator--back-button">
 							ย้อนกลับ
 						</button>
 					</div>
 					<div>
-						<button v-if="currentStep < 3" class="btn-next" @click="handleNext" data-test-id="tax-calculator__tax-calculator--next-button">
+						<button v-if="currentStep < 3" class="btn-next" @click="handleNext"
+							data-test-id="tax-calculator__tax-calculator--next-button">
 							ต่อไป
-							<i class="fas fa-arrow-right pl-4" data-test-id="tax-calculator__tax-calculator--next-icon"></i>
+							<i class="fas fa-arrow-right pl-4"
+								data-test-id="tax-calculator__tax-calculator--next-icon"></i>
 						</button>
 					</div>
 				</div>
 			</div>
-			<div class="w-[336px]" data-test-id="tax-calculator__tax-calculator--sidebar">
+			<div class="w-full md:w-[336px] pt-8 md:pt-0" data-test-id="tax-calculator__tax-calculator--sidebar">
 				<TaxSummary
 					v-if="currentStep === 3"
 					:calculation-data="calculationData"
@@ -362,7 +353,8 @@ const taxPlanning = computed(() => {
 /* Responsive adjustments for buttons */
 @media (max-width: 640px) {
 	.navigation-buttons {
-		flex-direction: column;
+		flex-direction: row;
+		justify-content: space-between;
 		gap: 12px;
 		padding: 0 8px;
 	}
