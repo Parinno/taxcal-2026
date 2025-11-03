@@ -194,7 +194,8 @@
 </template>
 
 <script setup lang="ts">
-import { appendToGoogleSheets } from '@/utils/googleSheets'
+
+import { useGoogleSheets } from '@/composables/useGoogleSheets'
 
 // Form data
 const formData = ref({
@@ -265,7 +266,7 @@ const handleAppend = async () => {
   message.value = ''
 
   try {
-    const result = await appendToGoogleSheets(combinedData.value)
+    const result = await useGoogleSheets(combinedData.value)
     
     if (result.success) {
       showMessage(result.message, 'success')

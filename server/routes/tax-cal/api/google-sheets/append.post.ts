@@ -2,14 +2,13 @@ import { google } from 'googleapis'
 
 export default defineEventHandler(async (event) => {
   try {
-
-    const { googleClientEmail, googlePrivateKey } = useRuntimeConfig();
-
+    const config = useRuntimeConfig()
+    
     const body = await readBody(event)
 
    // Get spreadsheetId and range from environment variables
-   const spreadsheetId = process.env.GOOGLE_SHEETS_ID
-   const range = process.env.GOOGLE_SHEETS_RANGE
+   const spreadsheetId = config.public.url.googleSheetsId
+   const range = config.public.url.googleSheetsRange
 
    const { values, headers } = body
 
@@ -30,8 +29,8 @@ export default defineEventHandler(async (event) => {
     // Initialize Google Sheets API
     const auth = new google.auth.GoogleAuth({ 
       credentials: {
-        client_email: googleClientEmail,
-        private_key: googlePrivateKey.replace(/\\n/g, '\n'),
+        client_email: config.googleClientEmail,
+        private_key: config.googlePrivateKey.replace(/\\n/g, '\n'),
       },
       scopes: ['https://www.googleapis.com/auth/spreadsheets']
     })
