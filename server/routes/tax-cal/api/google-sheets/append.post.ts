@@ -1,22 +1,20 @@
 import { google } from 'googleapis'
-import { GOOGLE_PRIVATE_KEY, GOOGLE_CLIENT_EMAIL } from '@/config/google'
+import { GOOGLE_PRIVATE_KEY, GOOGLE_CLIENT_EMAIL, GOOGLE_SHEETS_ID,GOOGLE_SHEETS_RANGE } from '@/config/google'
 
 export default defineEventHandler(async (event) => {
   try {
-    const config = useRuntimeConfig()
-    
     const body = await readBody(event)
 
    // Get spreadsheetId and range from environment variables
-   const spreadsheetId = config.public.url.googleSheetsId
-   const range = config.public.url.googleSheetsRange
+   const spreadsheetId = GOOGLE_SHEETS_ID
+   const range = GOOGLE_SHEETS_RANGE
 
    const { values, headers } = body
 
    if (!spreadsheetId || !range) {
      throw createError({
        statusCode: 500,
-       statusMessage: 'Missing environment variables: GOOGLE_SHEETS_ID and GOOGLE_SHEETS_RANGE must be set'
+       statusMessage: 'Missing environment variables: GOOGLE_SHEETS_ID or GOOGLE_SHEETS_RANGE must be set'
      })
    }
 
@@ -26,8 +24,6 @@ export default defineEventHandler(async (event) => {
        statusMessage: 'Missing required parameter: values'
      })
    }
-   console.log('Google client email:', GOOGLE_CLIENT_EMAIL)
-   console.log('Google secret:', GOOGLE_PRIVATE_KEY)
 
     // Initialize Google Sheets API
     const auth = new google.auth.GoogleAuth({ 
