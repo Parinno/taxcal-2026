@@ -15,7 +15,7 @@ useHead({
   link: [
     {
       rel: 'canonical',
-      href: `${config.public.url.finnomenaWebsiteUrl}/tax/คำนวณภาษี`
+      href: `${config.public.url.base}/tax/คำนวณภาษี`
     }
   ]
 })
@@ -24,13 +24,13 @@ useSeoMeta({
   description: 'คำนวณภาษีเงินได้บุคคลธรรมดาออนไลน์ฟรี ช่วยวางแผนภาษีและดูสิทธิ์ลดหย่อนภาษีได้ง่าย ๆ พร้อมคำแนะนำจาก FINNOMENA.',
   ogTitle: 'คำนวณภาษีเงินได้บุคคลธรรมดา | FINNOMENA',
   ogDescription: 'คำนวณภาษีเงินได้ออนไลน์ฟรี พร้อมแนะนำสิทธิ์ลดหย่อนและวางแผนภาษีอย่างชาญฉลาดกับ FINNOMENA.',
-  ogImage: `${config.public.url.contentUrl}`, // เว้นไว้ก่อนรอรูปจากพี่เบส
-  ogUrl: `${config.public.url.finnomenaWebsiteUrl}/tax/คำนวณภาษี`,
+  ogImage: `${config.public.url.scontent}/tax/tax-cal-og.png`, // เว้นไว้ก่อนรอรูปจากพี่เบส
+  ogUrl: `${config.public.url.base}/tax/คำนวณภาษี`,
   ogType: 'website',
   twitterCard: 'summary_large_image',
   twitterTitle: 'คำนวณภาษีเงินได้บุคคลธรรมดา | FINNOMENA',
   twitterDescription: 'คำนวณภาษีออนไลน์ฟรี พร้อมสิทธิ์ลดหย่อนและแนะนำการวางแผนภาษีรายปี',
-  twitterImage: `${config.public.url.contentUrl}` // เว้นไว้ก่อนรอรูปจากพี่เบส
+  twitterImage: `${config.public.url.scontent}/tax/tax-cal-og.png` // เว้นไว้ก่อนรอรูปจากพี่เบส
 })
 </script>
 
