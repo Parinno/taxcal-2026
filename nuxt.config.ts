@@ -1,7 +1,7 @@
 const contentURL = process.env.CONTENT_URL
 const headerVersion = process.env.HEADER_VERSION
 const authURL = process.env.AUTH_URL
-import { getSitemapRoutes } from './sitemap/routes'
+import sitemap  from './sitemap'
 
 export default defineNuxtConfig({
 	compatibilityDate: '2025-07-15',
@@ -160,8 +160,10 @@ export default defineNuxtConfig({
 		}
 	},
 	sitemap: {
-		hostname: process.env.BASE_URL || 'https://www.finnomena.com',
-		path: '/sitemap.xml',
-		routes: getSitemapRoutes
+		path: '/tax/sitemap.xml',
+		exclude: ['/tax/example-input'],
+		urls: async () => {
+			return await sitemap()
+		}
 	}
 })
