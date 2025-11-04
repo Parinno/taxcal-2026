@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, inject, watch } from 'vue'
 import { useTaxCalculator } from '~/composables/useTaxCalculator'
+import { useGoogleSheets } from '~/composables/useGoogleSheets'
 import IncomeForm from '~/components/IncomeForm.vue'
 import DeductionsForm from '~/components/DeductionsForm.vue'
 import TaxPlanningResult from '~/components/TaxPlanningResult.vue'
@@ -69,6 +70,9 @@ const showAlert = ref(false)
 
 // Form validation errors
 const incomeErrors = ref({})
+
+// Tax calculator functions - destructure at top level for use throughout component
+const { calculateTaxFromForms } = useTaxCalculator()
 
 // Validation functions
 const validateIncomeForm = () => {
@@ -180,6 +184,59 @@ const calculateTax = () => {
 		withholdingTax: result.withholdingTax,
 		netTaxPayable: result.netTaxPayable
 	}
+
+	// Submit data to Google Sheets after calculation
+	submitToGoogleSheets()
+}
+
+// Prepare and submit data to Google Sheets
+const submitToGoogleSheets = () => {
+	try {
+		// Prepare data payload combining all relevant information
+		const payload = {
+			// Income data
+			salary: incomeData.value.salary || '',
+			bonus: incomeData.value.bonus || '',
+			otherIncome: incomeData.value.otherIncome || '',
+			withholdingTax: incomeData.value.withholdingTax || '',
+			
+			// Deductions data
+			personalDeduction: deductionsData.value.personalDeduction || '',
+			socialSecurity: deductionsData.value.socialSecurity || '',
+			providentFund: deductionsData.value.providentFund || '',
+			thaiESGX: deductionsData.value.thaiESGX || '',
+			thaiESGXTransferred: deductionsData.value.thaiESGXTransferred || '',
+			otherDeduction: deductionsData.value.otherDeduction || '',
+			
+			// Calculation results
+			totalIncome: calculationData.value.totalIncome || 0,
+			totalExpenses: calculationData.value.totalExpenses || 0,
+			totalDeductions: calculationData.value.totalDeductions || 0,
+			totalDeductionsAndExpenses: calculationData.value.totalDeductionsAndExpenses || 0,
+			taxableIncome: calculationData.value.taxableIncome || 0,
+			taxAmount: calculationData.value.taxAmount || 0,
+			netTaxPayable: calculationData.value.netTaxPayable || 0,
+			
+			// Investment data
+			rmfInvestment: rmfInvestment.value || 0,
+			thaiEsgInvestment: thaiEsgInvestment.value || 0
+		}
+
+		// Add tax planning data (calculate at submission time)
+		const planning = calculateTaxPlanning(calculationData.value, rmfInvestment.value, thaiEsgInvestment.value)
+		payload.totalInvestment = planning.totalInvestment || 0
+		payload.taxSavings = planning.taxSavings || 0
+		payload.beforeTaxAmount = planning.beforeTaxAmount || 0
+		payload.afterTaxAmount = planning.afterTaxAmount || 0
+		payload.finalTaxAmount = planning.finalTaxAmount || 0
+		payload.finalNetTaxPayable = planning.finalNetTaxPayable || 0
+		payload.taxReduction = planning.taxReduction || 0
+		
+		 useGoogleSheets(payload)
+	
+	} catch (error) {
+		console.log(error)
+	}
 }
 
 // Handle recalculate button click
@@ -206,7 +263,7 @@ const handleStepClick = (stepId) => {
 
 		// If trying to go to step 3 from step 2, calculate tax first
 		if (currentStep.value === 2 && stepId === 3) {
-			calculateTax()
+			 calculateTax()
 		}
 
 		currentStep.value = stepId
