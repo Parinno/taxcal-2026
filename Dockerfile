@@ -18,7 +18,11 @@ ENV NUXT_APP_VERSION=${NUXT_APP_VERSION}
 # Build variable
 ARG CONTENT_URL=https://scontent.finnomena.com
 ARG HEADER_VERSION=latest
+ARG FINNOMENA_API_URL=https://api.finnomena.com 
+ARG FINNOMENA_WEBSITE_URL=https://www.finnomena.com
 ARG AUTH_URL=https://auth.finnomena.com
+ARG BASE_URL=https://www.finnomena.com
+ARG AUTH_COOKIE_SECURE=true
 
 # Run in production mode
 ENV NODE_ENV=production
