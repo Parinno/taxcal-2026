@@ -1,0 +1,41 @@
+ARG NODE_VERSION=node:20.19.0
+
+FROM $NODE_VERSION-alpine3.20 AS production
+
+RUN apk add g++ make py3-pip
+RUN npm install -g pnpm@10.9.0
+
+ENV HOST=0.0.0.0
+ENV DIR=/usr/src/app
+
+# Service hostname
+ENV NUXT_HOST=0.0.0.0
+
+# Service version
+ARG NUXT_APP_VERSION
+ENV NUXT_APP_VERSION=${NUXT_APP_VERSION}
+
+# Build variable
+ARG CONTENT_URL=https://scontent-int.finnomena.com
+ARG HEADER_VERSION=latest
+# force to prod for solid resposne from fund recommended
+ARG FINNOMENA_API_URL=https://api.finnomena.com 
+ARG FINNOMENA_WEBSITE_URL=https://int.finnomena.com
+ARG AUTH_URL=https://auth-int.finnomena.com
+ARG BASE_URL=https://int.finnomena.com
+ARG AUTH_COOKIE_SECURE=true
+
+# Run in production mode
+ENV NODE_ENV=production
+
+# create destination directory
+WORKDIR $DIR
+
+# Bundle app source
+COPY . .
+
+RUN rm -rf node_modules && pnpm install --no-frozen-lockfile
+RUN pnpm build
+
+
+ENTRYPOINT ["node", ".output/server/index.mjs"]

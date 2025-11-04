@@ -1,23 +1,17 @@
 <template>
   <div>
     <Header />
-    <section class="sm:container xs:mx-auto xs:w-full xs:px-3 md:mx-auto md:max-w-7xl lg:max-w-[1440px]">
+    <section class="sm:container xs:mx-auto xs:w-full xs:px-3 md:mx-auto md:max-w-7xl lg:max-w-[1000px]">
       <slot />
     </section>
-    <Disclaimer />
     <Footer />
   </div>
 </template>
 
 <script setup>
-import { ref, provide } from 'vue'
 import Header from '~/components/header/Header.vue'
 import Footer from '~/components/footer/Footer.vue'
-import Disclaimer from '~/components/Disclaimer.vue'
 
-// Current step state - provide to child components
-const currentStep = ref(1)
-provide('currentStep', currentStep)
 </script>
 
 <style scoped>

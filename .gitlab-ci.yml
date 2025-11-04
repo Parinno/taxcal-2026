@@ -1,0 +1,41 @@
+include:
+  - project: finnomena/finno-template-ci
+    ref: main
+    file:
+      - build-deploy-template-v2.yml
+      - container-scanning-template.yml
+      
+stages:
+  - test_lint
+  - test_build
+  - build
+  - scan
+  - deploy
+  
+test_lint:
+  stage: test_lint
+  image: node:20.19.0-alpine3.20
+  before_script:
+    - apk add g++ make py3-pip
+    - npm install -g pnpm@10.9.0
+  script:
+    - pnpm install --no-frozen-lockfile
+    - pnpm run lint || true
+  only:
+    - /^feature\/.*$/
+  tags:
+    - build-deploy-runner
+
+test_build:
+  stage: test_build
+  image: node:20.19.0-alpine3.20
+  before_script:
+    - apk add g++ make py3-pip
+    - npm install -g pnpm@10.9.0
+  script:
+    - pnpm install --no-frozen-lockfile
+    - pnpm run build
+  only:
+    - /^feature\/.*$/
+  tags:
+    - build-deploy-runner
