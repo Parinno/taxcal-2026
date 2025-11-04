@@ -59,7 +59,7 @@ const emit = defineEmits(['step-click'])
 const steps = [
   { id: 1, caption: 'ขั้นตอนที่ 1', title: 'รายได้' },
   { id: 2, caption: 'ขั้นตอนที่ 2', title: 'ค่าลดหย่อน' },
-  { id: 3, caption: 'ขั้นตอนที่ 3', title: 'คำนวนภาษี' }
+  { id: 3, caption: 'ขั้นตอนที่ 3', title: 'คำนวณภาษี' }
 ]
 
 // Helper function to get step classes

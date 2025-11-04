@@ -148,13 +148,13 @@ const onAmountInput = (which, e) => {
 					class="block text-gray-800 font-medium text-[15px] mb-1"
 					data-test-id="tax-calculator__income-form--salary-label"
 				>
-					เงินเดือน (บาท)
+					เงินเดือนทั้งปี (บาท)
 				</label>
 				<p
 					class="text-sm text-gray-500 mb-2 text-[15px]"
 					data-test-id="tax-calculator__income-form--salary-description"
 				>
-					ระบบจะคำนวณคูณ 12 เดือน เมื่อคำนวณภาษี
+                    รวมเงินเดือนทั้งหมดที่ได้รับในปี
 				</p>
 				<div class="relative">
 					<input
@@ -254,7 +254,7 @@ const onAmountInput = (which, e) => {
 					class="text-sm text-gray-500 mb-2 text-[15px]"
 					data-test-id="tax-calculator__income-form--other-income-description"
 				>
-					รายได้อื่นๆ นอกจากเงินเดือน และโบนัส หรือคุณสามารถกรอกรายได้รวมทั้งปีที่ตรงนี้ได้
+                    เช่น ฟรีแลนซ์, ขายของออนไลน์, เงินปันผล หรือรายได้อื่นๆ ตลอดทั้งปี
 				</p>
 				<div class="relative">
 					<input
