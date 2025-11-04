@@ -111,6 +111,9 @@ export default defineNuxtConfig({
 			script: [
 				{
 					src: `${contentURL}/web-component/${headerVersion}/header-finnomena.min.js`
+				},
+				{
+					src: `${contentURL}/gtm/gtm.js`
 				}
 			]
 		},
@@ -125,7 +128,7 @@ export default defineNuxtConfig({
 				finnomenaApiUrl: process.env.FINNOMENA_API_URL || 'https://api-int.finnomena.com',
 				finnomenaWebsiteUrl: process.env.FINNOMENA_WEBSITE_URL || 'https://www.finnomena.com',
 				scontent: contentURL || 'https://scontent.finnomena.com',
-				base: process.env.BASE_URL || 'https://www.finnomena.com',
+				base: process.env.BASE_URL || 'https://www.finnomena.com'
 			},
 			auth: {
 				token: `${authURL}/oauth2/token`,

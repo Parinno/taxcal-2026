@@ -38,7 +38,7 @@
             data-test-id="tax-calculator__tax-planning-result--tax-comparison">
             <div class="text-sm border-t border-gray-300 pt-4 mt-4"
               data-test-id="tax-calculator__tax-planning-result--tax-planning-description">
-              วางแผนกองทุน RMF, ThaiESG เพื่อประหยัดภาษีเพิ่มขึ้นสูงสุด {{ formatCurrency(maxTaxSavings) }} บาท
+              วางแผนกองทุน RMF, ThaiESG เพื่อประหยัดภาษีเพิ่มขึ้นสูงสุด {{ formatCurrencyTHBWithDecimals(maxTaxSavings) }} บาท
               พร้อมเปรียบเทียบผลต่างทางภาษีก่อนและหลังการลงทุน
             </div>
             <div class="flex justify-between items-center bg-gray-50 rounded-2xl p-4 mt-4"

@@ -19,7 +19,7 @@
         </div>
         <div v-if="taxSummaryData.maxTaxRate > 0" class="text-sm text-gray-600 mt-2" data-test-id="tax-calculator__tax-summary--tax-rate-section">
           <span data-test-id="tax-calculator__tax-summary--tax-rate-label">อัตราภาษีสูงสุด</span>
-          <span class="font-semibold px-2 py-1 rounded-full" style="background-color: #00E76B;" data-test-id="tax-calculator__tax-summary--tax-rate-value">{{ taxSummaryData.maxTaxRate }}%</span>
+          <span class="font-semibold px-2 py-1 mx-2 rounded-full" style="background-color: #00E76B;" data-test-id="tax-calculator__tax-summary--tax-rate-value">{{ taxSummaryData.maxTaxRate }}%</span>
         </div>
         <div v-else class="text-sm text-gray-500 mt-2" data-test-id="tax-calculator__tax-summary--no-tax-message">
           ยังไม่อยู่ในเกณฑ์ที่ต้องเสียภาษี

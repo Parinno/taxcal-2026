@@ -83,9 +83,9 @@ const validateIncomeForm = () => {
 	const hasIncome =
 		incomeData.value.salary || incomeData.value.bonus || incomeData.value.otherIncome
 	if (!hasIncome) {
-		errors.salary = 'กรุณากรอกเงินเดือน'
-		errors.bonus = 'กรุณากรอกโบนัส'
-		errors.otherIncome = 'กรุณากรอกรายได้อื่นๆ'
+		errors.salary = 'กรุณากรอกรายได้ทั้งหมดของคุณ อย่างน้อย 1 อย่าง'
+		errors.bonus = 'กรุณากรอกรายได้ทั้งหมดของคุณ อย่างน้อย 1 อย่าง'
+		errors.otherIncome = 'กรุณากรอกรายได้ทั้งหมดของคุณ อย่างน้อย 1 อย่าง'
 		return errors
 	}
 

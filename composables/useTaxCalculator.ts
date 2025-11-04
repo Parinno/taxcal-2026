@@ -106,7 +106,7 @@ export function useTaxCalculator() {
   ): CalculationResult => {
     // Annualize salary and compute total income
     const monthlySalary = toNumber(incomeData.salary)
-    const annualSalary = monthlySalary * 12
+    const annualSalary = monthlySalary // available for adjust salary logic
     const bonus = toNumber(incomeData.bonus)
     const otherIncome = toNumber(incomeData.otherIncome)
     const totalIncome = annualSalary + bonus + otherIncome
