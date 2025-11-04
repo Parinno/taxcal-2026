@@ -1,15 +1,15 @@
 import { google } from 'googleapis'
+import { GOOGLE_PRIVATE_KEY, GOOGLE_CLIENT_EMAIL } from '@/config/google'
 
 export default defineEventHandler(async (event) => {
   try {
-
-    const { googleClientEmail, googlePrivateKey } = useRuntimeConfig();
-
+    const config = useRuntimeConfig()
+    
     const body = await readBody(event)
 
    // Get spreadsheetId and range from environment variables
-   const spreadsheetId = process.env.GOOGLE_SHEETS_ID
-   const range = process.env.GOOGLE_SHEETS_RANGE
+   const spreadsheetId = config.public.url.googleSheetsId
+   const range = config.public.url.googleSheetsRange
 
    const { values, headers } = body
 
@@ -26,12 +26,14 @@ export default defineEventHandler(async (event) => {
        statusMessage: 'Missing required parameter: values'
      })
    }
+   console.log('Google client email:', GOOGLE_CLIENT_EMAIL)
+   console.log('Google secret:', GOOGLE_PRIVATE_KEY)
 
     // Initialize Google Sheets API
     const auth = new google.auth.GoogleAuth({ 
       credentials: {
-        client_email: googleClientEmail,
-        private_key: googlePrivateKey.replace(/\\n/g, '\n'),
+        client_email: GOOGLE_CLIENT_EMAIL,
+        private_key: GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       },
       scopes: ['https://www.googleapis.com/auth/spreadsheets']
     })

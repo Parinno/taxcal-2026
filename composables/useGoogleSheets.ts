@@ -1,56 +1,39 @@
-import { type GoogleSheetsResponse } from '@/utils/googleSheets'
-import { useGoogleSheetsClient } from './useGoogleSheetsClient'
+interface GoogleSheetsResponse {
+  success: boolean
+  message: string
+  data?: any
+}
 
-export const useGoogleSheets = () => {
-  const { 
-    isLoading, 
-    error, 
-    isAuthenticated,
-    authenticate,
-    signOut,
-    appendData: clientAppendData,
-    saveMultipleRows: clientSaveMultipleRows,
-    readData: clientReadData,
-    clearError: clientClearError
-  } = useGoogleSheetsClient()
+const apiPrefix = apiPrefixPath()
 
-  /**
-   * Append data to Google Sheets with loading state management
-   */
-  const appendData = async (
-    payload: Record<string, any>
-  ): Promise<GoogleSheetsResponse> => {
-    return await clientAppendData(payload)
-  }
-
-  /**
-   * Save multiple rows to Google Sheets with loading state management
-   */
-  const saveMultipleRows = async (
-    dataArray: Record<string, any>[]
-  ): Promise<GoogleSheetsResponse> => {
-    return await clientSaveMultipleRows(dataArray)
-  }
-
-  /**
-   * Read data from Google Sheets
-   */
-  const readData = async (): Promise<GoogleSheetsResponse> => {
-    return await clientReadData()
-  }
-
-  return {
-    // State
-    isLoading,
-    error,
-    isAuthenticated,
+export async function useGoogleSheets(
+  payload: Record<string, any>
+): Promise<GoogleSheetsResponse> {
+  try {
+    const headers = Object.keys(payload)
+    const values = Object.values(payload)
     
-    // Methods
-    authenticate,
-    signOut,
-    appendData,
-    saveMultipleRows,
-    readData,
-    clearError: clientClearError
+    const response = await $fetch(`/tax${apiPrefix}/google-sheets/append`, {
+      method: 'POST',
+      body: {
+        headers,
+        values: [values]
+      }
+    })
+
+    return {
+      success: true,
+      message: 'Data appended successfully to Google Sheets',
+      data: response
+    }
+  } catch (error) {
+    console.error('Error appending to Google Sheets:', error)
+    return {
+      success: false,
+      message: `Failed to append data: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    }
   }
 }
+
+// Export types for use in other files
+export type { GoogleSheetsResponse }

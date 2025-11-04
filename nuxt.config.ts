@@ -123,8 +123,6 @@ export default defineNuxtConfig({
 		'@': '~'
 	},
 	runtimeConfig: {
-		googlePrivateKey: process.env.GOOGLE_PRIVATE_KEY,
-		googleClientEmail: process.env.GOOGLE_CLIENT_EMAIL,
 		public: {
 			url: {
 				googleApiKey: process.env.GOOGLE_API_KEY,
