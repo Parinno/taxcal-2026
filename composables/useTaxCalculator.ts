@@ -115,7 +115,7 @@ export function useTaxCalculator() {
     const withholdingTax = toNumber(incomeData.withholdingTax)
 
     // Standard expense deduction (50% of employment income capped at 100,000)
-    const employmentIncome = annualSalary + bonus
+    const employmentIncome = totalIncome
     const employmentExpense = Math.min(employmentIncome * 0.5, 100000)
 
     // Basic deductions from form

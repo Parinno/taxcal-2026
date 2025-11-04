@@ -1,11 +1,12 @@
 const contentURL = process.env.CONTENT_URL
 const headerVersion = process.env.HEADER_VERSION
 const authURL = process.env.AUTH_URL
+import sitemap  from './sitemap'
 
 export default defineNuxtConfig({
 	compatibilityDate: '2025-07-15',
 	devtools: { enabled: true },
-	modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
+	modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxtjs/sitemap'],
 	css: ['@/assets/css/tailwind.css'],
 	vue: {
 		compilerOptions: {
@@ -15,6 +16,9 @@ export default defineNuxtConfig({
 	},
 	app: {
 		head: {
+			htmlAttrs: {
+				lang: 'th'
+			},
 			meta: [
 				{ charset: 'utf-8' },
 				{
@@ -151,6 +155,13 @@ export default defineNuxtConfig({
 				},
 				challengeMethod: 'S256'
 			}
+		}
+	},
+	sitemap: {
+		path: '/tax/sitemap.xml',
+		exclude: ['/tax/example-input'],
+		urls: async () => {
+			return await sitemap()
 		}
 	}
 })
