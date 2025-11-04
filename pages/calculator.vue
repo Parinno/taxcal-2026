@@ -11,7 +11,7 @@ definePageMeta({
 
 // SEO Meta Tags
 useHead({
-  title: 'คำนวณภาษีเงินได้บุคคลธรรมดา | FINNOMENA',
+  title: 'คำนวณภาษี วางแผนลดหย่อนภาษี | Finnomena',
   link: [
     {
       rel: 'canonical',
@@ -21,15 +21,15 @@ useHead({
 })
 
 useSeoMeta({
-  description: 'คำนวณภาษีเงินได้บุคคลธรรมดาออนไลน์ฟรี ช่วยวางแผนภาษีและดูสิทธิ์ลดหย่อนภาษีได้ง่าย ๆ พร้อมคำแนะนำจาก FINNOMENA.',
-  ogTitle: 'คำนวณภาษีเงินได้บุคคลธรรมดา | FINNOMENA',
-  ogDescription: 'คำนวณภาษีเงินได้ออนไลน์ฟรี พร้อมแนะนำสิทธิ์ลดหย่อนและวางแผนภาษีอย่างชาญฉลาดกับ FINNOMENA.',
+  description: 'เครื่องมือช่วยคำนวณภาษี พร้อมวางแผนลดหย่อนภาษีเพิ่มเติมได้ง่ายๆ ด้วยกองทุน RMF และ ThaiESG แนะนำจาก Finnomena',
+  ogTitle: 'คำนวณภาษี วางแผนลดหย่อนภาษี | Finnomena',
+  ogDescription: 'เครื่องมือช่วยคำนวณภาษี พร้อมวางแผนลดหย่อนภาษีเพิ่มเติมได้ง่ายๆ ด้วยกองทุน RMF และ ThaiESG แนะนำจาก Finnomena',
   ogImage: `${config.public.url.scontent}/tax/tax-cal-og.png`,
   ogUrl: `${config.public.url.base}/tax/คำนวณภาษี`,
   ogType: 'website',
   twitterCard: 'summary_large_image',
-  twitterTitle: 'คำนวณภาษีเงินได้บุคคลธรรมดา | FINNOMENA',
-  twitterDescription: 'คำนวณภาษีออนไลน์ฟรี พร้อมสิทธิ์ลดหย่อนและแนะนำการวางแผนภาษีรายปี',
+  twitterTitle: 'คำนวณภาษี วางแผนลดหย่อนภาษี | Finnomena',
+  twitterDescription: 'เครื่องมือช่วยคำนวณภาษี พร้อมวางแผนลดหย่อนภาษีเพิ่มเติมได้ง่ายๆ ด้วยกองทุน RMF และ ThaiESG แนะนำจาก Finnomena',
   twitterImage: `${config.public.url.scontent}/tax/tax-cal-og.png`
 })
 </script>
