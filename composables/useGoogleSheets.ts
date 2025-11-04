@@ -12,7 +12,7 @@ export async function useGoogleSheets(
   try {
     const headers = Object.keys(payload)
     const values = Object.values(payload)
-    
+
     const response = await $fetch(`/tax${apiPrefix}/google-sheets/append`, {
       method: 'POST',
       body: {

@@ -113,9 +113,6 @@ export default defineNuxtConfig({
 					src: `${contentURL}/web-component/${headerVersion}/header-finnomena.min.js`
 				},
 				{
-					src: 'https://apis.google.com/js/api.js'
-				},
-				{
 					src: `${contentURL}/gtm/gtm.js`
 				}
 			]
@@ -128,10 +125,6 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			url: {
-				googleApiKey: process.env.GOOGLE_API_KEY,
-				googleClientId: process.env.GOOGLE_CLIENT_ID,
-				googleSheetsId: process.env.GOOGLE_SHEETS_ID,
-				googleSheetsRange: process.env.GOOGLE_SHEETS_RANGE,
 				finnomenaApiUrl: process.env.FINNOMENA_API_URL || 'https://api-int.finnomena.com',
 				finnomenaWebsiteUrl: process.env.FINNOMENA_WEBSITE_URL || 'https://www.finnomena.com',
 				scontent: contentURL || 'https://scontent.finnomena.com',
