@@ -35,7 +35,7 @@
                     </h1>
                     <p class="text-[17px] font-bold text-color-secondary"
                         data-test-id="tax-calculator__header-content--subtitle">
-                        คำนวณภาษีเงินได้สำหรับบุคคลธรรมดาได้เงินคืนภาษีสูงสุด
+                        เครื่องมือคำนวณภาษี และวางแผนลดหย่อนภาษี ด้วยกองทุน RMF, ThaiESG แนะนำจาก Finnomena
                     </p>
                 </div>
             </div>
