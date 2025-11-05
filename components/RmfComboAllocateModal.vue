@@ -117,7 +117,7 @@
 			</div>
 
 			<!-- Footer -->
-			<div class="mt-5 flex items-center justify-end gap-2" data-test-id="tax-calculator__rmf-combo-allocate-modal--footer">
+			<!-- <div class="mt-5 flex items-center justify-end gap-2" data-test-id="tax-calculator__rmf-combo-allocate-modal--footer">
 				<button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50" @click="close" data-test-id="tax-calculator__rmf-combo-allocate-modal--cancel">ยกเลิก</button>
 				<button
 					class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50"
@@ -127,7 +127,7 @@
 				>
 					ยืนยันการจัดสรร
 				</button>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -218,23 +218,23 @@ const quickFill = (plus) => {
 	investmentAmount.value = base + plus
 }
 
-const canConfirm = computed(() => !!props.combo && (Number(investmentAmount.value) || 0) > 0)
+// const canConfirm = computed(() => !!props.combo && (Number(investmentAmount.value) || 0) > 0)
 
-const confirm = () => {
-	if (!canConfirm.value || !props.combo) return
-	const allocations = props.combo.funds.map((f) => ({
-		fundName: f.fundName,
-		percentage: f.percentage,
-		amount: calcAllocation(f.percentage)
-	}))
-	emit('confirm', {
-		comboId: props.combo.comboId,
-		comboName: props.combo.comboName,
-		investmentAmount: Number(investmentAmount.value) || 0,
-		allocations
-	})
-	close()
-}
+// const confirm = () => {
+// 	if (!canConfirm.value || !props.combo) return
+// 	const allocations = props.combo.funds.map((f) => ({
+// 		fundName: f.fundName,
+// 		percentage: f.percentage,
+// 		amount: calcAllocation(f.percentage)
+// 	}))
+// 	emit('confirm', {
+// 		comboId: props.combo.comboId,
+// 		comboName: props.combo.comboName,
+// 		investmentAmount: Number(investmentAmount.value) || 0,
+// 		allocations
+// 	})
+// 	close()
+// }
 
 // Sanitize input to allow only digits and commas, then normalize formatting
 const onAmountInput = (e) => {
