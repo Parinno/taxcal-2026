@@ -49,12 +49,13 @@ export function useTaxCalculator() {
   }
 
   // Helper function to compute maximum tax savings from investments
-  const computeMaxTaxSavingsFromInvestments = (totalIncome: number, taxableIncome: number, baseTax: number) => {
+  const computeMaxTaxSavingsFromInvestments = (calculationData: CalculationResult) => {
     // Calculate maximum possible investment with proper limits - ONLY RMF and TESG
-    const recommendations = getInvestmentRecommendations(totalIncome)
+    const recommendations = getInvestmentRecommendations(calculationData.totalIncome)
     
     // RMF: 30% of total income, max 500k, but limited by remaining retirement cap
-    const rmfMax = Math.min(recommendations.rmfMax, 500000)
+    // Adjust RMF Max by subtracting existing provident fund contributions
+    const rmfMax = Math.min(recommendations.rmfMax - (calculationData.providentFund || 0), 500000)
     
     // ThaiESG: 30% of total income, max 300k, separate from retirement funds
     const thaiEsgMax = Math.min(recommendations.thaiEsgMax, 300000)
@@ -63,7 +64,7 @@ export function useTaxCalculator() {
     const maxInvestment = rmfMax + thaiEsgMax
     
     // Calculate tax savings from maximum investment
-    return computeTaxSavingsFromInvestments(maxInvestment, taxableIncome, baseTax)
+    return computeTaxSavingsFromInvestments(maxInvestment, calculationData.taxableIncome, calculationData.taxAmount)
   }
 
   // Helper function to get investment limits
@@ -210,7 +211,7 @@ export function useTaxCalculator() {
     thaiEsgInvestment: number
   ) => {
     const totalInvestment = rmfInvestment + thaiEsgInvestment
-    
+
     // Calculate tax savings from investments
     const taxSavings = computeTaxSavingsFromInvestments(
       totalInvestment,
@@ -223,11 +224,7 @@ export function useTaxCalculator() {
     const afterTaxAmount = beforeTaxAmount - taxSavings
     
     // Calculate maximum possible tax savings
-    const maxTaxSavings = computeMaxTaxSavingsFromInvestments(
-      calculationData.totalIncome,
-      calculationData.taxableIncome,
-      calculationData.taxAmount
-    )
+    const maxTaxSavings = computeMaxTaxSavingsFromInvestments(calculationData)
     
     // Get investment limits
     const investmentLimits = getInvestmentLimits(calculationData.totalIncome)
