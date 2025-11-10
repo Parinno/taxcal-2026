@@ -313,16 +313,19 @@ const taxPlanning = computed(() => {
 				<!-- Navigation Buttons -->
 				<div class="line-separator" data-test-id="tax-calculator__tax-calculator--separator"></div>
 				<div class="navigation-buttons pb-[16px] relative"
-					data-test-id="tax-calculator__tax-calculator--navigation">
+					data-test-id="tax-calculator__tax-calculator--navigation"
+					data-fn-location="tax-calculator-navigation">
 					<div>
 						<button class="btn-back" @click="handleBack" v-if="currentStep != 1"
-							:disabled="currentStep <= 1" data-test-id="tax-calculator__tax-calculator--back-button">
+							:disabled="currentStep <= 1" data-test-id="tax-calculator__tax-calculator--back-button"
+							data-fn-action="navigation_back">
 							ย้อนกลับ
 						</button>
 					</div>
 					<div>
 						<button v-if="currentStep < 3" class="btn-next" @click="handleNext"
-							data-test-id="tax-calculator__tax-calculator--next-button">
+							data-test-id="tax-calculator__tax-calculator--next-button"
+							data-fn-action="navigation_next_step">
 							ต่อไป
 							<i class="fas fa-arrow-right pl-4"
 								data-test-id="tax-calculator__tax-calculator--next-icon"></i>

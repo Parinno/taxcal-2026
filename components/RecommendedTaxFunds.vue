@@ -1,12 +1,14 @@
 <template>
-	<div class="bg-white" data-test-id="tax-calculator__recommended-tax-funds--container">
+	<div class="bg-white" data-test-id="tax-calculator__recommended-tax-funds--container" data-fn-location="recommended-tax-funds">
 		<!-- Header -->
 		<div class="text-2xl font-bold text-gray-800 mb-4" data-test-id="tax-calculator__recommended-tax-funds--header">
 			กองทุนประหยัดภาษีแนะนำ</div>
 
 		<!-- Tabs -->
 		<div class="flex border-b border-gray-200 mb-4" data-test-id="tax-calculator__recommended-tax-funds--tabs">
-			<button @click="activeTab = 'rmf'" data-test-id="tax-calculator__recommended-tax-funds--tab-rmf" :class="[
+			<button @click="activeTab = 'rmf'" data-test-id="tax-calculator__recommended-tax-funds--tab-rmf" 
+				data-fn-action="fund_tab_rmf"
+				:class="[
 					'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
 					activeTab === 'rmf'
 						? 'text-gray-800 border-gray-800'
@@ -15,6 +17,7 @@
 				RMF
 			</button>
 			<button @click="activeTab = 'thaiEsg'" data-test-id="tax-calculator__recommended-tax-funds--tab-thaiesg"
+				data-fn-action="fund_tab_thai_esg"
 				:class="[
 					'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
 					activeTab === 'thaiEsg'
@@ -29,7 +32,9 @@
 		<div v-if="activeTab === 'rmf'" class="flex mb-4 space-x-2"
 			data-test-id="tax-calculator__recommended-tax-funds--rmf-subtabs">
 			<button @click="rmfSubTab = 'individual'"
-				data-test-id="tax-calculator__recommended-tax-funds--subtab-individual" :class="[
+				data-test-id="tax-calculator__recommended-tax-funds--subtab-individual"
+				data-fn-action="fund_rmf_subtab_individual"
+				:class="[
 					'px-4 py-2 text-sm font-medium border-2 p-2 rounded transition-colors focus:outline-none',
 					rmfSubTab === 'individual'
 						? 'text-white bg-gray-800 border-gray-800 shadow'
@@ -38,6 +43,7 @@
 				เลือก 1 กองทุน
 			</button>
 			<button @click="rmfSubTab = 'combo'" data-test-id="tax-calculator__recommended-tax-funds--subtab-combo"
+				data-fn-action="fund_rmf_subtab_combo"
 				:class="[
 					'px-4 py-2 text-sm font-medium border-2 p-2 rounded transition-colors focus:outline-none',
 					rmfSubTab === 'combo'
@@ -68,7 +74,8 @@
 				ไม่สามารถโหลดข้อมูลได้</div>
 			<button @click="refetchData"
 				class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
-				data-test-id="tax-calculator__recommended-tax-funds--error-retry">
+				data-test-id="tax-calculator__recommended-tax-funds--error-retry"
+				data-fn-action="fund_error_retry">
 				ลองใหม่
 			</button>
 		</div>
@@ -82,6 +89,8 @@
 			</div>
 			<div v-for="(fund, index) in thaiEsgFunds" :key="fund.id"
 				:data-test-id="`tax-calculator__recommended-tax-funds--thaiesg-fund-${index}`"
+				:data-fn-action="`fund_thai_esg_click`"
+				:data-fn-params="JSON.stringify({ fund_name: fund.name })"
 				class="py-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 cursor-pointer transition-colors group"
 				:title="`ดูข้อมูลกองทุน ${fund.name} ใน Finnomena`" @click="handleFundClick(fund)">
 				<!-- Fund Name -->
@@ -126,6 +135,8 @@
 			</div>
 			<div v-for="(fund, index) in rmfFunds" :key="fund.id"
 				:data-test-id="`tax-calculator__recommended-tax-funds--rmf-fund-${index}`"
+				:data-fn-action="`fund_rmf_individual_click`"
+				:data-fn-params="JSON.stringify({ fund_name: fund.name })"
 				class="py-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 cursor-pointer transition-colors group"
 				:title="`ดูข้อมูลกองทุน ${fund.name} ใน Finnomena`" @click="handleFundClick(fund)">
 				<!-- Fund Name -->
@@ -204,6 +215,8 @@
 						<tbody>
 							<tr v-for="(fund, fundIndex) in combo.funds" :key="fund.fundName"
 								:data-test-id="`tax-calculator__recommended-tax-funds--combo-fund-${fundIndex}`"
+								:data-fn-action="`fund_rmf_combo_fund_click`"
+								:data-fn-params="JSON.stringify({ fund_name: fund.fundName })"
 								class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer group"
 								@click="handleComboFundClick(fund)">
 								<td class="py-3 px-3">
@@ -238,6 +251,8 @@
 					data-test-id="tax-calculator__recommended-tax-funds--combo-cards-mobile">
 					<div v-for="(fund, fundIndex) in combo.funds" :key="fund.fundName"
 						:data-test-id="`tax-calculator__recommended-tax-funds--combo-fund-${fundIndex}`"
+						:data-fn-action="`fund_rmf_combo_fund_click`"
+						:data-fn-params="JSON.stringify({ fund_name: fund.fundName })"
 						class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors group"
 						@click="handleComboFundClick(fund)">
 						<!-- Fund Header -->
@@ -282,7 +297,9 @@
 					<button
 						class="px-4 py-2 bg-gray-800 text-sm text-white rounded-lg hover:bg-gray-700 transition-colors"
 						@click="openAllocateModal(combo)"
-						:data-test-id="`tax-calculator__recommended-tax-funds--select-combo-${comboIndex}`">
+						:data-test-id="`tax-calculator__recommended-tax-funds--select-combo-${comboIndex}`"
+						:data-fn-action="`fund_rmf_combo_calculate`"
+						:data-fn-params="JSON.stringify({ combo_name: combo.comboName })">
 						คำนวณสัดส่วนการลงทุน
 					</button>
 				</div>
