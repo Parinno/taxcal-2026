@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-container max-w-[288px] md:max-w-[648px]" data-test-id="tax-calculator__step-indicator--container">
+  <div class="progress-container max-w-[288px] md:max-w-[648px]" data-test-id="tax-calculator__step-indicator--container" data-fn-location="step-indicator">
     <div 
       v-for="(step, index) in steps" 
       :key="step.id"
@@ -14,6 +14,8 @@
             :class="getStepClasses(step.id).circle"
             @click="handleStepClick(step.id)"
             :data-test-id="`tax-calculator__step-indicator--step-${step.id}-circle`"
+            :data-fn-action="`step_click`"
+            :data-fn-params="JSON.stringify({ step_id: step.id, step_title: step.title })"
           >
             <span 
               class="step-number"

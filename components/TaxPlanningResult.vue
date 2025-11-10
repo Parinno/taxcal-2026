@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-4xl mx-auto" data-test-id="tax-calculator__tax-planning-result--container">
+  <div class="max-w-4xl mx-auto" data-test-id="tax-calculator__tax-planning-result--container" data-fn-location="tax-planning-result">
     <!-- Main Content -->
     <div class="space-y-8">
 
@@ -119,6 +119,7 @@
                 class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-32 md:w-64 focus-within:ring-2 focus-within:ring-gray-500">
                 <input type="text" v-model="rmfInvestmentFormatted" @input="updateRmfInvestment"
                   data-test-id="tax-calculator__tax-planning-result--rmf-input"
+                  data-fn-action="tax_planning_rmf_input"
                   class="w-full text-right font-medium bg-gray-100 focus:outline-none" />
                 <span class="text-gray-700">฿</span>
               </div>
@@ -129,6 +130,7 @@
           <div class="relative">
             <input type="range" v-model="rmfSliderValue" @input="updateRmfFromSlider" min="0" :max="rmfMaxValue"
               step="1000" data-test-id="tax-calculator__tax-planning-result--rmf-slider"
+              data-fn-action="tax_planning_rmf_slider"
               class="w-full h-2 bg-gray-300 appearance-none cursor-pointer slider" />
           </div>
 
@@ -160,6 +162,7 @@
                 class="flex items-right gap-2 relative bg-gray-100 rounded-lg px-3 py-2 w-32 md:w-64 focus-within:ring-2 focus-within:ring-gray-500">
                 <input type="text" v-model="thaiEsgInvestmentFormatted" @input="updateThaiEsgInvestment"
                   data-test-id="tax-calculator__tax-planning-result--thai-esg-input"
+                  data-fn-action="tax_planning_thai_esg_input"
                   class="w-full text-right font-medium bg-gray-100 focus:outline-none" />
                 <span class="text-gray-700">฿</span>
               </div>
@@ -170,6 +173,7 @@
           <div class="relative">
             <input type="range" v-model="thaiEsgSliderValue" @input="updateThaiEsgFromSlider" min="0"
               :max="thaiEsgMaxValue" step="1000" data-test-id="tax-calculator__tax-planning-result--thai-esg-slider"
+              data-fn-action="tax_planning_thai_esg_slider"
               class="w-full h-2 bg-gray-200 appearance-none cursor-pointer slider" />
           </div>
 

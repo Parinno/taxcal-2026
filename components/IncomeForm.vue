@@ -131,7 +131,7 @@ const onAmountInput = (which, e) => {
 </script>
 
 <template>
-	<div class="max-w-2xl mx-auto">
+	<div class="max-w-2xl mx-auto" data-fn-location="income-form">
 		<!-- Section Title -->
 		<h2
 			class="font-bold text-color-primary mb-[16px] text-[20px]"
@@ -165,6 +165,7 @@ const onAmountInput = (which, e) => {
 						placeholder="กรอกจำนวนเงิน"
 						@input="onAmountInput('salary', $event)"
 						data-test-id="tax-calculator__income-form--salary-input"
+						data-fn-action="income_salary_input"
 						:class="['form-input w-full md:w-[648px]', errors.salary ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
@@ -174,6 +175,7 @@ const onAmountInput = (which, e) => {
 						type="button"
 						tabindex="-1"
 						data-test-id="tax-calculator__income-form--salary-clear"
+						data-fn-action="income_salary_clear"
 						class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
 					>
 						<i class="fa-solid fa-xmark text-white"></i>
@@ -215,6 +217,7 @@ const onAmountInput = (which, e) => {
 						placeholder="กรอกจำนวนเงิน"
 						@input="onAmountInput('bonus', $event)"
 						data-test-id="tax-calculator__income-form--bonus-input"
+						data-fn-action="income_bonus_input"
 						:class="['form-input w-full md:w-[648px]', errors.bonus ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
@@ -224,6 +227,7 @@ const onAmountInput = (which, e) => {
 						type="button"
 						tabindex="-1"
 						data-test-id="tax-calculator__income-form--bonus-clear"
+						data-fn-action="income_bonus_clear"
 						class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
 					>
 						<i class="fa-solid fa-xmark text-white"></i>
@@ -265,6 +269,7 @@ const onAmountInput = (which, e) => {
 						placeholder="กรอกรายได้ทั้งปี"
 						@input="onAmountInput('otherIncome', $event)"
 						data-test-id="tax-calculator__income-form--other-income-input"
+						data-fn-action="income_other_income_input"
 						:class="['form-input w-full md:w-[648px]', errors.otherIncome ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
@@ -274,6 +279,7 @@ const onAmountInput = (which, e) => {
 						type="button"
 						tabindex="-1"
 						data-test-id="tax-calculator__income-form--other-income-clear"
+						data-fn-action="income_other_income_clear"
 						class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
 					>
 						<i class="fa-solid fa-xmark text-white"></i>
@@ -309,6 +315,7 @@ const onAmountInput = (which, e) => {
 						placeholder="กรอกภาษีทั้งปี"
 						@input="onAmountInput('withholdingTax', $event)"
 						data-test-id="tax-calculator__income-form--withholding-tax-input"
+						data-fn-action="income_withholding_tax_input"
 						:class="['form-input w-full md:w-[648px]', errors.withholdingTax ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
@@ -318,6 +325,7 @@ const onAmountInput = (which, e) => {
 						type="button"
 						tabindex="-1"
 						data-test-id="tax-calculator__income-form--withholding-tax-clear"
+						data-fn-action="income_withholding_tax_clear"
 						class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
 					>
 						<i class="fa-solid fa-xmark text-white"></i>
