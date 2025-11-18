@@ -133,7 +133,7 @@
 				data-test-id="tax-calculator__recommended-tax-funds--rmf-individual-empty">
 				ไม่พบข้อมูลกองทุน
 			</div>
-			<div v-for="(fund, index) in rmfFunds" :key="fund.id"
+			<div v-for="(fund, index) in visibleRmfFunds" :key="fund.id"
 				:data-test-id="`tax-calculator__recommended-tax-funds--rmf-fund-${index}`"
 				:data-fn-action="`fund_rmf_individual_click`"
 				:data-fn-params="JSON.stringify({ fund_name: fund.name })"
@@ -169,6 +169,15 @@
 						{{ riskLabels[fund.riskLevel - 1] }}
 					</span>
 				</div>
+			</div>
+			<div v-if="rmfFunds.length > RMF_VISIBLE_LIMIT && !showAllRmfFunds" class="text-center py-4">
+				<button
+					class="w-full px-4 py-2 text-sm font-medium text-white bg-gray-800 border-gray-800 shadow rounded transition-colors bg-color-primary"
+					@click="showAllRmfFunds = true"
+					data-test-id="tax-calculator__recommended-tax-funds--rmf-show-more"
+					data-fn-action="fund_rmf_show_more">
+					ดูเพิ่มเติม
+				</button>
 			</div>
 		</div>
 
@@ -367,6 +376,13 @@ const {
 const riskColors = ['bg-green-500', 'bg-orange-500', 'bg-red-500']
 const riskLabels = ['เสี่ยงต่ำ', 'เสี่ยงกลาง', 'เสี่ยงสูง']
 
+// RMF list visibility
+const RMF_VISIBLE_LIMIT = 5
+const showAllRmfFunds = ref(false)
+const visibleRmfFunds = computed(() =>
+	showAllRmfFunds.value ? rmfFunds.value : rmfFunds.value.slice(0, RMF_VISIBLE_LIMIT)
+)
+
 // Fetch data when component mounts
 onMounted(async () => {
 	await fetchAllFunds()
@@ -388,6 +404,10 @@ watch(activeTab, async (newTab) => {
 	} else if (newTab === 'thaiEsg' && thaiEsgFunds.value.length === 0) {
 		await fetchThaiEsgFunds()
 	}
+})
+
+watch(rmfFunds, () => {
+	showAllRmfFunds.value = false
 })
 
 const handleFundClick = (fund) => {

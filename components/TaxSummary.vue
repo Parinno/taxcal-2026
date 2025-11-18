@@ -48,7 +48,7 @@
         <div class="flex justify-between cursor-pointer" data-test-id="tax-calculator__tax-summary--tax-amount-row" @click="showTaxRateBreakdown = !showTaxRateBreakdown">
           <div class="flex items-center gap-2">
             <span class="text-gray-500" data-test-id="tax-calculator__tax-summary--tax-amount-label">ภาษีจากเงินได้สุทธิ</span>
-            <i :class="showTaxRateBreakdown ? 'fas fa-chevron-down' : 'fas fa-chevron-up'" class="text-gray-500 text-sm transition-all" data-test-id="tax-calculator__tax-summary--chevron"></i>
+            <i :class="showTaxRateBreakdown ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="text-gray-500 text-sm transition-all" data-test-id="tax-calculator__tax-summary--chevron"></i>
           </div>
           <span data-test-id="tax-calculator__tax-summary--tax-amount-value">{{ formatCurrencyWithDecimals(taxSummaryData.taxAmount) }}</span>
         </div>
@@ -176,7 +176,7 @@ const props = defineProps({
 const { calculateTaxSummary } = useTaxCalculator()
 
 // State for showing/hiding tax rate breakdown
-const showTaxRateBreakdown = ref(false)
+const showTaxRateBreakdown = ref(true)
 
 // Calculate tax summary data
 const taxSummaryData = computed(() => 
