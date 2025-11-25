@@ -5,6 +5,7 @@
 		aria-modal="true"
 		role="dialog"
 		data-test-id="tax-calculator__rmf-combo-allocate-modal--container"
+		data-fn-location="rmf-combo-allocate-modal"
 	>
 		<!-- Backdrop -->
 		<div class="absolute inset-0 bg-black bg-opacity-40" @click="close" data-test-id="tax-calculator__rmf-combo-allocate-modal--backdrop"></div>
@@ -37,7 +38,7 @@
 				
                     <div class="text-gray-400 text-xs mt-2" data-test-id="tax-calculator__rmf-combo-allocate-modal--disclaimer">∗ กรุณาศึกษาค่าธรรมเนียมกองทุนเพิ่มเติมในหนังสือชี้ชวนก่อนทำรายการ เนื่องจากค่าธรรมเนียมอาจมีการเปลี่ยนแปลงและอาจมีค่าธรรมเนียมอื่น ๆ เพิ่มเติม</div>
 				</div>
-				<button class="text-gray-400 hover:text-gray-600" @click="close" data-test-id="tax-calculator__rmf-combo-allocate-modal--close">
+				<button class="text-gray-400 hover:text-gray-600" @click="close" data-test-id="tax-calculator__rmf-combo-allocate-modal--close" data-fn-action="modal_close">
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 					</svg>
@@ -56,27 +57,36 @@
 						placeholder="เช่น 10,000"
 						class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800"
 						data-test-id="tax-calculator__rmf-combo-allocate-modal--amount"
+						data-fn-action="modal_amount_input"
 						@input="onAmountInput"
 					/>
 					<div class="flex gap-2 mt-2" data-test-id="tax-calculator__rmf-combo-allocate-modal--quick-fill-buttons">
 						<button
 							class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
 							data-test-id="tax-calculator__rmf-combo-allocate-modal--quick-500"
+							data-fn-action="modal_quick_fill"
+							:data-fn-params="JSON.stringify({ amount: 500 })"
 							@click="quickFill(500)"
 						>+500</button>
 						<button
 							class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
 							data-test-id="tax-calculator__rmf-combo-allocate-modal--quick-1000"
+							data-fn-action="modal_quick_fill"
+							:data-fn-params="JSON.stringify({ amount: 1000 })"
 							@click="quickFill(1000)"
 						>+1,000</button>
 						<button
 							class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
 							data-test-id="tax-calculator__rmf-combo-allocate-modal--quick-10000"
+							data-fn-action="modal_quick_fill"
+							:data-fn-params="JSON.stringify({ amount: 10000 })"
 							@click="quickFill(10000)"
 						>+10,000</button>
 						<button
 							class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
 							data-test-id="tax-calculator__rmf-combo-allocate-modal--quick-100000"
+							data-fn-action="modal_quick_fill"
+							:data-fn-params="JSON.stringify({ amount: 100000 })"
 							@click="quickFill(100000)"
 						>+100,000</button>
 					</div>
@@ -124,6 +134,8 @@
 					:disabled="!canConfirm"
 					@click="confirm"
 					data-test-id="tax-calculator__rmf-combo-allocate-modal--confirm"
+					data-fn-action="modal_confirm"
+					:data-fn-params="combo ? JSON.stringify({ combo_name: combo.comboName, amount: investmentAmount }) : ''"
 				>
 					ยืนยันการจัดสรร
 				</button>

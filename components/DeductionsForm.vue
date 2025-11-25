@@ -1,5 +1,5 @@
 <template>
-	<div class="max-w-2xl mx-auto">
+	<div class="max-w-2xl mx-auto" data-fn-location="deductions-form">
 		<!-- Form Fields -->
 		<!-- Basic Deductions Section -->
 		<div data-test-id="tax-calculator__deductions-form--basic-deductions-section">
@@ -69,6 +69,7 @@
 							v-model="displaySocialSecurity"
 							placeholder="กรอกจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--social-security-input"
+							data-fn-action="deduction_social_security_input"
 							:class="['form-input w-full md:w-[648px]']"
 							@input="onAmountInput('socialSecurity', $event)"
 						/>
@@ -78,6 +79,7 @@
 							@click="displaySocialSecurity = ''"
 							type="button"
 							tabindex="-1"
+							data-fn-action="deduction_social_security_clear"
 							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
 						>
 							<i class="fa-solid fa-xmark text-white"></i>
@@ -110,6 +112,7 @@
 							v-model="displayProvidentFund"
 							placeholder="กรอกจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--provident-fund-input"
+							data-fn-action="deduction_provident_fund_input"
 							:class="['form-input w-full md:w-[648px]']"
 							@input="onAmountInput('providentFund', $event)"
 						/>
@@ -119,6 +122,7 @@
 							@click="displayProvidentFund = ''"
 							type="button"
 							tabindex="-1"
+							data-fn-action="deduction_provident_fund_clear"
 							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
 						>
 							<i class="fa-solid fa-xmark text-white"></i>
@@ -153,6 +157,7 @@
 							v-model="displayThaiESGX"
 							placeholder="กรอกจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--thai-esgx-input"
+							data-fn-action="deduction_thai_esgx_input"
 							:class="['form-input w-full md:w-[648px]']"
 							@input="onAmountInput('thaiESGX', $event)"
 						/>
@@ -162,6 +167,7 @@
 							@click="displayThaiESGX = ''"
 							type="button"
 							tabindex="-1"
+							data-fn-action="deduction_thai_esgx_clear"
 							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
 						>
 							<i class="fa-solid fa-xmark text-white"></i>
@@ -199,6 +205,7 @@
 							v-model="displayThaiESGXTransferred"
 							placeholder="กรอกจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-input"
+							data-fn-action="deduction_thai_esgx_transferred_input"
 							:class="['form-input w-full md:w-[648px]']"
 							@input="onAmountInput('thaiESGXTransferred', $event)"
 						/>
@@ -208,6 +215,7 @@
 							@click="displayThaiESGXTransferred = ''"
 							type="button"
 							tabindex="-1"
+							data-fn-action="deduction_thai_esgx_transferred_clear"
 							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
 						>
 							<i class="fa-solid fa-xmark text-white"></i>
@@ -242,6 +250,7 @@
 							v-model="displayOtherDeduction"
 							placeholder="กรอกจำนวนเงิน"
 							data-test-id="tax-calculator__deductions-form--other-deduction-input"
+							data-fn-action="deduction_other_deduction_input"
 							:class="['form-input w-full md:w-[648px]']"
 							@input="onAmountInput('otherDeduction', $event)"
 						/>
@@ -251,6 +260,7 @@
 							@click="displayOtherDeduction = ''"
 							type="button"
 							tabindex="-1"
+							data-fn-action="deduction_other_deduction_clear"
 							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
 						>
 							<i class="fa-solid fa-xmark text-white"></i>
