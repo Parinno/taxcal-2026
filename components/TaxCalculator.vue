@@ -247,6 +247,17 @@ const clearIncomeErrors = () => {
 const taxPlanning = computed(() =>
 	calculateTaxPlanning(calculationData.value, rmfInvestment.value, thaiEsgInvestment.value)
 )
+
+// TaxSummary figures with step 3 RMF/ThaiESG counted as deductions, matching TaxPlanningResult
+const summaryCalculationData = computed(() =>
+	calculateTaxFromForms(incomeData.value, {
+		...deductionsData.value,
+		otherDeduction:
+			(Number(deductionsData.value.otherDeduction) || 0) +
+			(Number(rmfInvestment.value) || 0) +
+			(Number(thaiEsgInvestment.value) || 0)
+	})
+)
 </script>
 
 <template>
@@ -289,7 +300,7 @@ const taxPlanning = computed(() =>
 			</div>
 			<div class="w-full md:w-[336px] pt-8 md:pt-0" data-test-id="tax-calculator__tax-calculator--sidebar">
 				<TaxSummary
-					:calculation-data="calculationData"
+					:calculation-data="summaryCalculationData"
 					:tax-planning="taxPlanning"
 					:rmf-investment="rmfInvestment"
 					:thai-esg-investment="thaiEsgInvestment"
