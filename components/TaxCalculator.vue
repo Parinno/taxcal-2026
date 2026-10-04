@@ -54,25 +54,19 @@ const deductionsData = ref({
 	otherDeduction: ''
 })
 
-const calculationData = ref({
-	totalIncome: 0,
-	totalExpenses: 0,
-	totalDeductions: 0,
-	totalDeductionsAndExpenses: 0,
-	taxableIncome: 0,
-	taxAmount: 0,
-	withholdingTax: 0,
-	netTaxPayable: 0
-})
+// Tax calculator functions - destructure at top level for use throughout component
+const { calculateTaxFromForms, calculateTaxPlanning } = useTaxCalculator()
+
+// Recalculated on every input change so TaxSummary updates in real time
+const calculationData = computed(() =>
+	calculateTaxFromForms(incomeData.value, deductionsData.value)
+)
 
 // Alert modal state
 const showAlert = ref(false)
 
 // Form validation errors
 const incomeErrors = ref({})
-
-// Tax calculator functions - destructure at top level for use throughout component
-const { calculateTaxFromForms } = useTaxCalculator()
 
 // Validation functions
 const validateIncomeForm = () => {
@@ -150,7 +144,6 @@ const handleNext = () => {
 
 		currentStep.value = 2
 	} else if (currentStep.value === 2) {
-		calculateTax()
 		currentStep.value = 3
 	}
 
@@ -167,28 +160,7 @@ const handleBack = () => {
 	}
 }
 
-// Calculate tax function using the simplified composable
-const calculateTax = () => {
-	const { calculateTaxFromForms } = useTaxCalculator()
-
-	const result = calculateTaxFromForms(incomeData.value, deductionsData.value)
-
-	calculationData.value = {
-		totalIncome: result.totalIncome,
-		totalExpenses: result.totalExpenses,
-		totalDeductions: result.totalDeductions,
-		totalDeductionsAndExpenses: result.totalDeductionsAndExpenses,
-		taxableIncome: result.taxableIncome,
-		taxAmount: result.taxAmount,
-		providentFund: result.providentFund,
-		withholdingTax: result.withholdingTax,
-		netTaxPayable: result.netTaxPayable
-	}
-
-	// Submit data to Google Sheets after calculation
-	submitToGoogleSheets()
-}
-
+// ponytail: Sheets submit disabled for realtime summary, re-enable by calling submitToGoogleSheets() on 2→3 transition
 // Prepare and submit data to Google Sheets
 const submitToGoogleSheets = () => {
 	try {
@@ -261,11 +233,6 @@ const handleStepClick = (stepId) => {
 			}
 		}
 
-		// If trying to go to step 3 from step 2, calculate tax first
-		if (currentStep.value === 2 && stepId === 3) {
-			 calculateTax()
-		}
-
 		currentStep.value = stepId
 		// Scroll to top after step change
 		window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -277,22 +244,9 @@ const clearIncomeErrors = () => {
 	incomeErrors.value = {}
 }
 // Tax planning calculations for TaxSummary
-const { calculateTaxPlanning } = useTaxCalculator()
-
-const taxPlanning = computed(() => {
-	if (currentStep.value === 3) {
-		return calculateTaxPlanning(calculationData.value, rmfInvestment.value, thaiEsgInvestment.value)
-	}
-	return {
-		totalInvestment: 0,
-		taxSavings: 0,
-		beforeTaxAmount: 0,
-		afterTaxAmount: 0,
-		finalTaxAmount: 0,
-		finalNetTaxPayable: 0,
-		taxReduction: 0
-	}
-})
+const taxPlanning = computed(() =>
+	calculateTaxPlanning(calculationData.value, rmfInvestment.value, thaiEsgInvestment.value)
+)
 </script>
 
 <template>
@@ -335,7 +289,6 @@ const taxPlanning = computed(() => {
 			</div>
 			<div class="w-full md:w-[336px] pt-8 md:pt-0" data-test-id="tax-calculator__tax-calculator--sidebar">
 				<TaxSummary
-					v-if="currentStep === 3"
 					:calculation-data="calculationData"
 					:tax-planning="taxPlanning"
 					:rmf-investment="rmfInvestment"
