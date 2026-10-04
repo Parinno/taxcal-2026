@@ -61,7 +61,8 @@ const emit = defineEmits(['step-click'])
 const steps = [
   { id: 1, caption: 'ขั้นตอนที่ 1', title: 'รายได้' },
   { id: 2, caption: 'ขั้นตอนที่ 2', title: 'ค่าลดหย่อน' },
-  { id: 3, caption: 'ขั้นตอนที่ 3', title: 'คำนวณภาษี' }
+  { id: 3, caption: 'ขั้นตอนที่ 3', title: 'ค่าลดหย่อนเพิ่มเติม' },
+  { id: 4, caption: 'ขั้นตอนที่ 4', title: 'คำนวณภาษี' }
 ]
 
 // Helper function to get step classes
@@ -504,4 +505,33 @@ const handleStepClick = (stepId) => {
 
 /* Medium screens - 600px and above (md) */
 /* Base styles already handle this size, no overrides needed */
+
+/* Fluid widths so any number of steps fits the container */
+.progress-container {
+  width: 100%;
+}
+
+.step-frame {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.step-frame-last {
+  flex: none;
+  width: auto;
+}
+
+.step-row {
+  width: 100%;
+}
+
+.step-line {
+  width: auto;
+  flex: 1 1 auto;
+  margin-right: 8px;
+}
+
+.step-content {
+  width: 100%;
+}
 </style>

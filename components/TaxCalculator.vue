@@ -4,6 +4,7 @@ import { useTaxCalculator } from '~/composables/useTaxCalculator'
 import { useGoogleSheets } from '~/composables/useGoogleSheets'
 import IncomeForm from '~/components/IncomeForm.vue'
 import DeductionsForm from '~/components/DeductionsForm.vue'
+import AdditionalDeductionsForm from '~/components/AdditionalDeductionsForm.vue'
 import TaxPlanningResult from '~/components/TaxPlanningResult.vue'
 import TaxSummary from '~/components/TaxSummary.vue'
 import HeaderContent from '~/components/HeaderContent.vue'
@@ -51,7 +52,12 @@ const deductionsData = ref({
 	providentFund: '',
 	thaiESGX: '',
 	thaiESGXTransferred: '',
-	otherDeduction: ''
+	otherDeduction: '',
+	// Step 3 additional deductions
+	lifeInsurance: '',
+	healthInsurance: '',
+	homeLoanInterest: '',
+	donation: ''
 })
 
 // Tax calculator functions - destructure at top level for use throughout component
@@ -110,6 +116,8 @@ const currentComponent = computed(() => {
 		case 2:
 			return DeductionsForm
 		case 3:
+			return AdditionalDeductionsForm
+		case 4:
 			return TaxPlanningResult
 		default:
 			return IncomeForm
@@ -124,6 +132,8 @@ const currentFormData = computed(() => {
 		case 2:
 			return deductionsData.value
 		case 3:
+			return deductionsData.value
+		case 4:
 			return calculationData.value
 		default:
 			return incomeData.value
@@ -143,8 +153,8 @@ const handleNext = () => {
 		}
 
 		currentStep.value = 2
-	} else if (currentStep.value === 2) {
-		currentStep.value = 3
+	} else if (currentStep.value < 4) {
+		currentStep.value++
 	}
 
 	// Scroll to top after step change
@@ -160,7 +170,7 @@ const handleBack = () => {
 	}
 }
 
-// ponytail: Sheets submit disabled for realtime summary, re-enable by calling submitToGoogleSheets() on 2→3 transition
+// ponytail: Sheets submit disabled for realtime summary, re-enable by calling submitToGoogleSheets() on 3→4 transition
 // Prepare and submit data to Google Sheets
 const submitToGoogleSheets = () => {
 	try {
@@ -248,7 +258,7 @@ const taxPlanning = computed(() =>
 	calculateTaxPlanning(calculationData.value, rmfInvestment.value, thaiEsgInvestment.value)
 )
 
-// TaxSummary figures with step 3 RMF/ThaiESG counted as deductions, matching TaxPlanningResult
+// TaxSummary figures with step 4 RMF/ThaiESG counted as deductions, matching TaxPlanningResult
 const summaryCalculationData = computed(() =>
 	calculateTaxFromForms(incomeData.value, {
 		...deductionsData.value,
@@ -288,7 +298,7 @@ const summaryCalculationData = computed(() =>
 						</button>
 					</div>
 					<div>
-						<button v-if="currentStep < 3" class="btn-next" @click="handleNext"
+						<button v-if="currentStep < 4" class="btn-next" @click="handleNext"
 							data-test-id="tax-calculator__tax-calculator--next-button"
 							data-fn-action="navigation_next_step">
 							ต่อไป
