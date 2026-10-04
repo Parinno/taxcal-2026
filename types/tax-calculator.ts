@@ -12,6 +12,10 @@ export interface DeductionsData {
   thaiESGX: string | number
   thaiESGXTransferred: string | number
   otherDeduction: string | number
+  lifeInsurance?: string | number
+  healthInsurance?: string | number
+  homeLoanInterest?: string | number
+  donation?: string | number
 }
 
 export interface CalculationResult {

@@ -135,9 +135,21 @@ export function useTaxCalculator() {
     // Other deductions (no specific limits, but should be reasonable)
     const otherDeduction = toNumber(deductionsData.otherDeduction)
 
+    // Insurance: health max 25,000, life + health combined max 100,000
+    const healthInsurance = Math.min(toNumber(deductionsData.healthInsurance), 25000)
+    const lifeInsurance = Math.min(toNumber(deductionsData.lifeInsurance), 100000 - healthInsurance)
+    const homeLoanInterest = Math.min(toNumber(deductionsData.homeLoanInterest), 100000)
+
     // Calculate expenses and deductions separately
     const totalExpenses = employmentExpense
-    const totalDeductions = personalDeduction + socialSecurity + providentFund + thaiESGX + thaiESGXTransferred + otherDeduction
+    const deductionsBeforeDonation = personalDeduction + socialSecurity + providentFund + thaiESGX + thaiESGXTransferred + otherDeduction
+      + lifeInsurance + healthInsurance + homeLoanInterest
+
+    // Donation: max 10% of income after expenses and other deductions
+    const donationLimit = Math.max(0, (totalIncome - totalExpenses - deductionsBeforeDonation) * 0.1)
+    const donation = Math.min(toNumber(deductionsData.donation), donationLimit)
+
+    const totalDeductions = deductionsBeforeDonation + donation
     const totalDeductionsAndExpenses = totalExpenses + totalDeductions
 
     const taxableIncome = Math.max(0, totalIncome - totalDeductionsAndExpenses)
