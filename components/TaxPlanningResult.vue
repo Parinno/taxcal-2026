@@ -101,6 +101,13 @@
       <!-- Investment Planning Section -->
       <div v-if="taxPlanningResult.beforeTaxRate > 0" class="space-y-6"
         data-test-id="tax-calculator__tax-planning-result--investment-planning">
+        <div class="flex justify-end">
+          <button type="button" class="text-[15px] font-medium text-color-primary underline"
+            data-test-id="tax-calculator__tax-planning-result--max-all-button"
+            data-fn-action="tax_planning_max_all" @click="setRmf(rmfMaxValue); setThaiEsg(thaiEsgMaxValue)">
+            ใช้สิทธิ์สูงสุดทั้งหมด
+          </button>
+        </div>
         <!-- RMF Investment -->
         <div class="space-y-3" data-test-id="tax-calculator__tax-planning-result--rmf-investment">
           <div class="flex items-center gap-3">
@@ -281,6 +288,19 @@ const updateRmfFromSlider = () => {
 const updateThaiEsgFromSlider = () => {
   thaiEsgInvestment.value = Number(thaiEsgSliderValue.value) || 0
   thaiEsgInvestmentFormatted.value = formatCurrencyTHB(thaiEsgInvestment.value)
+}
+
+// Keep model, slider and formatted input in sync
+const setRmf = (value) => {
+  rmfInvestment.value = value
+  rmfSliderValue.value = value
+  rmfInvestmentFormatted.value = formatCurrencyTHB(value)
+}
+
+const setThaiEsg = (value) => {
+  thaiEsgInvestment.value = value
+  thaiEsgSliderValue.value = value
+  thaiEsgInvestmentFormatted.value = formatCurrencyTHB(value)
 }
 
 const updateRmfInvestment = (event) => {

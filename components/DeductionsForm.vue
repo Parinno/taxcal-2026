@@ -1,5 +1,16 @@
 <template>
 	<div class="max-w-2xl mx-auto" data-fn-location="deductions-form">
+		<div v-if="maxValues" class="flex justify-end mb-[16px]">
+			<button
+				type="button"
+				class="text-[15px] font-medium text-color-primary underline"
+				data-test-id="tax-calculator__deductions-form--max-all-button"
+				data-fn-action="deduction_max_all"
+				@click="fillAllMax"
+			>
+				ใช้สิทธิ์สูงสุดทั้งหมด
+			</button>
+		</div>
 		<!-- Form Fields -->
 		<!-- Basic Deductions Section -->
 		<div data-test-id="tax-calculator__deductions-form--basic-deductions-section">
@@ -304,10 +315,23 @@ const props = defineProps({
 			thaiESGXTransferred: '',
 			otherDeduction: ''
 		})
+	},
+	// Per-field max from getDeductionMaxes; prefill buttons are hidden when absent
+	maxValues: {
+		type: Object,
+		default: undefined
 	}
 })
 
 const emit = defineEmits(['update:modelValue', 'submit', 'back'])
+
+const maxFields = ['socialSecurity', 'providentFund', 'thaiESGX', 'thaiESGXTransferred']
+
+const fillMax = (key) => {
+	formData.value[key] = props.maxValues[key]
+}
+
+const fillAllMax = () => maxFields.forEach(fillMax)
 
 // Two-way binding helper
 const formData = computed({

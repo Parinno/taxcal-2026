@@ -175,6 +175,27 @@ export function useTaxCalculator() {
     }
   }
 
+  // Max deductible amount per field, given the current inputs (same caps as calculateTaxFromForms)
+  const getDeductionMaxes = (incomeData: IncomeData, deductionsData: DeductionsData) => {
+    const totalIncome = toNumber(incomeData.salary) + toNumber(incomeData.bonus) + toNumber(incomeData.otherIncome)
+    const esgMax = Math.min(totalIncome * 0.3, 300000)
+    const healthInsurance = Math.min(toNumber(deductionsData.healthInsurance), 25000)
+
+    // Donation cap depends on every other deduction, so reuse the full calculation without it
+    const { taxableIncome } = calculateTaxFromForms(incomeData, { ...deductionsData, donation: 0 })
+
+    return {
+      socialSecurity: 9000,
+      providentFund: 500000,
+      thaiESGX: esgMax,
+      thaiESGXTransferred: esgMax,
+      lifeInsurance: 100000 - healthInsurance,
+      healthInsurance: 25000,
+      homeLoanInterest: 100000,
+      donation: Math.floor(taxableIncome * 0.1)
+    }
+  }
+
   // Tax planning calculations
   const calculateTaxPlanning = (
     calculationData: CalculationResult,
@@ -336,6 +357,7 @@ export function useTaxCalculator() {
 
   return {
     calculateTaxFromForms,
+    getDeductionMaxes,
     calculateTaxPlanning,
     calculateTaxPlanningResult,
     calculateTaxSummary,

@@ -4,12 +4,24 @@
 			class="space-y-4 mb-[20px]"
 			data-test-id="tax-calculator__additional-deductions-form--section"
 		>
-			<h2
-				class="font-bold text-color-primary mb-[16px] text-[20px]"
-				data-test-id="tax-calculator__additional-deductions-form--title"
-			>
-				ค่าลดหย่อนเพิ่มเติม
-			</h2>
+			<div class="flex items-center justify-between mb-[16px]">
+				<h2
+					class="font-bold text-color-primary text-[20px]"
+					data-test-id="tax-calculator__additional-deductions-form--title"
+				>
+					ค่าลดหย่อนเพิ่มเติม
+				</h2>
+				<button
+					v-if="maxValues"
+					type="button"
+					class="text-[15px] font-medium text-color-primary underline"
+					data-test-id="tax-calculator__additional-deductions-form--max-all-button"
+					data-fn-action="deduction_additional_max_all"
+					@click="fillAllMax"
+				>
+					ใช้สิทธิ์สูงสุดทั้งหมด
+				</button>
+			</div>
 
 			<div class="space-y-6 mb-[20px]">
 				<div
@@ -64,7 +76,7 @@
 </template>
 
 <script setup>
-import { reactive, watch } from 'vue'
+import { nextTick, reactive, watch } from 'vue'
 import {
 	formatNumberWithSeparatorsPreserveDecimals,
 	parseNumberFromFormattedWithDecimals,
@@ -75,6 +87,11 @@ const props = defineProps({
 	modelValue: {
 		type: Object,
 		required: true
+	},
+	// Per-field max from getDeductionMaxes; prefill buttons are hidden when absent
+	maxValues: {
+		type: Object,
+		default: undefined
 	}
 })
 
@@ -108,6 +125,21 @@ const setValue = (key, formatted) => {
 	display[key] = formatted
 	// Mutate in place like DeductionsForm so the parent's computed summary updates live
 	props.modelValue[key] = parseNumberFromFormattedWithDecimals(formatted)
+}
+
+const fillMax = (key) => {
+	props.modelValue[key] = props.maxValues[key]
+}
+
+// Order matters: life cap depends on health, donation cap depends on all others.
+// Wait a tick between so the parent recomputes maxValues.
+const fillAllMax = async () => {
+	fillMax('healthInsurance')
+	fillMax('homeLoanInterest')
+	await nextTick()
+	fillMax('lifeInsurance')
+	await nextTick()
+	fillMax('donation')
 }
 
 const onAmountInput = (key, e) => {

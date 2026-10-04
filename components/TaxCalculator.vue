@@ -70,12 +70,15 @@ const deductionsData = ref({
 })
 
 // Tax calculator functions - destructure at top level for use throughout component
-const { calculateTaxFromForms, calculateTaxPlanning } = useTaxCalculator()
+const { calculateTaxFromForms, getDeductionMaxes, calculateTaxPlanning } = useTaxCalculator()
 
 // Recalculated on every input change so TaxSummary updates in real time
 const calculationData = computed(() =>
 	calculateTaxFromForms(incomeData.value, deductionsData.value)
 )
+
+// Per-field max for the "ใช้สิทธิ์สูงสุดทั้งหมด" prefill button on deduction steps
+const deductionMaxes = computed(() => getDeductionMaxes(incomeData.value, deductionsData.value))
 
 // Alert modal state
 const showAlert = ref(false)
@@ -290,7 +293,9 @@ const summaryCalculationData = computed(() =>
 			<div class="w-full md:w-[648px] px-[16px]" data-test-id="tax-calculator__tax-calculator--main-content">
 				<StepIndicator :current-step="currentStep" @step-click="handleStepClick" />
 				<component :is="currentComponent" v-model="currentFormData"
-					:errors="currentStep === 1 ? incomeErrors : {}" @submit="handleNext" @back="handleBack"
+					:errors="currentStep === 1 ? incomeErrors : {}"
+					:max-values="currentStep === 2 || currentStep === 3 ? deductionMaxes : undefined"
+					@submit="handleNext" @back="handleBack"
 					@recalculate="handleRecalculate" @update:rmf-investment="handleRmfInvestmentUpdate"
 					@update:thai-esg-investment="handleThaiEsgInvestmentUpdate" @clear-errors="clearIncomeErrors"
 					:data-test-id="`tax-calculator__tax-calculator--step-${currentStep}-form`" />
