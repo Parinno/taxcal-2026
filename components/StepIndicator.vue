@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-container max-w-[288px] md:max-w-[648px]" data-test-id="tax-calculator__step-indicator--container" data-fn-location="step-indicator">
+  <div class="progress-container md:max-w-[648px]" data-test-id="tax-calculator__step-indicator--container" data-fn-location="step-indicator">
     <div 
       v-for="(step, index) in steps" 
       :key="step.id"
@@ -41,6 +41,11 @@
       </div>
     </div>
   </div>
+  <!-- Mobile: only the current step label, all labels don't fit -->
+  <div class="step-mobile-label" data-test-id="tax-calculator__step-indicator--mobile-label">
+    <div class="step-caption">ขั้นตอนที่ {{ currentStepInfo.id }} จาก {{ steps.length }}</div>
+    <div class="step-detail">{{ currentStepInfo.title }}</div>
+  </div>
 </template>
 
 <script setup>
@@ -64,6 +69,8 @@ const steps = [
   { id: 3, caption: 'ขั้นตอนที่ 3', title: 'ค่าลดหย่อนเพิ่มเติม' },
   { id: 4, caption: 'ขั้นตอนที่ 4', title: 'คำนวณภาษี' }
 ]
+
+const currentStepInfo = computed(() => steps.find((s) => s.id === props.currentStep) ?? steps[0])
 
 // Helper function to get step classes
 const getStepClasses = (step) => {  
@@ -533,5 +540,29 @@ const handleStepClick = (stepId) => {
 
 .step-content {
   width: 100%;
+}
+
+.step-mobile-label {
+  display: none;
+}
+
+/* Mobile: circles span full width, labels replaced by current-step label */
+@media (max-width: 599px) {
+  .progress-container {
+    padding: 24px 0px 8px;
+  }
+
+  .step-frame {
+    height: auto;
+  }
+
+  .step-content {
+    display: none;
+  }
+
+  .step-mobile-label {
+    display: block;
+    padding-bottom: 24px;
+  }
 }
 </style>

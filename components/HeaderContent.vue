@@ -1,8 +1,8 @@
 <template>
     <div class="sm:container xs:mx-auto xs:w-full xs:px-3 md:mx-auto md:max-w-7xl lg:max-w-[1272px] pb-[32px]"
         data-test-id="tax-calculator__header-content--container">
-        <div class="flex justify-between w-full">
-            <div class="w-0 md:w-[288px]">
+        <div class="flex md:justify-center w-full">
+            <div class="hidden">
                 <!-- TODO for development : Add login and logout buttons -->
                 <!-- <div class="w-[288px] flex items-start justify-start gap-2">
                     <button v-if="!isLoggedIn" class="px-3 py-2 rounded bg-[#111827] text-white text-sm"
