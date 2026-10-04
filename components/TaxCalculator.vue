@@ -29,6 +29,15 @@ watch(
 const rmfInvestment = ref(0)
 const thaiEsgInvestment = ref(0)
 
+// TaxPlanningResult resets its inputs to 0 on remount, so clear them when leaving step 4
+// to keep TaxSummary from showing stale RMF/ThaiESG on earlier steps
+watch(currentStep, (step) => {
+	if (step !== 4) {
+		rmfInvestment.value = 0
+		thaiEsgInvestment.value = 0
+	}
+})
+
 // Handlers for investment data updates
 const handleRmfInvestmentUpdate = (value) => {
 	rmfInvestment.value = value
