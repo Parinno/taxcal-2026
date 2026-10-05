@@ -25,3 +25,5 @@ logs
 
 # Google Service Account
 service-account.json
+.vercel
+.env*
