@@ -24,12 +24,12 @@ const failures = []
 const browser = await chromium.launch()
 for (const [viewportName, viewport] of Object.entries(viewports)) {
   const page = await browser.newPage({ viewport })
-  await page.goto(url)
 
   try {
+    await page.goto(url, { timeout: 30_000 })
     await page.locator(id('tax-calculator--step-1-form')).waitFor({ timeout: 30_000 })
   } catch {
-    failures.push(`${viewportName}: step 1 never rendered (stuck on the splash?)`)
+    failures.push(`${viewportName}: the page never loaded or step 1 never rendered (stuck on the splash?)`)
     await page.screenshot({ path: `${outDir}${viewportName}-stuck.png` })
     await page.close()
     continue
