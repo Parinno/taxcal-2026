@@ -11,7 +11,9 @@ Nuxt 4, Vue 3 `<script setup>`, Pinia, Tailwind. One page: `/tax/calculator`.
 - Current work and Ford's decisions so far: `HANDOFF-tax-cal-2026-ux.md`
 
 ## Run it
-- Node 24 only; Node 26 hangs on the Nuxt splash. `.npmrc` pins it, so always go through pnpm (`pnpm dev`), never `npm` or `npx`.
+- Node 24 only; Node 26 hangs on the Nuxt splash. `.npmrc` pins it for pnpm, and the `dev` script goes through pnpm, so `npm run dev` (what Ford types) and `pnpm dev` both get Node 24. Never run `npx nuxt` or `node …/nuxt.mjs`: they skip the pin.
+- The splash hang is in the browser. `curl` still gets 200 from a hung server, so it proves nothing; use `scripts/check-ui`.
+- One dev server per folder. A second `nuxt dev` here rewrites `.nuxt` and breaks the first, including Ford's on port 3000. Check the running one on 3000 instead of starting another; if you must start one, stop it when done.
 - Export `CONTENT_URL` and `HEADER_VERSION` from `.exmaple.env` first.
 - Open http://localhost:3000/tax/calculator
 - No tests, lint, or typecheck scripts. The check for UI changes, with the dev server running:
