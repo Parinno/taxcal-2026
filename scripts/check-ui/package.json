@@ -1,0 +1,11 @@
+{
+  "name": "check-ui",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node check-ui.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}
