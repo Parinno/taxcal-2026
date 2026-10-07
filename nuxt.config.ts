@@ -1,6 +1,10 @@
 const contentURL = process.env.CONTENT_URL
 const headerVersion = process.env.HEADER_VERSION
 const authURL = process.env.AUTH_URL
+// The CDN only lets a few origins load its webfonts (CORS), so on any other domain, like a Vercel
+// preview, DB Heavent and FontAwesome render blank. The browser fetches them through our own server
+// instead (server/routes/_content), which works on every domain, localhost included.
+const fontURL = contentURL ? '/tax/_content' : contentURL
 import sitemap  from './sitemap'
 
 export default defineNuxtConfig({
@@ -35,71 +39,71 @@ export default defineNuxtConfig({
 				},
 				{
 					rel: 'preload',
-					href: `${contentURL}/fonts/DBHeaventRez.css`,
+					href: `${fontURL}/fonts/DBHeaventRez.css`,
 					as: 'style'
 				},
 				{
 					rel: 'preload',
-					href: `${contentURL}/fonts/DBHeaventRez-Regular.woff`,
+					href: `${fontURL}/fonts/DBHeaventRez-Regular.woff`,
 					as: 'font',
 					crossorigin: 'anonymous'
 				},
 				{
 					rel: 'preload',
-					href: `${contentURL}/fonts/DBHeaventRez-Bold.woff`,
+					href: `${fontURL}/fonts/DBHeaventRez-Bold.woff`,
 					as: 'font',
 					crossorigin: 'anonymous'
 				},
 				{
 					rel: 'preload',
-					href: `${contentURL}/fontawesome-pro-6.4.2/css/all.min.css`,
+					href: `${fontURL}/fontawesome-pro-6.4.2/css/all.min.css`,
 					as: 'style'
 				},
 				{
 					rel: 'preload',
-					href: `${contentURL}/fontawesome-pro-6.4.2/webfonts/fa-regular-400.woff2`,
+					href: `${fontURL}/fontawesome-pro-6.4.2/webfonts/fa-regular-400.woff2`,
 					as: 'font',
 					crossorigin: 'anonymous'
 				},
 				{
 					rel: 'preload',
-					href: `${contentURL}/fontawesome-pro-6.4.2/webfonts/fa-solid-900.woff2`,
+					href: `${fontURL}/fontawesome-pro-6.4.2/webfonts/fa-solid-900.woff2`,
 					as: 'font',
 					crossorigin: 'anonymous'
 				},
 				{
 					rel: 'preload',
-					href: `${contentURL}/fontawesome-pro-6.4.2/webfonts/fa-regular-400.woff2`,
+					href: `${fontURL}/fontawesome-pro-6.4.2/webfonts/fa-regular-400.woff2`,
 					as: 'font'
 				},
 				{
 					rel: 'stylesheet',
-					href: `${contentURL}/fontawesome-pro-6.4.2/css/all.min.css`,
+					href: `${fontURL}/fontawesome-pro-6.4.2/css/all.min.css`,
 					type: 'text/css'
 				},
 				{
 					rel: 'stylesheet',
-					href: `${contentURL}/fontawesome-pro-6.4.2/css/v5-font-face.css`,
+					href: `${fontURL}/fontawesome-pro-6.4.2/css/v5-font-face.css`,
 					type: 'text/css'
 				},
 				{
 					rel: 'stylesheet',
-					href: `${contentURL}/fontawesome-pro-6.4.2/css/sharp-regular.css`,
+					href: `${fontURL}/fontawesome-pro-6.4.2/css/sharp-regular.css`,
 					type: 'text/css'
 				},
 				{
 					rel: 'stylesheet',
-					href: `${contentURL}/fontawesome-pro-6.4.2/css/sharp-light.min.css`,
+					href: `${fontURL}/fontawesome-pro-6.4.2/css/sharp-light.min.css`,
 					type: 'text/css'
 				},
 				{
 					rel: 'stylesheet',
-					href: `${contentURL}/fontawesome-pro-6.4.2/css/sharp-solid.min.css`,
+					href: `${fontURL}/fontawesome-pro-6.4.2/css/sharp-solid.min.css`,
 					type: 'text/css'
 				},
 				{
 					rel: 'stylesheet',
-					href: `${contentURL}/fonts/DBHeaventRez.css`,
+					href: `${fontURL}/fonts/DBHeaventRez.css`,
 					type: 'text/css'
 				},
 				{
