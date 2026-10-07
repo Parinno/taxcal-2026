@@ -14,6 +14,19 @@ Notes
 
 Page: `tax-calculator`
 
+Component: `deductions-form` (step 2)
+- Actions: `tax-calculator__deductions-form--savings-investment-max-button`
+- Sections: `tax-calculator__deductions-form--{family|savings-investment|other}-section` / `-title`
+- Amount fields (`-container`, `-label`, `-input`, `-info`): `personal-deduction`, `maternity-expense`, `social-security`, `provident-fund`, `thai-esgx-transferred` (amount of LTF switched), `other-deduction`
+- Yes/no field (`-container`, `-label`, `-input`): `spouse`
+- Count fields (`-container`, `-label`, `-info`, `-decrease`, `-value`, `-increase`): `children-born-before-2561-count`, `children-born-from-2561-count`, `own-parents-count`, `spouse-parents-count`, `disabled-dependents-count`
+- Family subtotal: `tax-calculator__deductions-form--family-total`
+
+Component: `additional-deductions-form` (step 3)
+- Header: `tax-calculator__additional-deductions-form--section`, `--title`
+- Amount fields (`-container`, `-label`, `-input`, `-info`): `lifeInsurance`, `healthInsurance`, `parentHealthInsurance`, `spouseLifeInsurance`, `homeLoanInterest`, `solarRooftop`, `artwork`, `socialEnterprise`, `doubleDonation`, `donation`, `partyDonation`
+- Pickers: `tax-calculator__additional-deductions-form--{insurance|home-measures|donation}-picker`; per field `-chip` (opens the field) and `-deducted` (shown when a cap cuts the entry)
+
 Component: `recommended-tax-funds`
 - Tabs
   - `tax-calculator__recommended-tax-funds--tab-rmf`
@@ -39,6 +52,30 @@ Component: `rmf-combo-allocate-modal`
 - Footer actions
   - Cancel: `tax-calculator__rmf-combo-allocate-modal--cancel`
   - Confirm: `tax-calculator__rmf-combo-allocate-modal--confirm`
+
+Component: `tax-result-slip` (result page summary)
+- Result: `tax-calculator__tax-result-slip--status`, `tax-calculator__tax-result-slip--amount`, `tax-calculator__tax-result-slip--tax-rate-value`
+- Facts: `tax-calculator__tax-result-slip--total-income`, `tax-calculator__tax-result-slip--total-deductions`, `tax-calculator__tax-result-slip--taxable-income`
+- Result emoji: `tax-calculator__tax-result-slip--emoji`
+- Deduction usage hint (prototype): `tax-calculator__tax-result-slip--usage-hint`, `tax-calculator__tax-summary--usage-hint`
+- Summary panel emoji (prototype): `tax-calculator__tax-summary--emoji`
+- Emoji rule picker (prototype, ?emoji=): `tax-calculator__result-emoji-variant-picker--{container,ticket,usage,usage-hint}`
+- Full calculation toggle: `tax-calculator__tax-result-slip--breakdown-toggle`
+- Full list: see `DATA_TEST_IDS_LIST.txt`
+
+Component: `login-nudge` (guests only: above the stepper on steps 1–3, and on the result page)
+- `tax-calculator__login-nudge--container`, `--login-button`, `--dismiss` (steps only)
+
+Component: `header-content`
+- Result page "แก้ไขข้อมูล" (back to step 3): `tax-calculator__header-content--edit-link`
+
+Component: `tax-planning-result` (RMF/ThaiESG upsell on the result page)
+- Planning card (replaces the savings line): see `tax-planning-card`
+
+Component: `tax-planning-card` (moved from the floating panel to the result page upsell)
+- Container: `tax-calculator__tax-planning-card--container`
+- Savings amount: `tax-calculator__tax-planning-card--tax-savings-amount`
+- Full list: see `DATA_TEST_IDS_LIST.txt`
 
 ### Usage examples (Cypress)
 

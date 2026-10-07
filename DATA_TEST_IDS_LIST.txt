@@ -61,44 +61,141 @@ Withholding Tax:
 Component: deductions-form
 ==========================================
 
-Basic Deductions Section:
-- tax-calculator__deductions-form--basic-deductions-section
-- tax-calculator__deductions-form--basic-deductions-title
-- tax-calculator__deductions-form--personal-deduction-container
-- tax-calculator__deductions-form--personal-deduction-label
-- tax-calculator__deductions-form--personal-deduction-description
-- tax-calculator__deductions-form--personal-deduction-input
+Actions:
+- tax-calculator__deductions-form--savings-investment-max-button
 
-Savings/Investment Section:
+Sections (each has -section and -title): family, savings-investment, other
+- tax-calculator__deductions-form--family-section
+- tax-calculator__deductions-form--family-title
 - tax-calculator__deductions-form--savings-investment-section
 - tax-calculator__deductions-form--savings-investment-title
+- tax-calculator__deductions-form--other-section
+- tax-calculator__deductions-form--other-title
 
-Social Security:
+Family:
+- tax-calculator__deductions-form--personal-deduction-container
+- tax-calculator__deductions-form--personal-deduction-label
+- tax-calculator__deductions-form--personal-deduction-input
+- tax-calculator__deductions-form--personal-deduction-info
+- tax-calculator__deductions-form--spouse-container
+- tax-calculator__deductions-form--spouse-label
+- tax-calculator__deductions-form--spouse-input
+- tax-calculator__deductions-form--children-born-before-2561-count-container
+- tax-calculator__deductions-form--children-born-before-2561-count-label
+- tax-calculator__deductions-form--children-born-before-2561-count-info
+- tax-calculator__deductions-form--children-born-before-2561-count-decrease
+- tax-calculator__deductions-form--children-born-before-2561-count-value
+- tax-calculator__deductions-form--children-born-before-2561-count-increase
+- tax-calculator__deductions-form--children-born-from-2561-count-container
+- tax-calculator__deductions-form--children-born-from-2561-count-label
+- tax-calculator__deductions-form--children-born-from-2561-count-info
+- tax-calculator__deductions-form--children-born-from-2561-count-decrease
+- tax-calculator__deductions-form--children-born-from-2561-count-value
+- tax-calculator__deductions-form--children-born-from-2561-count-increase
+- tax-calculator__deductions-form--maternity-expense-container
+- tax-calculator__deductions-form--maternity-expense-label
+- tax-calculator__deductions-form--maternity-expense-input
+- tax-calculator__deductions-form--maternity-expense-info
+- tax-calculator__deductions-form--own-parents-count-container
+- tax-calculator__deductions-form--own-parents-count-label
+- tax-calculator__deductions-form--own-parents-count-info
+- tax-calculator__deductions-form--own-parents-count-decrease
+- tax-calculator__deductions-form--own-parents-count-value
+- tax-calculator__deductions-form--own-parents-count-increase
+- tax-calculator__deductions-form--spouse-parents-count-container
+- tax-calculator__deductions-form--spouse-parents-count-label
+- tax-calculator__deductions-form--spouse-parents-count-info
+- tax-calculator__deductions-form--spouse-parents-count-decrease
+- tax-calculator__deductions-form--spouse-parents-count-value
+- tax-calculator__deductions-form--spouse-parents-count-increase
+- tax-calculator__deductions-form--disabled-dependents-count-container
+- tax-calculator__deductions-form--disabled-dependents-count-label
+- tax-calculator__deductions-form--disabled-dependents-count-info
+- tax-calculator__deductions-form--disabled-dependents-count-decrease
+- tax-calculator__deductions-form--disabled-dependents-count-value
+- tax-calculator__deductions-form--disabled-dependents-count-increase
+- tax-calculator__deductions-form--family-total
+
+Savings/Investment:
 - tax-calculator__deductions-form--social-security-container
 - tax-calculator__deductions-form--social-security-label
 - tax-calculator__deductions-form--social-security-input
 - tax-calculator__deductions-form--social-security-info
-
-Provident Fund:
 - tax-calculator__deductions-form--provident-fund-container
 - tax-calculator__deductions-form--provident-fund-label
 - tax-calculator__deductions-form--provident-fund-input
 - tax-calculator__deductions-form--provident-fund-info
-
-ThaiESGX:
-- tax-calculator__deductions-form--thai-esgx-container
-- tax-calculator__deductions-form--thai-esgx-label
-- tax-calculator__deductions-form--thai-esgx-input
-
-ThaiESGX Transferred:
 - tax-calculator__deductions-form--thai-esgx-transferred-container
 - tax-calculator__deductions-form--thai-esgx-transferred-label
 - tax-calculator__deductions-form--thai-esgx-transferred-input
+- tax-calculator__deductions-form--thai-esgx-transferred-info
 
 Other Deduction:
 - tax-calculator__deductions-form--other-deduction-container
+- tax-calculator__deductions-form--other-deduction-label
 - tax-calculator__deductions-form--other-deduction-input
 - tax-calculator__deductions-form--other-deduction-info
+
+==========================================
+Component: additional-deductions-form
+==========================================
+
+Header:
+- tax-calculator__additional-deductions-form--section
+- tax-calculator__additional-deductions-form--title
+
+Pickers (each field also has -chip and -deducted):
+- tax-calculator__additional-deductions-form--insurance-picker
+- tax-calculator__additional-deductions-form--home-measures-picker
+- tax-calculator__additional-deductions-form--donation-picker
+- tax-calculator__additional-deductions-form--{field}-chip
+- tax-calculator__additional-deductions-form--{field}-deducted
+
+Fields (each has -container, -label, -input, -info):
+- tax-calculator__additional-deductions-form--lifeInsurance-container
+- tax-calculator__additional-deductions-form--lifeInsurance-label
+- tax-calculator__additional-deductions-form--lifeInsurance-input
+- tax-calculator__additional-deductions-form--lifeInsurance-info
+- tax-calculator__additional-deductions-form--healthInsurance-container
+- tax-calculator__additional-deductions-form--healthInsurance-label
+- tax-calculator__additional-deductions-form--healthInsurance-input
+- tax-calculator__additional-deductions-form--healthInsurance-info
+- tax-calculator__additional-deductions-form--parentHealthInsurance-container
+- tax-calculator__additional-deductions-form--parentHealthInsurance-label
+- tax-calculator__additional-deductions-form--parentHealthInsurance-input
+- tax-calculator__additional-deductions-form--parentHealthInsurance-info
+- tax-calculator__additional-deductions-form--spouseLifeInsurance-container
+- tax-calculator__additional-deductions-form--spouseLifeInsurance-label
+- tax-calculator__additional-deductions-form--spouseLifeInsurance-input
+- tax-calculator__additional-deductions-form--spouseLifeInsurance-info
+- tax-calculator__additional-deductions-form--homeLoanInterest-container
+- tax-calculator__additional-deductions-form--homeLoanInterest-label
+- tax-calculator__additional-deductions-form--homeLoanInterest-input
+- tax-calculator__additional-deductions-form--homeLoanInterest-info
+- tax-calculator__additional-deductions-form--solarRooftop-container
+- tax-calculator__additional-deductions-form--solarRooftop-label
+- tax-calculator__additional-deductions-form--solarRooftop-input
+- tax-calculator__additional-deductions-form--solarRooftop-info
+- tax-calculator__additional-deductions-form--artwork-container
+- tax-calculator__additional-deductions-form--artwork-label
+- tax-calculator__additional-deductions-form--artwork-input
+- tax-calculator__additional-deductions-form--artwork-info
+- tax-calculator__additional-deductions-form--socialEnterprise-container
+- tax-calculator__additional-deductions-form--socialEnterprise-label
+- tax-calculator__additional-deductions-form--socialEnterprise-input
+- tax-calculator__additional-deductions-form--socialEnterprise-info
+- tax-calculator__additional-deductions-form--doubleDonation-container
+- tax-calculator__additional-deductions-form--doubleDonation-label
+- tax-calculator__additional-deductions-form--doubleDonation-input
+- tax-calculator__additional-deductions-form--doubleDonation-info
+- tax-calculator__additional-deductions-form--donation-container
+- tax-calculator__additional-deductions-form--donation-label
+- tax-calculator__additional-deductions-form--donation-input
+- tax-calculator__additional-deductions-form--donation-info
+- tax-calculator__additional-deductions-form--partyDonation-container
+- tax-calculator__additional-deductions-form--partyDonation-label
+- tax-calculator__additional-deductions-form--partyDonation-input
+- tax-calculator__additional-deductions-form--partyDonation-info
 
 ==========================================
 Component: recommended-tax-funds
@@ -202,46 +299,107 @@ Footer:
 - tax-calculator__rmf-combo-allocate-modal--confirm
 
 ==========================================
-Component: tax-planning-result
+Component: tax-result (หน้าผลลัพธ์ หลังขั้นตอนที่ 3)
+==========================================
+
+Container:
+- tax-calculator__tax-result--container
+- tax-calculator__tax-result--divider
+
+==========================================
+Component: tax-result-slip (ใบสรุปภาษี)
+==========================================
+
+Container & Header:
+- tax-calculator__tax-result-slip--container
+- tax-calculator__tax-result-slip--title
+- tax-calculator__tax-result-slip--tax-year
+- tax-calculator__tax-result-slip--explanation
+
+Result:
+- tax-calculator__tax-result-slip--status
+- tax-calculator__tax-result-slip--amount
+- tax-calculator__tax-result-slip--currency
+- tax-calculator__tax-result-slip--emoji
+- tax-calculator__tax-result-slip--usage-hint
+- tax-calculator__tax-result-slip--tax-rate
+- tax-calculator__tax-result-slip--tax-rate-value
+
+Facts:
+- tax-calculator__tax-result-slip--facts
+- tax-calculator__tax-result-slip--total-income
+- tax-calculator__tax-result-slip--total-deductions
+- tax-calculator__tax-result-slip--taxable-income
+
+Breakdown (ดูการคำนวณทั้งหมด):
+- tax-calculator__tax-result-slip--breakdown
+- tax-calculator__tax-result-slip--breakdown-toggle
+- tax-calculator__tax-result-slip--brackets-toggle
+- tax-calculator__tax-result-slip--brackets
+- tax-calculator__tax-result-slip--bracket-row-{index}
+
+Footer:
+- tax-calculator__tax-result-slip--footer
+
+==========================================
+Component: login-nudge (การ์ดชวนเข้าสู่ระบบ เฉพาะคนที่ยังไม่ login: เหนือ stepper ขั้นตอนที่ 1–3 และหน้าผลลัพธ์)
+==========================================
+
+- tax-calculator__login-nudge--container
+- tax-calculator__login-nudge--login-button
+- tax-calculator__login-nudge--dismiss (เฉพาะหน้า step)
+
+==========================================
+Component: header-content
+==========================================
+
+Result page:
+- tax-calculator__header-content--edit-link
+
+==========================================
+Component: tax-planning-card (การ์ดวางแผนลดหย่อนภาษี ในส่วน upsell หน้าผลลัพธ์)
+==========================================
+
+Card:
+- tax-calculator__tax-planning-card--container
+- tax-calculator__tax-planning-card--title
+- tax-calculator__tax-planning-card--description
+
+Additional Investment:
+- tax-calculator__tax-planning-card--additional-investment-section
+- tax-calculator__tax-planning-card--additional-investment-label
+- tax-calculator__tax-planning-card--additional-investment-amount
+- tax-calculator__tax-planning-card--additional-investment-amount-value
+- tax-calculator__tax-planning-card--additional-investment-currency
+
+Tax Savings:
+- tax-calculator__tax-planning-card--tax-savings-section
+- tax-calculator__tax-planning-card--tax-savings-label
+- tax-calculator__tax-planning-card--tax-savings-amount
+
+Investment Breakdown:
+- tax-calculator__tax-planning-card--investment-breakdown
+- tax-calculator__tax-planning-card--rmf-investment-row
+- tax-calculator__tax-planning-card--rmf-indicator
+- tax-calculator__tax-planning-card--rmf-investment-label
+- tax-calculator__tax-planning-card--rmf-investment-value
+- tax-calculator__tax-planning-card--thai-esg-investment-row
+- tax-calculator__tax-planning-card--thai-esg-indicator
+- tax-calculator__tax-planning-card--thai-esg-investment-label
+- tax-calculator__tax-planning-card--thai-esg-investment-value
+
+==========================================
+Component: tax-planning-result (ส่วนวางแผน RMF/ThaiESG บนหน้าผลลัพธ์)
 ==========================================
 
 Container:
 - tax-calculator__tax-planning-result--container
-- tax-calculator__tax-planning-result--planning-header
-- tax-calculator__tax-planning-result--planning-title
 
-Tax Summary Card:
-- tax-calculator__tax-planning-result--tax-summary-card
-- tax-calculator__tax-planning-result--tax-summary-title
-- tax-calculator__tax-planning-result--tax-amount
-- tax-calculator__tax-planning-result--tax-currency
-- tax-calculator__tax-planning-result--tax-rate
-- tax-calculator__tax-planning-result--tax-rate-label
-- tax-calculator__tax-planning-result--tax-rate-value
-
-Tax Comparison:
-- tax-calculator__tax-planning-result--tax-comparison
-- tax-calculator__tax-planning-result--tax-planning-description
-- tax-calculator__tax-planning-result--tax-comparison-container
-- tax-calculator__tax-planning-result--tax-before
-- tax-calculator__tax-planning-result--tax-before-label
-- tax-calculator__tax-planning-result--tax-before-status
-- tax-calculator__tax-planning-result--tax-before-amount
-- tax-calculator__tax-planning-result--tax-before-rate-container
-- tax-calculator__tax-planning-result--tax-before-rate
-- tax-calculator__tax-planning-result--tax-comparison-arrow
-- tax-calculator__tax-planning-result--tax-after
-- tax-calculator__tax-planning-result--tax-after-label
-- tax-calculator__tax-planning-result--tax-after-status
-- tax-calculator__tax-planning-result--tax-after-amount
-- tax-calculator__tax-planning-result--tax-after-rate-container
-- tax-calculator__tax-planning-result--tax-after-rate
-
-No Tax Info:
-- tax-calculator__tax-planning-result--no-tax-info
-- tax-calculator__tax-planning-result--no-tax-message
-- tax-calculator__tax-planning-result--no-tax-icon
-- tax-calculator__tax-planning-result--no-tax-text
+Upsell:
+- tax-calculator__tax-planning-result--upsell
+- tax-calculator__tax-planning-result--upsell-title
+- tax-calculator__tax-planning-result--upsell-description
+- tax-calculator__tax-planning-result--max-all-button
 
 Investment Planning:
 - tax-calculator__tax-planning-result--investment-planning
@@ -285,6 +443,8 @@ Tax Payable Section:
 - tax-calculator__tax-summary--tax-payable-amount-container
 - tax-calculator__tax-summary--tax-payable-amount
 - tax-calculator__tax-summary--tax-payable-currency
+- tax-calculator__tax-summary--emoji
+- tax-calculator__tax-summary--usage-hint
 - tax-calculator__tax-summary--tax-rate-section
 - tax-calculator__tax-summary--tax-rate-label
 - tax-calculator__tax-summary--tax-rate-value
@@ -329,34 +489,6 @@ Final Tax:
 - tax-calculator__tax-summary--final-tax-label
 - tax-calculator__tax-summary--final-tax-value
 
-Tax Planning Card:
-- tax-calculator__tax-summary--tax-planning-card
-- tax-calculator__tax-summary--tax-planning-title
-- tax-calculator__tax-summary--tax-planning-description
-
-Additional Investment:
-- tax-calculator__tax-summary--additional-investment-section
-- tax-calculator__tax-summary--additional-investment-label
-- tax-calculator__tax-summary--additional-investment-amount
-- tax-calculator__tax-summary--additional-investment-amount-value
-- tax-calculator__tax-summary--additional-investment-currency
-
-Tax Savings:
-- tax-calculator__tax-summary--tax-savings-section
-- tax-calculator__tax-summary--tax-savings-label
-- tax-calculator__tax-summary--tax-savings-amount
-
-Investment Breakdown:
-- tax-calculator__tax-summary--investment-breakdown
-- tax-calculator__tax-summary--rmf-investment-row
-- tax-calculator__tax-summary--rmf-indicator
-- tax-calculator__tax-summary--rmf-investment-label
-- tax-calculator__tax-summary--rmf-investment-value
-- tax-calculator__tax-summary--thai-esg-investment-row
-- tax-calculator__tax-summary--thai-esg-indicator
-- tax-calculator__tax-summary--thai-esg-investment-label
-- tax-calculator__tax-summary--thai-esg-investment-value
-
 ==========================================
 หมายเหตุ
 ==========================================
@@ -376,3 +508,7 @@ Investment Breakdown:
 - tax-calculator__rmf-combo-allocate-modal--table-row-0
 
 ==========================================
+- tax-calculator__result-emoji-variant-picker--container
+- tax-calculator__result-emoji-variant-picker--ticket
+- tax-calculator__result-emoji-variant-picker--usage
+- tax-calculator__result-emoji-variant-picker--usage-hint

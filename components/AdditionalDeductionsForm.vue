@@ -1,74 +1,54 @@
 <template>
 	<div class="max-w-2xl mx-auto" data-fn-location="additional-deductions-form">
+		<!-- Pick first: only the items the user has get a field -->
 		<div
-			class="space-y-4 mb-[20px]"
+			class="mb-[20px]"
 			data-test-id="tax-calculator__additional-deductions-form--section"
 		>
-			<div class="flex items-center justify-between mb-[16px]">
-				<h2
-					class="font-bold text-color-primary text-[20px]"
-					data-test-id="tax-calculator__additional-deductions-form--title"
-				>
-					ค่าลดหย่อนเพิ่มเติม
-				</h2>
-				<button
-					v-if="maxValues"
-					type="button"
-					class="text-[15px] font-medium text-color-primary underline"
-					data-test-id="tax-calculator__additional-deductions-form--max-all-button"
-					data-fn-action="deduction_additional_max_all"
-					@click="fillAllMax"
-				>
-					ใช้สิทธิ์สูงสุดทั้งหมด
-				</button>
+			<h2
+				class="font-bold text-color-primary text-[20px]"
+				data-test-id="tax-calculator__additional-deductions-form--title"
+			>
+				ค่าลดหย่อนเพิ่มเติม
+			</h2>
+			<p class="text-[15px] text-color-secondary mt-1 mb-[16px]">
+				ปีนี้คุณจ่ายรายการไหนบ้าง เลือกได้หลายข้อ ไม่มีก็กดถัดไปได้เลย
+			</p>
+
+			<div
+				v-for="section in visibleSections"
+				:key="section.testId"
+				class="mb-[16px]"
+				:data-test-id="`tax-calculator__additional-deductions-form--${section.testId}-picker`"
+			>
+				<p class="text-[13px] font-medium text-color-secondary mb-2">{{ section.title }}</p>
+				<div class="flex flex-wrap gap-2">
+					<button
+						v-for="field in section.fields"
+						:key="field.key"
+						type="button"
+						:aria-pressed="picked.has(field.key)"
+						:class="['pick-chip', picked.has(field.key) && 'pick-chip--on']"
+						:data-test-id="`tax-calculator__additional-deductions-form--${field.testId}-chip`"
+						:data-fn-action="`deduction_${field.key}_pick`"
+						@click="togglePick(field.key)"
+					>
+						<i :class="['fa-solid text-[12px]', picked.has(field.key) ? 'fa-check' : 'fa-plus']"></i>
+						{{ field.chip }}
+					</button>
+				</div>
 			</div>
 
-			<div class="space-y-6 mb-[20px]">
-				<div
-					v-for="field in fields"
-					:key="field.key"
-					class="mb-6"
-					:data-test-id="`tax-calculator__additional-deductions-form--${field.key}-container`"
-				>
-					<label
-						class="block text-gray-800 font-medium text-[15px]"
-						:data-test-id="`tax-calculator__additional-deductions-form--${field.key}-label`"
+			<div v-if="pickedFields.length" class="space-y-6 pt-[16px] mt-[8px] border-t border-[#e9eff2]">
+				<div v-for="field in pickedFields" :key="field.key">
+					<DeductionField :field="field" :model="modelValue" test-prefix="tax-calculator__additional-deductions-form" />
+					<p
+						v-if="deductedNote(field)"
+						class="mt-1 ml-5 text-[15px] font-medium text-color-primary"
+						:data-test-id="`tax-calculator__additional-deductions-form--${field.testId}-deducted`"
 					>
-						{{ field.label }}
-					</label>
-					<div class="relative">
-						<input
-							type="text"
-							inputmode="numeric"
-							pattern="[0-9,]*"
-							:value="display[field.key]"
-							placeholder="กรอกจำนวนเงิน"
-							:data-test-id="`tax-calculator__additional-deductions-form--${field.key}-input`"
-							:data-fn-action="`deduction_${field.key}_input`"
-							:class="['form-input w-full md:w-[648px]']"
-							@input="onAmountInput(field.key, $event)"
-						/>
-						<!-- Clear button -->
-						<button
-							v-if="display[field.key]"
-							@click="setValue(field.key, '')"
-							type="button"
-							tabindex="-1"
-							:data-fn-action="`deduction_${field.key}_clear`"
-							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
-						>
-							<i class="fa-solid fa-xmark text-white"></i>
-						</button>
-					</div>
-					<div
-						class="flex items-center mt-2"
-						:data-test-id="`tax-calculator__additional-deductions-form--${field.key}-info`"
-					>
-						<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
-							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
-						</div>
-						<p class="text-[15px] text-color-secondary">{{ field.info }}</p>
-					</div>
+						{{ deductedNote(field) }}
+					</p>
 				</div>
 			</div>
 		</div>
@@ -76,20 +56,16 @@
 </template>
 
 <script setup>
-import { nextTick, reactive, watch } from 'vue'
-import {
-	formatNumberWithSeparatorsPreserveDecimals,
-	parseNumberFromFormattedWithDecimals,
-	sanitizeAndFormatNumberInputWithDecimals
-} from '~/utils/format'
+import { computed, ref } from 'vue'
+import DeductionField from '~/components/DeductionField.vue'
 
 const props = defineProps({
 	modelValue: {
 		type: Object,
 		required: true
 	},
-	// Per-field max from getDeductionMaxes; prefill buttons are hidden when absent
-	maxValues: {
+	// What each field actually takes off after its cap, from calculateTaxFromForms
+	deducted: {
 		type: Object,
 		default: undefined
 	}
@@ -97,52 +73,149 @@ const props = defineProps({
 
 defineEmits(['update:modelValue', 'submit', 'back'])
 
-const fields = [
-	{ key: 'lifeInsurance', label: 'เบี้ยประกันชีวิต', info: 'ไม่เกิน 100,000 บาท' },
+// Tax year 2569 rules
+const sections = [
 	{
-		key: 'healthInsurance',
-		label: 'เบี้ยประกันสุขภาพตนเอง',
-		info: 'ไม่เกิน 25,000 บาท และเมื่อรวมกับประกันชีวิตไม่เกิน 100,000 บาท'
+		testId: 'insurance',
+		title: 'ประกัน',
+		fields: [
+			{ key: 'lifeInsurance', testId: 'lifeInsurance', chip: 'ประกันชีวิต', label: 'เบี้ยประกันชีวิต', info: 'ไม่เกิน 100,000 บาท', kind: 'amount' },
+			{
+				key: 'healthInsurance',
+				testId: 'healthInsurance',
+				chip: 'ประกันสุขภาพ',
+				label: 'เบี้ยประกันสุขภาพตนเอง',
+				info: 'ไม่เกิน 25,000 บาท และเมื่อรวมกับประกันชีวิตไม่เกิน 100,000 บาท',
+				kind: 'amount'
+			},
+			{
+				key: 'parentHealthInsurance',
+				testId: 'parentHealthInsurance',
+				chip: 'ประกันสุขภาพพ่อแม่',
+				label: 'เบี้ยประกันสุขภาพพ่อแม่',
+				info: 'รวมกันไม่เกิน 15,000 บาท',
+				kind: 'amount'
+			},
+			{
+				key: 'spouseLifeInsurance',
+				testId: 'spouseLifeInsurance',
+				chip: 'ประกันชีวิตคู่สมรส',
+				label: 'เบี้ยประกันชีวิตคู่สมรสที่ไม่มีรายได้',
+				info: 'ไม่เกิน 10,000 บาท',
+				kind: 'amount',
+				showIf: (data) => data.hasSpouseWithoutIncome
+			}
+		]
 	},
-	{ key: 'homeLoanInterest', label: 'ดอกเบี้ยเงินกู้ยืมเพื่อที่อยู่อาศัย', info: 'ไม่เกิน 100,000 บาท' },
-	{ key: 'donation', label: 'เงินบริจาค', info: 'ไม่เกิน 10% ของเงินได้หลังหักค่าใช้จ่ายและค่าลดหย่อน' }
+	{
+		testId: 'home-measures',
+		title: 'บ้านและมาตรการรัฐ',
+		fields: [
+			{ key: 'homeLoanInterest', testId: 'homeLoanInterest', chip: 'ดอกเบี้ยบ้าน', label: 'ดอกเบี้ยเงินกู้ยืมเพื่อที่อยู่อาศัย', info: 'ไม่เกิน 100,000 บาท', kind: 'amount' },
+			{
+				key: 'solarRooftop',
+				testId: 'solarRooftop',
+				chip: 'Solar Rooftop',
+				label: 'ค่าติดตั้ง Solar Rooftop',
+				info: 'ไม่เกิน 200,000 บาท ใช้สิทธิ์ได้ครั้งเดียว ในปีที่เชื่อมต่อระบบสำเร็จ (2569-2571)',
+				kind: 'amount'
+			},
+			{ key: 'artwork', testId: 'artwork', chip: 'งานศิลปะ', label: 'ซื้องานศิลปะทัศนศิลป์', info: 'ไม่เกิน 100,000 บาท (2568-2570)', kind: 'amount' },
+			{
+				key: 'socialEnterprise',
+				testId: 'socialEnterprise',
+				chip: 'วิสาหกิจเพื่อสังคม',
+				label: 'ลงทุนในวิสาหกิจเพื่อสังคม',
+				info: 'ไม่เกิน 100,000 บาท',
+				kind: 'amount'
+			}
+		]
+	},
+	{
+		testId: 'donation',
+		title: 'เงินบริจาค',
+		fields: [
+			{
+				key: 'doubleDonation',
+				testId: 'doubleDonation',
+				chip: 'บริจาคการศึกษา กีฬา รพ.รัฐ',
+				label: 'บริจาคเพื่อการศึกษา กีฬา โรงพยาบาลรัฐ',
+				info: 'กรอกยอดที่บริจาคจริง ระบบหักให้ 2 เท่า ไม่เกิน 10% ของเงินได้หลังหักค่าใช้จ่ายและค่าลดหย่อน',
+				kind: 'amount'
+			},
+			{
+				key: 'donation',
+				testId: 'donation',
+				chip: 'บริจาคทั่วไป',
+				label: 'บริจาคทั่วไป',
+				info: 'ไม่เกิน 10% ของเงินได้ที่เหลือ หลังหักเงินบริจาค 2 เท่า',
+				kind: 'amount'
+			},
+			{ key: 'partyDonation', testId: 'partyDonation', chip: 'บริจาคพรรคการเมือง', label: 'บริจาคพรรคการเมือง', info: 'ไม่เกิน 10,000 บาท', kind: 'amount' }
+		]
+	}
 ]
 
-// Display values with separators while keeping numeric values in the model
-const display = reactive({})
+const visibleSections = computed(() =>
+	sections.map((section) => ({
+		...section,
+		fields: section.fields.filter((field) => !field.showIf || field.showIf(props.modelValue))
+	}))
+)
 
-fields.forEach(({ key }) => {
-	watch(
-		() => props.modelValue[key],
-		(newVal) => {
-			display[key] = formatNumberWithSeparatorsPreserveDecimals(newVal)
-		},
-		{ immediate: true }
-	)
-})
+// Items already filled stay open when the user comes back to this step
+const allFields = sections.flatMap((section) => section.fields)
+const picked = ref(new Set(allFields.filter((field) => Number(props.modelValue[field.key]) > 0).map((field) => field.key)))
 
-const setValue = (key, formatted) => {
-	display[key] = formatted
-	// Mutate in place like DeductionsForm so the parent's computed summary updates live
-	props.modelValue[key] = parseNumberFromFormattedWithDecimals(formatted)
+const pickedFields = computed(() =>
+	visibleSections.value.flatMap((section) => section.fields).filter((field) => picked.value.has(field.key))
+)
+
+// Unpicking clears the amount, so nothing hidden still counts
+const togglePick = (key) => {
+	const next = new Set(picked.value)
+	if (next.has(key)) {
+		next.delete(key)
+		props.modelValue[key] = ''
+	} else {
+		next.add(key)
+	}
+	picked.value = next
 }
 
-const fillMax = (key) => {
-	props.modelValue[key] = props.maxValues[key]
-}
-
-// Order matters: life cap depends on health, donation cap depends on all others.
-// Wait a tick between so the parent recomputes maxValues.
-const fillAllMax = async () => {
-	fillMax('healthInsurance')
-	fillMax('homeLoanInterest')
-	await nextTick()
-	fillMax('lifeInsurance')
-	await nextTick()
-	fillMax('donation')
-}
-
-const onAmountInput = (key, e) => {
-	setValue(key, sanitizeAndFormatNumberInputWithDecimals(e.target.value))
+// Shown only when the cap cuts the entry, or for the 2x donation where the deduction differs from what was paid
+const deductedNote = (field) => {
+	const entered = Number(props.modelValue[field.key]) || 0
+	const deducted = Math.round(props.deducted?.[field.key] ?? 0)
+	if (!entered) return ''
+	if (field.key === 'doubleDonation') return `ลดหย่อนได้ ${deducted.toLocaleString()} บาท`
+	if (deducted < entered) return `ลดหย่อนได้ ${deducted.toLocaleString()} บาท ส่วนที่เกินเพดานไม่นับ`
+	return ''
 }
 </script>
+
+<style scoped>
+.pick-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 40px;
+	padding: 0 14px;
+	border-radius: 200px;
+	border: 1px solid #d3dfe6;
+	background: #fff;
+	color: var(--color-primary);
+	font-size: 15px;
+	font-weight: 500;
+	transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.pick-chip:hover {
+	border-color: var(--color-primary);
+}
+
+.pick-chip--on {
+	background: #e9eff2;
+	border-color: var(--color-primary);
+}
+</style>

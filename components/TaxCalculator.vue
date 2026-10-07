@@ -5,13 +5,25 @@ import { useGoogleSheets } from '~/composables/useGoogleSheets'
 import IncomeForm from '~/components/IncomeForm.vue'
 import DeductionsForm from '~/components/DeductionsForm.vue'
 import AdditionalDeductionsForm from '~/components/AdditionalDeductionsForm.vue'
-import TaxPlanningResult from '~/components/TaxPlanningResult.vue'
+import TaxResult from '~/components/TaxResult.vue'
 import TaxSummary from '~/components/TaxSummary.vue'
 import HeaderContent from '~/components/HeaderContent.vue'
 import StepIndicator from '~/components/StepIndicator.vue'
+import LoginNudge from '~/components/LoginNudge.vue'
+import ResultEmojiVariantPicker from '~/components/ResultEmojiVariantPicker.vue'
+import { useResultEmojiVariant } from '~/composables/useResultEmojiVariant'
 
-// Current step state
+// Current step state: 1–3 are the form steps, 4 is the result page (not shown as a step)
 const currentStep = ref(1)
+const isResultPage = computed(() => currentStep.value === 4)
+
+// Result page header. U+2060 (word joiner) keeps "ของคุณ" together; Thai has no spaces to break on
+const resultPageTitle = 'สรุปภาษีปี 2569 ของ\u2060คุณ'
+const resultPageSubtitle = 'ประมาณการจากข้อมูลที่คุณกรอก'
+// The result page has its own title and no floating summary, so its header centers on the page
+const headerProps = computed(() =>
+	isResultPage.value ? { title: resultPageTitle, subtitle: resultPageSubtitle, centered: true } : {}
+)
 
 // Inject currentStep from layout and update it
 const layoutCurrentStep = inject('currentStep')
@@ -29,7 +41,7 @@ watch(
 const rmfInvestment = ref(0)
 const thaiEsgInvestment = ref(0)
 
-// TaxPlanningResult resets its inputs to 0 on remount, so clear them when leaving step 4
+// The result page's RMF/ThaiESG inputs reset to 0 on remount, so clear them when leaving it
 // to keep TaxSummary from showing stale RMF/ThaiESG on earlier steps
 watch(currentStep, (step) => {
 	if (step !== 4) {
@@ -57,16 +69,30 @@ const incomeData = ref({
 
 const deductionsData = ref({
 	personalDeduction: 60000,
+	// Family facts
+	hasSpouseWithoutIncome: false,
+	childrenBornBefore2561Count: 0,
+	childrenBornFrom2561Count: 0,
+	maternityExpense: '',
+	ownParentsCount: 0,
+	spouseParentsCount: 0,
+	disabledDependentsCount: 0,
 	socialSecurity: '',
 	providentFund: '',
-	thaiESGX: '',
-	thaiESGXTransferred: '',
+	ltfSwitchedAmount: '',
 	otherDeduction: '',
 	// Step 3 additional deductions
 	lifeInsurance: '',
 	healthInsurance: '',
+	parentHealthInsurance: '',
+	spouseLifeInsurance: '',
 	homeLoanInterest: '',
-	donation: ''
+	solarRooftop: '',
+	artwork: '',
+	socialEnterprise: '',
+	doubleDonation: '',
+	donation: '',
+	partyDonation: ''
 })
 
 // Tax calculator functions - destructure at top level for use throughout component
@@ -77,8 +103,34 @@ const calculationData = computed(() =>
 	calculateTaxFromForms(incomeData.value, deductionsData.value)
 )
 
-// Per-field max for the "ใช้สิทธิ์สูงสุดทั้งหมด" prefill button on deduction steps
-const deductionMaxes = computed(() => getDeductionMaxes(incomeData.value, deductionsData.value))
+// Per-field max for the step 2 "ใช้สิทธิ์สูงสุด" button
+const deductionMaxes = getDeductionMaxes()
+
+// Draft saved on this device while the user fills the form (NEXT-6743). Restoring it comes later
+const draftStorageKey = 'tax-calculator-draft-2569'
+watch(
+	[incomeData, deductionsData, currentStep],
+	() => {
+		try {
+			localStorage.setItem(
+				draftStorageKey,
+				JSON.stringify({
+					incomeData: incomeData.value,
+					deductionsData: deductionsData.value,
+					currentStep: currentStep.value,
+					savedAt: new Date().toISOString()
+				})
+			)
+		} catch (error) {
+			// Storage blocked (private mode, full): the form still works, only the draft is lost
+			console.log(error)
+		}
+	},
+	{ deep: true }
+)
+
+// Prototype only (NEXT-6741): which rule picks the result emoji, see useResultEmojiVariant
+const { variant: resultEmojiVariant, isPrototype: isResultEmojiPrototype } = useResultEmojiVariant()
 
 // Alert modal state
 const showAlert = ref(false)
@@ -130,7 +182,7 @@ const currentComponent = computed(() => {
 		case 3:
 			return AdditionalDeductionsForm
 		case 4:
-			return TaxPlanningResult
+			return TaxResult
 		default:
 			return IncomeForm
 	}
@@ -198,8 +250,7 @@ const submitToGoogleSheets = () => {
 			personalDeduction: deductionsData.value.personalDeduction || '',
 			socialSecurity: deductionsData.value.socialSecurity || '',
 			providentFund: deductionsData.value.providentFund || '',
-			thaiESGX: deductionsData.value.thaiESGX || '',
-			thaiESGXTransferred: deductionsData.value.thaiESGXTransferred || '',
+			ltfSwitchedAmount: deductionsData.value.ltfSwitchedAmount || '',
 			otherDeduction: deductionsData.value.otherDeduction || '',
 			
 			// Calculation results
@@ -270,7 +321,7 @@ const taxPlanning = computed(() =>
 	calculateTaxPlanning(calculationData.value, rmfInvestment.value, thaiEsgInvestment.value)
 )
 
-// TaxSummary figures with step 4 RMF/ThaiESG counted as deductions, matching TaxPlanningResult
+// TaxSummary figures with the result page's RMF/ThaiESG counted as deductions
 const summaryCalculationData = computed(() =>
 	calculateTaxFromForms(incomeData.value, {
 		...deductionsData.value,
@@ -283,17 +334,32 @@ const summaryCalculationData = computed(() =>
 </script>
 
 <template>
-	<HeaderContent />
+	<!-- One header for every step: swapping two header instances on the way to the result page broke the DOM patch -->
+	<HeaderContent v-bind="headerProps">
+		<template v-if="isResultPage" #actions>
+			<button
+				type="button"
+				class="text-[15px] font-medium text-color-primary underline underline-offset-4 min-h-[44px] px-1"
+				data-test-id="tax-calculator__header-content--edit-link"
+				data-fn-action="result_edit_inputs"
+				@click="handleStepClick(3)"
+			>
+				แก้ไขข้อมูล
+			</button>
+		</template>
+	</HeaderContent>
 	<div
 		class="sm:container xs:mx-auto xs:w-full xs:px-3 md:mx-auto md:max-w-7xl lg:max-w-[1272px] pb-[32px]"
 		data-test-id="tax-calculator__tax-calculator--container"
 	>
 		<div class="flex flex-col md:flex-row md:justify-center w-full overflow-x-hidden">
 			<div class="w-full md:w-[648px] px-[16px]" data-test-id="tax-calculator__tax-calculator--main-content">
-				<StepIndicator :current-step="currentStep" @step-click="handleStepClick" />
+				<LoginNudge v-if="!isResultPage" compact dismissible class="mt-2" />
+				<StepIndicator v-if="!isResultPage" :current-step="currentStep" @step-click="handleStepClick" />
 				<component :is="currentComponent" v-model="currentFormData"
 					:errors="currentStep === 1 ? incomeErrors : {}"
-					:max-values="currentStep === 2 || currentStep === 3 ? deductionMaxes : undefined"
+					:max-values="currentStep === 2 ? deductionMaxes : undefined"
+					:deducted="currentStep === 3 ? calculationData.deductedByField : undefined"
 					@submit="handleNext" @back="handleBack"
 					@recalculate="handleRecalculate" @update:rmf-investment="handleRmfInvestmentUpdate"
 					@update:thai-esg-investment="handleThaiEsgInvestmentUpdate" @clear-errors="clearIncomeErrors"
@@ -314,14 +380,19 @@ const summaryCalculationData = computed(() =>
 						<button v-if="currentStep < 4" class="btn-next" @click="handleNext"
 							data-test-id="tax-calculator__tax-calculator--next-button"
 							data-fn-action="navigation_next_step">
-							ต่อไป
-							<i class="fas fa-arrow-right pl-4"
-								data-test-id="tax-calculator__tax-calculator--next-icon"></i>
+							<!-- Step 3 leads to the result page, so the button says so (no arrow: the label needs the room on phones) -->
+							<span v-if="currentStep === 3" class="whitespace-nowrap">ดูสรุปภาษีปีนี้ของฉัน</span>
+							<template v-else>
+								ต่อไป
+								<i class="fas fa-arrow-right pl-4"
+									data-test-id="tax-calculator__tax-calculator--next-icon"></i>
+							</template>
 						</button>
 					</div>
 				</div>
 			</div>
-			<div class="w-full md:w-[336px] pt-8 md:pt-0 md:pl-4" data-test-id="tax-calculator__tax-calculator--sidebar">
+			<!-- No sidebar on the result page, so its column centers on the page -->
+			<div v-if="!isResultPage" class="w-full md:w-[336px] pt-8 md:pt-0 md:pl-4" data-test-id="tax-calculator__tax-calculator--sidebar">
 				<TaxSummary
 					:calculation-data="summaryCalculationData"
 					:tax-planning="taxPlanning"
@@ -332,6 +403,7 @@ const summaryCalculationData = computed(() =>
 			</div>
 		</div>
 	</div>
+	<ResultEmojiVariantPicker v-if="isResultEmojiPrototype" v-model="resultEmojiVariant" />
 </template>
 
 <style scoped>

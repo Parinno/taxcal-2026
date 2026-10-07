@@ -2,7 +2,7 @@
   <div class="space-y-6 mx-4" data-test-id="tax-calculator__tax-summary--container">
     <!-- Tax Year Summary Card -->
     <div class="bg-white border border-gray-200 rounded-xl p-6" data-test-id="tax-calculator__tax-summary--tax-year-card">
-      <h3 class="text-xl font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-summary--tax-year-title">สรุปปีภาษี 2568</h3>
+      <h3 class="text-xl font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-summary--tax-year-title">สรุปปีภาษี 2569</h3>
       <span class="text-sm text-gray-500" data-test-id="tax-calculator__tax-summary--tax-year-description">ประมาณการภาษีประจำปีก่อนวางแผนภาษี RMF, ThaiESG</span>
       
       <!-- Tax Payable -->
@@ -10,6 +10,7 @@
         <div class="text-md font-bold text-gray-800 mb-2" data-test-id="tax-calculator__tax-summary--tax-payable-label">
           {{ taxSummaryData.netTaxPayable >= 0 ? 'ภาษีที่ต้องจ่ายเพิ่ม' : 'ภาษีที่ได้รับคืน' }}
         </div>
+        <div class="flex items-start justify-between gap-4">
         <div class="flex items-end gap-2" data-test-id="tax-calculator__tax-summary--tax-payable-amount-container">
           <div class="text-2xl font-bold" :class="taxSummaryData.netTaxPayable >= 0 ? '' : 'text-green-600'"
             data-test-id="tax-calculator__tax-summary--tax-payable-amount">
@@ -17,6 +18,9 @@
           </div>
           <div class="text-md font-semibold text-gray-500" data-test-id="tax-calculator__tax-summary--tax-payable-currency">THB</div>
         </div>
+        <div v-if="emojiVariant !== 'ticket'" class="text-4xl leading-none shrink-0" aria-hidden="true" data-test-id="tax-calculator__tax-summary--emoji">{{ usageEmoji[usage.level] }}</div>
+        </div>
+        <p v-if="emojiVariant === 'usage-hint'" class="text-sm text-gray-600 mt-3" data-test-id="tax-calculator__tax-summary--usage-hint">{{ usageHint }}</p>
         <div v-if="taxSummaryData.maxTaxRate > 0" class="text-sm text-gray-600 mt-2" data-test-id="tax-calculator__tax-summary--tax-rate-section">
           <span data-test-id="tax-calculator__tax-summary--tax-rate-label">อัตราภาษีสูงสุด</span>
           <span class="font-semibold px-2 py-1 mx-2 rounded-full" style="background-color: #00E76B;" data-test-id="tax-calculator__tax-summary--tax-rate-value">{{ taxSummaryData.maxTaxRate }}%</span>
@@ -45,13 +49,13 @@
           <span class="text-gray-600 font-bold" data-test-id="tax-calculator__tax-summary--taxable-income-label">เงินได้สุทธิ</span>
           <span class="font-semibold" data-test-id="tax-calculator__tax-summary--taxable-income-value">{{ formatCurrencyWithDecimals(taxSummaryData.taxableIncome) }}</span>
         </div>
-        <div class="flex justify-between cursor-pointer" data-test-id="tax-calculator__tax-summary--tax-amount-row" @click="showTaxRateBreakdown = !showTaxRateBreakdown">
-          <div class="flex items-center gap-2">
+        <button type="button" class="w-full flex justify-between text-left cursor-pointer" :aria-expanded="showTaxRateBreakdown" data-test-id="tax-calculator__tax-summary--tax-amount-row" @click="showTaxRateBreakdown = !showTaxRateBreakdown">
+          <span class="flex items-center gap-2">
             <span class="text-gray-500" data-test-id="tax-calculator__tax-summary--tax-amount-label">ภาษีจากเงินได้สุทธิ</span>
-            <i :class="showTaxRateBreakdown ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="text-gray-500 text-sm transition-all" data-test-id="tax-calculator__tax-summary--chevron"></i>
-          </div>
+            <i :class="showTaxRateBreakdown ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="text-gray-500 text-sm" aria-hidden="true" data-test-id="tax-calculator__tax-summary--chevron"></i>
+          </span>
           <span data-test-id="tax-calculator__tax-summary--tax-amount-value">{{ formatCurrencyWithDecimals(taxSummaryData.taxAmount) }}</span>
-        </div>
+        </button>
         <div v-show="showTaxRateBreakdown" class="bg-gray-100 rounded-lg p-4" data-test-id="tax-calculator__tax-summary--tax-breakdown-container">
           <div class="flex justify-between border-b border-gray-300 pb-4" data-test-id="tax-calculator__tax-summary--tax-breakdown-header">
             <span class="text-gray-500" data-test-id="tax-calculator__tax-summary--tax-breakdown-title">อัตราภาษีเงินได้บุคคลธรรมดา</span>
@@ -78,54 +82,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Tax Planning Card -->
-    <div v-if="taxSummaryData.maxTaxRate > 0" class="bg-white border border-gray-200 rounded-xl p-6" data-test-id="tax-calculator__tax-summary--tax-planning-card">
-      <h3 class="text-xl font-bold text-gray-800 mb-1" data-test-id="tax-calculator__tax-summary--tax-planning-title">วางแผนลดหย่อนภาษี</h3>
-      <div class="text-sm text-gray-500 mb-4" data-test-id="tax-calculator__tax-summary--tax-planning-description">ประมาณการภาษีประจำปี</div>
-      
-      <!-- Additional Investment -->
-      <div class="text-left mb-1" data-test-id="tax-calculator__tax-summary--additional-investment-section">
-        <div class="text-sm text-gray-700 mb-1 font-bold" data-test-id="tax-calculator__tax-summary--additional-investment-label">เงินลงทุนเพิ่ม</div>
-        <div class="font-bold flex items-end gap-2" data-test-id="tax-calculator__tax-summary--additional-investment-amount">
-          <span class="text-gray-800 text-2xl" data-test-id="tax-calculator__tax-summary--additional-investment-amount-value">{{ formatCurrencyWithDecimals(taxSummaryData.totalInvestment) }}</span>
-          <span class="text-md text-gray-500" data-test-id="tax-calculator__tax-summary--additional-investment-currency">THB</span>
-        </div>
-      </div>
-
-      <!-- Tax Savings -->
-      <div class="text-left mb-4 flex items-center gap-2" data-test-id="tax-calculator__tax-summary--tax-savings-section">
-        <div class="text-md text-gray-700 font-medium" data-test-id="tax-calculator__tax-summary--tax-savings-label">ประหยัดภาษีเพิ่มขึ้น</div>
-        <div class="text-md text-green-600" data-test-id="tax-calculator__tax-summary--tax-savings-amount">
-          +{{ formatCurrencyWithDecimals(taxSummaryData.taxSavings) }}
-        </div>
-      </div>
-
-      <!-- Investment Breakdown -->
-      <div class="space-y-3 border-t border-gray-300 pt-4 text-sm" data-test-id="tax-calculator__tax-summary--investment-breakdown">
-        <div class="flex justify-between items-center" data-test-id="tax-calculator__tax-summary--rmf-investment-row">
-          <div class="flex items-center gap-3">
-            <div class="w-3 h-3 bg-purple-500 rounded-full" data-test-id="tax-calculator__tax-summary--rmf-indicator"></div>
-            <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--rmf-investment-label">RMF</span>
-          </div>
-          <span class="font-medium" data-test-id="tax-calculator__tax-summary--rmf-investment-value">{{ formatCurrencyWithDecimals(taxSummaryData.rmfInvestment) }}</span>
-        </div>
-        <div class="flex justify-between items-center" data-test-id="tax-calculator__tax-summary--thai-esg-investment-row">
-          <div class="flex items-center gap-3">
-            <div class="w-3 h-3 bg-green-500 rounded-full" data-test-id="tax-calculator__tax-summary--thai-esg-indicator"></div>
-            <span class="text-gray-600" data-test-id="tax-calculator__tax-summary--thai-esg-investment-label">ThaiESG</span>
-          </div>
-          <span class="font-medium" data-test-id="tax-calculator__tax-summary--thai-esg-investment-value">{{ formatCurrencyWithDecimals(taxSummaryData.thaiEsgInvestment) }}</span>
-        </div>
-      </div>
-
-      <!-- Action Button -->
-      <!-- <button class="w-full bg-gray-200 text-gray-800 font-bold mt-6 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center"
-        data-test-id="tax-calculator__tax-summary--view-funds-button">
-        <span data-test-id="tax-calculator__tax-summary--view-funds-text">ดูกองทุนประหยัดภาษี</span>
-        <i class="fas fa-arrow-right ml-2" data-test-id="tax-calculator__tax-summary--view-funds-icon"></i>
-      </button> -->
-    </div>
   </div>
 </template>
 
@@ -133,6 +89,7 @@
 import { computed, ref } from 'vue'
 import { formatCurrencyTHB, formatCurrencyTHBWithDecimals } from '~/utils/format'
 import { useTaxCalculator } from '~/composables/useTaxCalculator'
+import { useResultEmojiVariant, usageEmoji, usageHintText } from '~/composables/useResultEmojiVariant'
 
 const props = defineProps({
   calculationData: {
@@ -173,10 +130,10 @@ const props = defineProps({
 })
 
 // Use tax calculator composable
-const { calculateTaxSummary } = useTaxCalculator()
+const { calculateTaxSummary, getDeductionUsage } = useTaxCalculator()
 
-// State for showing/hiding tax rate breakdown
-const showTaxRateBreakdown = ref(true)
+// The tax-rate table under ภาษีจากเงินได้สุทธิ starts folded; the chevron opens it
+const showTaxRateBreakdown = ref(false)
 
 // Calculate tax summary data
 const taxSummaryData = computed(() => 
@@ -187,6 +144,12 @@ const taxSummaryData = computed(() =>
     props.thaiEsgInvestment
   )
 )
+
+const { variant: emojiVariant } = useResultEmojiVariant()
+// calculationData here already counts the result page's RMF/ThaiESG as deductions
+const usage = computed(() => getDeductionUsage(props.calculationData, (Number(props.rmfInvestment) || 0) + (Number(props.thaiEsgInvestment) || 0)))
+const usageHint = computed(() => usageHintText(usage.value))
+
 
 // Format currency helper
 const formatCurrency = (amount) => formatCurrencyTHB(amount)
