@@ -57,8 +57,8 @@ const { login } = useAuth()
 <style scoped>
 .secondary-button {
 	height: 36px;
-	padding: 6px 12px;
-	border-radius: 8px;
+	padding: 6px 16px;
+	border-radius: 200px;
 	background: rgba(1, 23, 43, 0.1);
 	color: var(--color-primary);
 	font-size: 15px;
