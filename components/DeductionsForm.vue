@@ -31,15 +31,6 @@
 				:model="formData"
 				test-prefix="tax-calculator__deductions-form"
 			/>
-			<p
-				v-if="section.testId === 'family'"
-				class="text-[15px] text-color-secondary md:w-[648px]"
-				data-test-id="tax-calculator__deductions-form--family-total"
-			>
-				ลดหย่อนส่วนตัวและครอบครัวรวม
-				<span class="font-semibold text-color-primary tabular-nums">{{ familyTotal.toLocaleString() }}</span>
-				บาท
-			</p>
 		</div>
 	</div>
 </template>
@@ -47,7 +38,6 @@
 <script setup>
 import { computed } from 'vue'
 import DeductionField from '~/components/DeductionField.vue'
-import { useTaxCalculator } from '~/composables/useTaxCalculator'
 
 const props = defineProps({
 	modelValue: {
@@ -68,10 +58,6 @@ const formData = computed({
 	get: () => props.modelValue,
 	set: (val) => emit('update:modelValue', val)
 })
-
-const { getFamilyDeductions } = useTaxCalculator()
-// Personal allowance included, so the total agrees with the locked field above it
-const familyTotal = computed(() => 60000 + getFamilyDeductions(formData.value).total)
 
 // Tax year 2569 rules. Family fields ask for facts the user knows; the calculator turns them into baht
 const sections = [

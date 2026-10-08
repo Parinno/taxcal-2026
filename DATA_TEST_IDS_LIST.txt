@@ -114,7 +114,6 @@ Family:
 - tax-calculator__deductions-form--disabled-dependents-count-decrease
 - tax-calculator__deductions-form--disabled-dependents-count-value
 - tax-calculator__deductions-form--disabled-dependents-count-increase
-- tax-calculator__deductions-form--family-total
 
 Savings/Investment:
 - tax-calculator__deductions-form--social-security-container

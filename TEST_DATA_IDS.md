@@ -20,7 +20,6 @@ Component: `deductions-form` (step 2)
 - Amount fields (`-container`, `-label`, `-input`, `-info`): `personal-deduction`, `maternity-expense`, `social-security`, `provident-fund`, `thai-esgx-transferred` (amount of LTF switched), `other-deduction`
 - Yes/no field (`-container`, `-label`, `-input`): `spouse`
 - Count fields (`-container`, `-label`, `-info`, `-decrease`, `-value`, `-increase`): `children-born-before-2561-count`, `children-born-from-2561-count`, `own-parents-count`, `spouse-parents-count`, `disabled-dependents-count`
-- Family subtotal: `tax-calculator__deductions-form--family-total`
 
 Component: `additional-deductions-form` (step 3)
 - Header: `tax-calculator__additional-deductions-form--section`, `--title`
