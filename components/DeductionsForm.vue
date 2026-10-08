@@ -168,7 +168,7 @@ const sections = [
 				key: 'otherDeduction',
 				testId: 'other-deduction',
 				label: 'ค่าลดหย่อนอื่นๆ',
-				info: 'รายการอื่นที่หักได้ตามกฎหมาย ที่ไม่มีในหน้านี้และหน้าถัดไป',
+				info: 'รายการอื่นที่หักได้ตามกฎหมาย',
 				kind: 'amount'
 			}
 		]

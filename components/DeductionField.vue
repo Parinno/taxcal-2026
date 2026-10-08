@@ -105,16 +105,13 @@
 					<i class="fa-solid fa-xmark text-white"></i>
 				</button>
 			</div>
-			<div
+			<p
 				v-if="info"
-				class="flex items-center mt-2"
+				class="mt-2 text-[15px] text-color-secondary md:w-[648px]"
 				:data-test-id="`${testPrefix}--${field.testId}-info`"
 			>
-				<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
-					<i class="fa fa-info-circle" style="color: #01172ba6"></i>
-				</div>
-				<p class="text-[15px] text-color-secondary">{{ info }}</p>
-			</div>
+				{{ info }}
+			</p>
 		</template>
 	</div>
 </template>
