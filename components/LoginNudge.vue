@@ -12,7 +12,7 @@
 	>
 		<div class="min-w-0">
 			<p class="text-[16px] leading-6 font-medium text-color-primary">เข้าสู่ระบบเพื่อจดจำข้อมูล</p>
-			<p class="text-[14px] leading-5 text-[rgba(1,23,43,0.45)] pt-1">กลับมาดูหรือแก้ไขได้ทุกเมื่อ ไม่ต้องกรอกใหม่</p>
+			<p class="text-[14px] leading-5 text-color-primary pt-1">กลับมาดูหรือแก้ไขได้ทุกเมื่อ ไม่ต้องกรอกใหม่</p>
 		</div>
 		<button
 			type="button"
