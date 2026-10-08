@@ -19,7 +19,7 @@
                 </div> -->
                 <!-- End of TODO for development : Add login and logout buttons -->
             </div>
-            <div class="w-full md:w-[648px] px-[16px]" data-test-id="tax-calculator__header-content--main-content">
+            <div class="w-full md:w-[627px] px-[16px]" data-test-id="tax-calculator__header-content--main-content">
                 <div class="py-[32px] flex items-center justify-between gap-4" data-test-id="tax-calculator__header-content--back-section">
                     <a href="/" class="pointer-events-auto text-colors-background-navy-100 font-bold py-[4px]"
                         data-test-id="tax-calculator__header-content--back-link">
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <!-- Matches the floating summary column so the header lines up with the form; dropped when the page has no summary -->
-            <div v-if="!centered" class="w-0 md:w-[336px]"></div>
+            <div v-if="!centered" class="w-0 md:w-[360px]"></div>
         </div>
     </div>
 </template>

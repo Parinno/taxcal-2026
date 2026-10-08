@@ -353,7 +353,7 @@ const summaryCalculationData = computed(() =>
 		data-test-id="tax-calculator__tax-calculator--container"
 	>
 		<div class="flex flex-col md:flex-row md:justify-center w-full overflow-x-hidden">
-			<div class="w-full md:w-[648px] px-[16px]" data-test-id="tax-calculator__tax-calculator--main-content">
+			<div class="w-full md:w-[627px] px-[16px]" data-test-id="tax-calculator__tax-calculator--main-content">
 				<LoginNudge v-if="!isResultPage" compact dismissible class="mt-2" />
 				<StepIndicator v-if="!isResultPage" :current-step="currentStep" @step-click="handleStepClick" />
 				<component :is="currentComponent" v-model="currentFormData"
@@ -392,7 +392,7 @@ const summaryCalculationData = computed(() =>
 				</div>
 			</div>
 			<!-- No sidebar on the result page, so its column centers on the page -->
-			<div v-if="!isResultPage" class="w-full md:w-[336px] pt-8 md:pt-0 md:pl-4" data-test-id="tax-calculator__tax-calculator--sidebar">
+			<div v-if="!isResultPage" class="w-full md:w-[360px] pt-8 md:pt-0 md:px-2" data-test-id="tax-calculator__tax-calculator--sidebar">
 				<TaxSummary
 					:calculation-data="summaryCalculationData"
 					:tax-planning="taxPlanning"
@@ -413,7 +413,7 @@ const summaryCalculationData = computed(() =>
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	max-width: 616px;
+	max-width: 595px;
 	padding: 0px 0px 32px 0px;
 }
 

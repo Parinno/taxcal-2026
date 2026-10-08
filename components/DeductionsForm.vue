@@ -6,7 +6,7 @@
 			:class="['space-y-6 mb-[20px]', index > 0 && 'pt-[16px]']"
 			:data-test-id="`tax-calculator__deductions-form--${section.testId}-section`"
 		>
-			<div class="flex items-center justify-between gap-4 mb-[16px] md:w-[648px]">
+			<div class="flex items-center justify-between gap-4 mb-[16px]">
 				<h2
 					class="font-bold text-color-primary text-[20px]"
 					:data-test-id="`tax-calculator__deductions-form--${section.testId}-title`"

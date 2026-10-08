@@ -166,7 +166,7 @@ const onAmountInput = (which, e) => {
 						@input="onAmountInput('salary', $event)"
 						data-test-id="tax-calculator__income-form--salary-input"
 						data-fn-action="income_salary_input"
-						:class="['form-input w-full md:w-[648px]', errors.salary ? 'form-input--error' : '']"
+						:class="['form-input w-full', errors.salary ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
 					<button
@@ -218,7 +218,7 @@ const onAmountInput = (which, e) => {
 						@input="onAmountInput('bonus', $event)"
 						data-test-id="tax-calculator__income-form--bonus-input"
 						data-fn-action="income_bonus_input"
-						:class="['form-input w-full md:w-[648px]', errors.bonus ? 'form-input--error' : '']"
+						:class="['form-input w-full', errors.bonus ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
 					<button
@@ -270,7 +270,7 @@ const onAmountInput = (which, e) => {
 						@input="onAmountInput('otherIncome', $event)"
 						data-test-id="tax-calculator__income-form--other-income-input"
 						data-fn-action="income_other_income_input"
-						:class="['form-input w-full md:w-[648px]', errors.otherIncome ? 'form-input--error' : '']"
+						:class="['form-input w-full', errors.otherIncome ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
 					<button
@@ -316,7 +316,7 @@ const onAmountInput = (which, e) => {
 						@input="onAmountInput('withholdingTax', $event)"
 						data-test-id="tax-calculator__income-form--withholding-tax-input"
 						data-fn-action="income_withholding_tax_input"
-						:class="['form-input w-full md:w-[648px]', errors.withholdingTax ? 'form-input--error' : '']"
+						:class="['form-input w-full', errors.withholdingTax ? 'form-input--error' : '']"
 					/>
 					<!-- Clear button -->
 					<button

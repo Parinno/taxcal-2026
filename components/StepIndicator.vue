@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-container md:max-w-[648px]" data-test-id="tax-calculator__step-indicator--container" data-fn-location="step-indicator">
+  <div class="progress-container md:max-w-[627px]" data-test-id="tax-calculator__step-indicator--container" data-fn-location="step-indicator">
     <div 
       v-for="(step, index) in steps" 
       :key="step.id"

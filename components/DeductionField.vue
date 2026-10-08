@@ -22,7 +22,7 @@
 
 		<!-- Number of people, the rules turn it into baht -->
 		<template v-else-if="field.kind === 'count'">
-			<div class="flex items-center justify-between gap-4 md:w-[648px]">
+			<div class="flex items-center justify-between gap-4">
 				<div class="min-w-0">
 					<label
 						class="block text-gray-800 font-medium text-[15px]"
@@ -90,7 +90,7 @@
 					:disabled="field.disabled"
 					:data-test-id="`${testPrefix}--${field.testId}-input`"
 					:data-fn-action="`deduction_${field.key}_input`"
-					:class="['form-input w-full md:w-[648px]']"
+					:class="['form-input w-full']"
 					@input="setAmount(sanitizeAndFormatNumberInputWithDecimals($event.target.value))"
 				/>
 				<!-- Clear button -->
@@ -107,7 +107,7 @@
 			</div>
 			<p
 				v-if="info"
-				class="mt-2 text-[15px] text-color-secondary md:w-[648px]"
+				class="mt-2 text-[15px] text-color-secondary"
 				:data-test-id="`${testPrefix}--${field.testId}-info`"
 			>
 				{{ info }}
