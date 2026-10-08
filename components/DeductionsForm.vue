@@ -1,320 +1,48 @@
 <template>
 	<div class="max-w-2xl mx-auto" data-fn-location="deductions-form">
-		<div v-if="maxValues" class="flex justify-end mb-[16px]">
-			<button
-				type="button"
-				class="text-[15px] font-medium text-color-primary underline"
-				data-test-id="tax-calculator__deductions-form--max-all-button"
-				data-fn-action="deduction_max_all"
-				@click="fillAllMax"
-			>
-				ใช้สิทธิ์สูงสุดทั้งหมด
-			</button>
-		</div>
-		<!-- Form Fields -->
-		<!-- Basic Deductions Section -->
-		<div data-test-id="tax-calculator__deductions-form--basic-deductions-section">
-			<h2
-				class="font-bold text-color-primary mb-[16px] text-[20px]"
-				data-test-id="tax-calculator__deductions-form--basic-deductions-title"
-			>
-				ค่าลดหย่อนพื้นฐาน
-			</h2>
-
-			<!-- Personal Deduction -->
-			<div class="space-y-4 mb-[20px]">
-				<div data-test-id="tax-calculator__deductions-form--personal-deduction-container">
-					<label
-						class="block text-gray-800 font-medium text-[15px]"
-						data-test-id="tax-calculator__deductions-form--personal-deduction-label"
-					>
-						ลดหย่อนส่วนบุคคล
-					</label>
-					<p
-						class="text-sm text-gray-500 mb-2 text-[15px]"
-						data-test-id="tax-calculator__deductions-form--personal-deduction-description"
-					></p>
-					<div class="relative">
-						<input
-							type="text"
-							inputmode="numeric"
-							pattern="[0-9,]*"
-							v-model="displayPersonalDeduction"
-							placeholder="กรอกจำนวนเงิน"
-							data-test-id="tax-calculator__deductions-form--personal-deduction-input"
-							:class="['form-input w-full md:w-[648px]']"
-							@input="onAmountInput('personalDeduction', $event)"
-							:disabled="true"
-						/>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Savings/Investment Deductions Section -->
 		<div
-			class="space-y-4 pt-[16px] mb-[20px]"
-			data-test-id="tax-calculator__deductions-form--savings-investment-section"
+			v-for="(section, index) in visibleSections"
+			:key="section.testId"
+			:class="['space-y-6 mb-[20px]', index > 0 && 'pt-[16px]']"
+			:data-test-id="`tax-calculator__deductions-form--${section.testId}-section`"
 		>
-			<h2
-				class="font-bold text-color-primary mb-[16px] text-[20px]"
-				data-test-id="tax-calculator__deductions-form--savings-investment-title"
-			>
-				ค่าลดหย่อนการออม/การลงทุน
-			</h2>
-
-			<div class="space-y-6 mb-[20px]">
-				<!-- Social Security Fund -->
-				<div class="mb-6" data-test-id="tax-calculator__deductions-form--social-security-container">
-					<label
-						class="block text-gray-800 font-medium text-[15px]"
-						data-test-id="tax-calculator__deductions-form--social-security-label"
-					>
-						เงินประกันสังคม
-					</label>
-					<div class="relative">
-						<input
-							type="text"
-							inputmode="numeric"
-							pattern="[0-9,]*"
-							v-model="displaySocialSecurity"
-							placeholder="กรอกจำนวนเงิน"
-							data-test-id="tax-calculator__deductions-form--social-security-input"
-							data-fn-action="deduction_social_security_input"
-							:class="['form-input w-full md:w-[648px]']"
-							@input="onAmountInput('socialSecurity', $event)"
-						/>
-						<!-- Clear button -->
-						<button
-							v-if="displaySocialSecurity"
-							@click="displaySocialSecurity = ''"
-							type="button"
-							tabindex="-1"
-							data-fn-action="deduction_social_security_clear"
-							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
-						>
-							<i class="fa-solid fa-xmark text-white"></i>
-						</button>
-					</div>
-					<div
-						class="flex items-center mt-2"
-						data-test-id="tax-calculator__deductions-form--social-security-info"
-					>
-						<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
-							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
-						</div>
-						<p class="text-[15px] text-color-secondary">ไม่เกิน 9,000 บาท</p>
-					</div>
-				</div>
-
-				<!-- Provident Fund (PVD) -->
-				<div data-test-id="tax-calculator__deductions-form--provident-fund-container">
-					<label
-						class="block text-gray-800 font-medium text-[15px]"
-						data-test-id="tax-calculator__deductions-form--provident-fund-label"
-					>
-						กองทุนกลุ่มเกษียณ ยังไม่รวม RMF (กองทุนสำรองเลี้ยงชีพ, กบข, กอช, ประกันบำนาญ)
-					</label>
-					<div class="relative">
-						<input
-							type="text"
-							inputmode="numeric"
-							pattern="[0-9,]*"
-							v-model="displayProvidentFund"
-							placeholder="กรอกจำนวนเงิน"
-							data-test-id="tax-calculator__deductions-form--provident-fund-input"
-							data-fn-action="deduction_provident_fund_input"
-							:class="['form-input w-full md:w-[648px]']"
-							@input="onAmountInput('providentFund', $event)"
-						/>
-						<!-- Clear button -->
-						<button
-							v-if="displayProvidentFund"
-							@click="displayProvidentFund = ''"
-							type="button"
-							tabindex="-1"
-							data-fn-action="deduction_provident_fund_clear"
-							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
-						>
-							<i class="fa-solid fa-xmark text-white"></i>
-						</button>
-					</div>
-					<div
-						class="flex items-center mt-2"
-						data-test-id="tax-calculator__deductions-form--provident-fund-info"
-					>
-						<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
-							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
-						</div>
-						<p class="text-[15px] text-color-secondary">
-							ไม่เกิน 500,000 บาท (ไม่รวมเงินสมทบจากนายจ้าง)
-						</p>
-					</div>
-				</div>
-
-				<!-- ThaiESGX Fund -->
-				<div data-test-id="tax-calculator__deductions-form--thai-esgx-container">
-					<label
-						class="block text-gray-800 font-medium text-[15px]"
-						data-test-id="tax-calculator__deductions-form--thai-esgx-label"
-					>
-						กองทุน ThaiESGX
-					</label>
-					<div class="relative">
-						<input
-							type="text"
-							inputmode="numeric"
-							pattern="[0-9,]*"
-							v-model="displayThaiESGX"
-							placeholder="กรอกจำนวนเงิน"
-							data-test-id="tax-calculator__deductions-form--thai-esgx-input"
-							data-fn-action="deduction_thai_esgx_input"
-							:class="['form-input w-full md:w-[648px]']"
-							@input="onAmountInput('thaiESGX', $event)"
-						/>
-						<!-- Clear button -->
-						<button
-							v-if="displayThaiESGX"
-							@click="displayThaiESGX = ''"
-							type="button"
-							tabindex="-1"
-							data-fn-action="deduction_thai_esgx_clear"
-							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
-						>
-							<i class="fa-solid fa-xmark text-white"></i>
-						</button>
-					</div>
-					<div
-						class="flex items-center mt-2"
-						data-test-id="tax-calculator__deductions-form--provident-fund-info"
-					>
-						<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
-							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
-						</div>
-						<p class="text-[15px] text-color-secondary">
-							ไม่เกิน 30% รายได้ทั้งปี สูงสุด 300,000 บาท
-						</p>
-					</div>
-				</div>
-
-				<!-- ThaiESGX Fund (Transferred from LTF) -->
-				<div
-					class="mb-6"
-					data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-container"
+			<div class="flex items-center justify-between gap-4 mb-[16px] md:w-[648px]">
+				<h2
+					class="font-bold text-color-primary text-[20px]"
+					:data-test-id="`tax-calculator__deductions-form--${section.testId}-title`"
 				>
-					<label
-						class="block text-gray-800 font-medium mb-2"
-						data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-label"
-					>
-						กองทุน ThaiESGX (โอนจาก LTF)
-					</label>
-					<div class="relative">
-						<input
-							type="text"
-							inputmode="numeric"
-							pattern="[0-9,]*"
-							v-model="displayThaiESGXTransferred"
-							placeholder="กรอกจำนวนเงิน"
-							data-test-id="tax-calculator__deductions-form--thai-esgx-transferred-input"
-							data-fn-action="deduction_thai_esgx_transferred_input"
-							:class="['form-input w-full md:w-[648px]']"
-							@input="onAmountInput('thaiESGXTransferred', $event)"
-						/>
-						<!-- Clear button -->
-						<button
-							v-if="displayThaiESGXTransferred"
-							@click="displayThaiESGXTransferred = ''"
-							type="button"
-							tabindex="-1"
-							data-fn-action="deduction_thai_esgx_transferred_clear"
-							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
-						>
-							<i class="fa-solid fa-xmark text-white"></i>
-						</button>
-					</div>
-					<div
-						class="flex items-center mt-2"
-						data-test-id="tax-calculator__deductions-form--provident-fund-info"
-					>
-						<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
-							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
-						</div>
-						<p class="text-[15px] text-color-secondary">
-							ไม่เกิน 30% รายได้ทั้งปี สูงสุด 300,000 บาท
-						</p>
-					</div>
-				</div>
-
-				<!-- Other Deductions -->
-				<div data-test-id="tax-calculator__deductions-form--other-deduction-container">
-					<h2
-						class="font-bold text-color-primary mb-[16px] text-[20px]"
-						data-test-id="tax-calculator__deductions-form--savings-investment-title"
-					>
-						ค่าลดหย่อนอื่นๆ
-					</h2>
-					<div class="relative">
-						<input
-							type="text"
-							inputmode="numeric"
-							pattern="[0-9,]*"
-							v-model="displayOtherDeduction"
-							placeholder="กรอกจำนวนเงิน"
-							data-test-id="tax-calculator__deductions-form--other-deduction-input"
-							data-fn-action="deduction_other_deduction_input"
-							:class="['form-input w-full md:w-[648px]']"
-							@input="onAmountInput('otherDeduction', $event)"
-						/>
-						<!-- Clear button -->
-						<button
-							v-if="displayOtherDeduction"
-							@click="displayOtherDeduction = ''"
-							type="button"
-							tabindex="-1"
-							data-fn-action="deduction_other_deduction_clear"
-							class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-color-primary rounded-full flex items-center justify-center transition-colors"
-						>
-							<i class="fa-solid fa-xmark text-white"></i>
-						</button>
-					</div>
-					<div
-						class="flex items-center mt-2"
-						data-test-id="tax-calculator__deductions-form--other-deduction-info"
-					>
-						<div class="w-4 h-4 rounded-full flex items-center justify-center mr-1">
-							<i class="fa fa-info-circle" style="color: #01172ba6"></i>
-						</div>
-						<p class="text-sm text-gray-600">
-							เช่น ช้อปดีมีคืน ดอกเบี้ยบ้าน อุปการะบิดามารดา ค่าคลอดบุตร และอื่นๆ
-							ที่สามารถหักได้ตามกฎหมาย
-						</p>
-					</div>
-				</div>
+					{{ section.title }}
+				</h2>
+				<button
+					v-if="maxValues && section.maxFields"
+					type="button"
+					class="text-[15px] font-medium text-color-primary underline shrink-0"
+					:data-test-id="`tax-calculator__deductions-form--${section.testId}-max-button`"
+					:data-fn-action="`deduction_${section.testId}_max`"
+					@click="section.maxFields.forEach(fillMax)"
+				>
+					ใช้สิทธิ์สูงสุด
+				</button>
 			</div>
+			<DeductionField
+				v-for="field in section.fields"
+				:key="field.key"
+				:field="field"
+				:model="formData"
+				test-prefix="tax-calculator__deductions-form"
+			/>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
-import {
-	formatNumberWithSeparatorsPreserveDecimals,
-	parseNumberFromFormattedWithDecimals,
-	sanitizeAndFormatNumberInputWithDecimals
-} from '~/utils/format'
+import { computed } from 'vue'
+import DeductionField from '~/components/DeductionField.vue'
 
 const props = defineProps({
 	modelValue: {
 		type: Object,
-		required: true,
-		default: () => ({
-			personalDeduction: '',
-			socialSecurity: '',
-			providentFund: '',
-			thaiESGX: '',
-			thaiESGXTransferred: '',
-			otherDeduction: ''
-		})
+		required: true
 	},
 	// Per-field max from getDeductionMaxes; prefill buttons are hidden when absent
 	maxValues: {
@@ -325,158 +53,136 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'submit', 'back'])
 
-const maxFields = ['socialSecurity', 'providentFund', 'thaiESGX', 'thaiESGXTransferred']
-
-const fillMax = (key) => {
-	formData.value[key] = props.maxValues[key]
-}
-
-const fillAllMax = () => maxFields.forEach(fillMax)
-
 // Two-way binding helper
 const formData = computed({
 	get: () => props.modelValue,
 	set: (val) => emit('update:modelValue', val)
 })
 
-const handleNext = () => {
-	emit('submit')
-}
-
-const handleBack = () => {
-	emit('back')
-}
-
-// Display values with separators while keeping numeric values in the model
-const displayPersonalDeduction = ref('')
-const displaySocialSecurity = ref('')
-const displayProvidentFund = ref('')
-const displayThaiESGX = ref('')
-const displayThaiESGXTransferred = ref('')
-const displayOtherDeduction = ref('')
-
-// Personal deduction display <-> model
-watch(
-	() => formData.value.personalDeduction,
-	(newVal) => {
-		displayPersonalDeduction.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
+// Tax year 2569 rules. Family fields ask for facts the user knows; the calculator turns them into baht
+const sections = [
+	{
+		testId: 'family',
+		title: 'ส่วนตัวและครอบครัว',
+		fields: [
+			{
+				key: 'personalDeduction',
+				testId: 'personal-deduction',
+				label: 'ลดหย่อนส่วนบุคคล',
+				// Shows the spouse allowance too; the calculator still counts it once, under family
+				shownValue: (data) => 60000 + (data.hasSpouseWithoutIncome ? 60000 : 0),
+				info: (data) =>
+					data.hasSpouseWithoutIncome
+						? 'ตัวคุณ 60,000 บาท + คู่สมรสที่ไม่มีรายได้ 60,000 บาท ระบบใส่ให้แล้ว'
+						: 'ผู้เสียภาษีทุกคนได้ 60,000 บาท ระบบใส่ให้แล้ว',
+				kind: 'amount',
+				disabled: true
+			},
+			// Sits close under the personal deduction: both are about who you are
+			{
+				key: 'hasSpouseWithoutIncome',
+				testId: 'spouse',
+				label: 'มีคู่สมรสที่ไม่มีรายได้',
+				info: 'จดทะเบียนสมรส ลดหย่อนได้ 60,000 บาท',
+				kind: 'toggle',
+				class: '!mt-2'
+			},
+			{
+				key: 'childrenBornBefore2561Count',
+				testId: 'children-born-before-2561-count',
+				label: 'บุตรที่เกิดก่อนปี 2561',
+				info: 'คนละ 30,000 บาท',
+				kind: 'count',
+				max: 10
+			},
+			{
+				key: 'childrenBornFrom2561Count',
+				testId: 'children-born-from-2561-count',
+				label: 'บุตรที่เกิดตั้งแต่ปี 2561',
+				info: 'บุตรคนแรก 30,000 บาท คนที่ 2 ขึ้นไป คนละ 60,000 บาท',
+				kind: 'count',
+				max: 10
+			},
+			{
+				key: 'maternityExpense',
+				testId: 'maternity-expense',
+				label: 'ค่าฝากครรภ์และคลอดบุตร',
+				info: 'ไม่เกิน 60,000 บาทต่อครรภ์',
+				kind: 'amount'
+			},
+			{
+				key: 'ownParentsCount',
+				testId: 'own-parents-count',
+				label: 'พ่อแม่ที่คุณเลี้ยงดู',
+				info: 'อายุ 60 ปีขึ้นไป และมีรายได้ไม่ถึง 30,000 บาทต่อปี คนละ 30,000 บาท',
+				kind: 'count',
+				max: 2
+			},
+			{
+				key: 'spouseParentsCount',
+				testId: 'spouse-parents-count',
+				label: 'พ่อแม่ของคู่สมรสที่คุณเลี้ยงดู',
+				info: 'เงื่อนไขเดียวกับพ่อแม่ของคุณ คนละ 30,000 บาท',
+				kind: 'count',
+				showIf: (data) => data.hasSpouseWithoutIncome,
+				max: 2
+			},
+			{
+				key: 'disabledDependentsCount',
+				testId: 'disabled-dependents-count',
+				label: 'ผู้พิการหรือทุพพลภาพที่คุณดูแล',
+				info: 'มีรายได้ไม่เกิน 30,000 บาทต่อปี คนละ 60,000 บาท',
+				kind: 'count',
+				max: 10
+			}
+		]
 	},
-	{ immediate: true }
+	{
+		testId: 'savings-investment',
+		title: 'การออมและการลงทุน',
+		// Filled by the section's "ใช้สิทธิ์สูงสุด" button
+		maxFields: ['socialSecurity', 'providentFund'],
+		fields: [
+			{ key: 'socialSecurity', testId: 'social-security', label: 'เงินประกันสังคม', info: 'ไม่เกิน 10,500 บาท', kind: 'amount' },
+			{
+				key: 'providentFund',
+				testId: 'provident-fund',
+				label: 'กองทุนกลุ่มเกษียณ ยังไม่รวม RMF (กองทุนสำรองเลี้ยงชีพ, กบข, กอช, ประกันบำนาญ)',
+				info: 'ไม่เกิน 500,000 บาท (ไม่รวมเงินสมทบจากนายจ้าง)',
+				kind: 'amount'
+			},
+			{
+				key: 'ltfSwitchedAmount',
+				testId: 'thai-esgx-transferred',
+				label: 'ยอดที่สับเปลี่ยนจาก LTF ไป ThaiESGX',
+				info: 'ระบบคำนวณสิทธิ์ให้ ส่วนที่เกิน 300,000 บาท ทยอยหักปีละ 1 ใน 4 สูงสุด 50,000 บาทต่อปี (ปีภาษี 2569-2572)',
+				kind: 'amount'
+			}
+		]
+	},
+	{
+		testId: 'other',
+		title: 'ค่าลดหย่อนอื่นๆ',
+		fields: [
+			{
+				key: 'otherDeduction',
+				testId: 'other-deduction',
+				label: 'ค่าลดหย่อนอื่นๆ',
+				info: 'รายการอื่นที่หักได้ตามกฎหมาย',
+				kind: 'amount'
+			}
+		]
+	}
+]
+
+const visibleSections = computed(() =>
+	sections.map((section) => ({
+		...section,
+		fields: section.fields.filter((field) => !field.showIf || field.showIf(formData.value))
+	}))
 )
 
-watch(displayPersonalDeduction, (newVal) => {
-	const parsed = parseNumberFromFormattedWithDecimals(newVal)
-	if (parsed !== formData.value.personalDeduction) {
-		formData.value.personalDeduction = parsed
-	}
-})
-
-// Social security display <-> model
-watch(
-	() => formData.value.socialSecurity,
-	(newVal) => {
-		displaySocialSecurity.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
-	},
-	{ immediate: true }
-)
-
-watch(displaySocialSecurity, (newVal) => {
-	const parsed = parseNumberFromFormattedWithDecimals(newVal)
-	if (parsed !== formData.value.socialSecurity) {
-		formData.value.socialSecurity = parsed
-	}
-})
-
-// Provident fund display <-> model
-watch(
-	() => formData.value.providentFund,
-	(newVal) => {
-		displayProvidentFund.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
-	},
-	{ immediate: true }
-)
-
-watch(displayProvidentFund, (newVal) => {
-	const parsed = parseNumberFromFormattedWithDecimals(newVal)
-	if (parsed !== formData.value.providentFund) {
-		formData.value.providentFund = parsed
-	}
-})
-
-// ThaiESGX display <-> model
-watch(
-	() => formData.value.thaiESGX,
-	(newVal) => {
-		displayThaiESGX.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
-	},
-	{ immediate: true }
-)
-
-watch(displayThaiESGX, (newVal) => {
-	const parsed = parseNumberFromFormattedWithDecimals(newVal)
-	if (parsed !== formData.value.thaiESGX) {
-		formData.value.thaiESGX = parsed
-	}
-})
-
-// ThaiESGX transferred display <-> model
-watch(
-	() => formData.value.thaiESGXTransferred,
-	(newVal) => {
-		displayThaiESGXTransferred.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
-	},
-	{ immediate: true }
-)
-
-watch(displayThaiESGXTransferred, (newVal) => {
-	const parsed = parseNumberFromFormattedWithDecimals(newVal)
-	if (parsed !== formData.value.thaiESGXTransferred) {
-		formData.value.thaiESGXTransferred = parsed
-	}
-})
-
-// Other deduction display <-> model
-watch(
-	() => formData.value.otherDeduction,
-	(newVal) => {
-		displayOtherDeduction.value = formatNumberWithSeparatorsPreserveDecimals(newVal)
-	},
-	{ immediate: true }
-)
-
-watch(displayOtherDeduction, (newVal) => {
-	const parsed = parseNumberFromFormattedWithDecimals(newVal)
-	if (parsed !== formData.value.otherDeduction) {
-		formData.value.otherDeduction = parsed
-	}
-})
-
-// Sanitize input to allow only digits and commas, then normalize formatting
-const onAmountInput = (which, e) => {
-	const formatted = sanitizeAndFormatNumberInputWithDecimals(e.target.value)
-	switch (which) {
-		case 'personalDeduction':
-			displayPersonalDeduction.value = formatted
-			break
-		case 'socialSecurity':
-			displaySocialSecurity.value = formatted
-			break
-		case 'providentFund':
-			displayProvidentFund.value = formatted
-			break
-		case 'thaiESGX':
-			displayThaiESGX.value = formatted
-			break
-		case 'thaiESGXTransferred':
-			displayThaiESGXTransferred.value = formatted
-			break
-		case 'otherDeduction':
-			displayOtherDeduction.value = formatted
-			break
-	}
+const fillMax = (key) => {
+	formData.value[key] = props.maxValues[key]
 }
 </script>
-
-<style scoped>
-/* Custom styles if needed */
-</style>

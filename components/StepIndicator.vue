@@ -63,11 +63,11 @@ const props = defineProps({
 const emit = defineEmits(['step-click'])
 
 // Steps configuration
+// Input steps only; the result page that follows step 3 is not a step
 const steps = [
   { id: 1, caption: 'ขั้นตอนที่ 1', title: 'รายได้' },
   { id: 2, caption: 'ขั้นตอนที่ 2', title: 'ค่าลดหย่อน' },
-  { id: 3, caption: 'ขั้นตอนที่ 3', title: 'ค่าลดหย่อนเพิ่มเติม' },
-  { id: 4, caption: 'ขั้นตอนที่ 4', title: 'คำนวณภาษี' }
+  { id: 3, caption: 'ขั้นตอนที่ 3', title: 'ค่าลดหย่อนเพิ่มเติม' }
 ]
 
 const currentStepInfo = computed(() => steps.find((s) => s.id === props.currentStep) ?? steps[0])

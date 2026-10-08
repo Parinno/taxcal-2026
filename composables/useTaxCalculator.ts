@@ -100,6 +100,38 @@ export function useTaxCalculator() {
     return finalTaxAmount
   }
 
+  // Family deductions for tax year 2569, from the facts the user enters
+  const getFamilyDeductions = (deductionsData: DeductionsData) => {
+    const hasSpouse = Boolean(deductionsData.hasSpouseWithoutIncome)
+    const bornBefore2561 = Math.max(0, Math.floor(toNumber(deductionsData.childrenBornBefore2561Count)))
+    const bornFrom2561 = Math.max(0, Math.floor(toNumber(deductionsData.childrenBornFrom2561Count)))
+    const ownParents = Math.min(Math.max(0, Math.floor(toNumber(deductionsData.ownParentsCount))), 2)
+    // The spouse's parents count only when the spouse has no income
+    const spouseParents = hasSpouse
+      ? Math.min(Math.max(0, Math.floor(toNumber(deductionsData.spouseParentsCount))), 2)
+      : 0
+    const disabledDependents = Math.max(0, Math.floor(toNumber(deductionsData.disabledDependentsCount)))
+
+    const spouse = hasSpouse ? 60000 : 0
+    // 30,000 per child, 60,000 for child no. 2 onward born in 2561 or later.
+    // Older children come first, so a child born before 2561 is always the first one
+    const firstChildBornFrom2561 = bornBefore2561 === 0 && bornFrom2561 > 0 ? 1 : 0
+    const children = bornBefore2561 * 30000
+      + firstChildBornFrom2561 * 30000
+      + (bornFrom2561 - firstChildBornFrom2561) * 60000
+    const parents = (ownParents + spouseParents) * 30000
+    const disabled = disabledDependents * 60000
+
+    return { spouse, children, parents, disabled, total: spouse + children + parents + disabled }
+  }
+
+  // ThaiESGX switched from LTF, tax years 2569-2572: the part above 300,000 (of at most 500,000)
+  // is spread over four years, so at most 50,000 a year
+  const getThaiESGXFromLtfDeduction = (switchedAmount: string | number | undefined) => {
+    const switched = Math.min(toNumber(switchedAmount), 500000)
+    return Math.max(0, switched - 300000) / 4
+  }
+
   // Main calculation function that works with actual form fields
   const calculateTaxFromForms = (
     incomeData: IncomeData,
@@ -119,18 +151,15 @@ export function useTaxCalculator() {
     const employmentIncome = totalIncome
     const employmentExpense = Math.min(employmentIncome * 0.5, 100000)
 
-    // Basic deductions from form
+    // Personal and family: the user enters facts (who they support), the rules turn them into baht
     const personalDeduction = toNumber(deductionsData.personalDeduction) || 60000
-    const socialSecurity = Math.min(toNumber(deductionsData.socialSecurity), 9000)
+    const family = getFamilyDeductions(deductionsData)
+    const maternityExpense = Math.min(toNumber(deductionsData.maternityExpense), 60000)
+
+    // Savings and investment
+    const socialSecurity = Math.min(toNumber(deductionsData.socialSecurity), 10500)
     const providentFund = Math.min(toNumber(deductionsData.providentFund), 500000)
-    
-    // ThaiESGX limits: 30% of total income, max 300,000 baht
-    const thaiESGXLimit = Math.min(totalIncome * 0.3, 300000)
-    const thaiESGX = Math.min(toNumber(deductionsData.thaiESGX), thaiESGXLimit)
-    
-    // ThaiESGX Transferred from LTF: same limits as ThaiESGX
-    const thaiESGXTransferredLimit = Math.min(totalIncome * 0.3, 300000)
-    const thaiESGXTransferred = Math.min(toNumber(deductionsData.thaiESGXTransferred), thaiESGXTransferredLimit)
+    const thaiESGXFromLtf = getThaiESGXFromLtfDeduction(deductionsData.ltfSwitchedAmount)
 
     // Other deductions (no specific limits, but should be reasonable)
     const otherDeduction = toNumber(deductionsData.otherDeduction)
@@ -138,18 +167,32 @@ export function useTaxCalculator() {
     // Insurance: health max 25,000, life + health combined max 100,000
     const healthInsurance = Math.min(toNumber(deductionsData.healthInsurance), 25000)
     const lifeInsurance = Math.min(toNumber(deductionsData.lifeInsurance), 100000 - healthInsurance)
+    const parentHealthInsurance = Math.min(toNumber(deductionsData.parentHealthInsurance), 15000)
+    const spouseLifeInsurance = deductionsData.hasSpouseWithoutIncome
+      ? Math.min(toNumber(deductionsData.spouseLifeInsurance), 10000)
+      : 0
+
+    // Home and government measures
     const homeLoanInterest = Math.min(toNumber(deductionsData.homeLoanInterest), 100000)
+    const solarRooftop = Math.min(toNumber(deductionsData.solarRooftop), 200000)
+    const artwork = Math.min(toNumber(deductionsData.artwork), 100000)
+    const socialEnterprise = Math.min(toNumber(deductionsData.socialEnterprise), 100000)
+    const partyDonation = Math.min(toNumber(deductionsData.partyDonation), 10000)
 
     // Calculate expenses and deductions separately
     const totalExpenses = employmentExpense
-    const deductionsBeforeDonation = personalDeduction + socialSecurity + providentFund + thaiESGX + thaiESGXTransferred + otherDeduction
-      + lifeInsurance + healthInsurance + homeLoanInterest
+    const deductionsBeforeDonation = personalDeduction + family.total + maternityExpense
+      + socialSecurity + providentFund + thaiESGXFromLtf + otherDeduction
+      + lifeInsurance + healthInsurance + parentHealthInsurance + spouseLifeInsurance
+      + homeLoanInterest + solarRooftop + artwork + socialEnterprise + partyDonation
 
-    // Donation: max 10% of income after expenses and other deductions
-    const donationLimit = Math.max(0, (totalIncome - totalExpenses - deductionsBeforeDonation) * 0.1)
-    const donation = Math.min(toNumber(deductionsData.donation), donationLimit)
+    // Donations: the 2x kind comes off first, capped at 10% of income after expenses and deductions,
+    // then general donations, capped at 10% of what is left
+    const incomeBeforeDonation = Math.max(0, totalIncome - totalExpenses - deductionsBeforeDonation)
+    const doubleDonation = Math.min(toNumber(deductionsData.doubleDonation) * 2, incomeBeforeDonation * 0.1)
+    const donation = Math.min(toNumber(deductionsData.donation), (incomeBeforeDonation - doubleDonation) * 0.1)
 
-    const totalDeductions = deductionsBeforeDonation + donation
+    const totalDeductions = deductionsBeforeDonation + doubleDonation + donation
     const totalDeductionsAndExpenses = totalExpenses + totalDeductions
 
     const taxableIncome = Math.max(0, totalIncome - totalDeductionsAndExpenses)
@@ -168,33 +211,32 @@ export function useTaxCalculator() {
       totalDeductionsAndExpenses,
       taxableIncome,
       taxAmount,
-      retirementUsed: providentFund + thaiESGX + thaiESGXTransferred,
+      retirementUsed: providentFund,
       providentFund,
       withholdingTax,
       netTaxPayable,
+      // What each step 3 field actually takes off, after its cap; shown when the entry is above it
+      deductedByField: {
+        lifeInsurance,
+        healthInsurance,
+        parentHealthInsurance,
+        spouseLifeInsurance,
+        homeLoanInterest,
+        solarRooftop,
+        artwork,
+        socialEnterprise,
+        doubleDonation,
+        donation,
+        partyDonation,
+      },
     }
   }
 
-  // Max deductible amount per field, given the current inputs (same caps as calculateTaxFromForms)
-  const getDeductionMaxes = (incomeData: IncomeData, deductionsData: DeductionsData) => {
-    const totalIncome = toNumber(incomeData.salary) + toNumber(incomeData.bonus) + toNumber(incomeData.otherIncome)
-    const esgMax = Math.min(totalIncome * 0.3, 300000)
-    const healthInsurance = Math.min(toNumber(deductionsData.healthInsurance), 25000)
-
-    // Donation cap depends on every other deduction, so reuse the full calculation without it
-    const { taxableIncome } = calculateTaxFromForms(incomeData, { ...deductionsData, donation: 0 })
-
-    return {
-      socialSecurity: 9000,
-      providentFund: 500000,
-      thaiESGX: esgMax,
-      thaiESGXTransferred: esgMax,
-      lifeInsurance: 100000 - healthInsurance,
-      healthInsurance: 25000,
-      homeLoanInterest: 100000,
-      donation: Math.floor(taxableIncome * 0.1)
-    }
-  }
+  // Max deductible amount for the step 2 "ใช้สิทธิ์สูงสุด" button (same caps as calculateTaxFromForms)
+  const getDeductionMaxes = () => ({
+    socialSecurity: 10500,
+    providentFund: 500000
+  })
 
   // Tax planning calculations
   const calculateTaxPlanning = (
@@ -355,9 +397,38 @@ export function useTaxCalculator() {
     }
   }
 
+  // Prototype (NEXT-6741 emoji): how much of the tax the user could cut by buying deductions they have
+  // actually cut. Counts only deductions a person can buy more of (insurance, PVD/RMF, ThaiESG), not family
+  // facts. Each person is measured against their own ceiling, so every bracket is judged the same way.
+  // otherInvestment: RMF/ThaiESG already counted inside calculationData (the floating panel on the result page)
+  const getDeductionUsage = (calculationData: CalculationResult, otherInvestment = 0) => {
+    const totalIncome = calculationData.totalIncome || 0
+    const byField = calculationData.deductedByField || {}
+    const insurance = (byField.lifeInsurance || 0) + (byField.healthInsurance || 0)
+    const providentFund = calculationData.providentFund || 0
+    const usedDeductions = insurance + providentFund + otherInvestment
+
+    const maxDeductions = 100000
+      + Math.min(totalIncome * 0.3, 500000)
+      + Math.min(totalIncome * 0.3, 300000)
+
+    // Net income as if none of the buyable deductions were used
+    const taxableWithoutThem = calculationData.taxableIncome + usedDeductions
+    const taxWithoutThem = calculateTaxByBrackets(taxableWithoutThem)
+    const savedTax = Math.max(0, taxWithoutThem - calculationData.taxAmount)
+    const maxSavedTax = Math.max(0, taxWithoutThem - calculateTaxByBrackets(Math.max(0, taxableWithoutThem - maxDeductions)))
+
+    const score = maxSavedTax <= 0 ? 1 : Math.min(1, savedTax / maxSavedTax)
+    const level = score >= 0.8 ? 'high' : score >= 0.4 ? 'mid' : 'low'
+    return { score, level, savedTax, maxSavedTax, remainingTax: Math.max(0, maxSavedTax - savedTax) }
+  }
+
   return {
     calculateTaxFromForms,
+    getDeductionUsage,
     getDeductionMaxes,
+    getFamilyDeductions,
+    getThaiESGXFromLtfDeduction,
     calculateTaxPlanning,
     calculateTaxPlanningResult,
     calculateTaxSummary,
